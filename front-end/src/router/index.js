@@ -10,6 +10,10 @@ import Login from '@/page/login'
 import About from '@/page/about'
 import Lian from '@/page/lian'
 import Registration from '@/page/registration'
+import PersonalInformation from '@/page/personal-information'
+import Resume from '@/page/resume'
+import Application from '@/page/application'
+import Historys from '@/page/history'
 
 Vue.use(Router)
 
@@ -69,6 +73,26 @@ export default new Router({
       path: '/registration',
       name: 'Registration',
       component: Registration
+    },
+    {
+      path: '/personal-information',
+      name: 'PersonalInformation',
+      component: PersonalInformation
+    },
+    {
+      path: '/resume',
+      name: 'Resume',
+      component: Resume
+    },
+    {
+      path: '/application',
+      name: 'Application',
+      component: Application
+    },
+    {
+      path: '/history',
+      name: 'History',
+      component: Historys
     }
   ]
 })

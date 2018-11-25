@@ -445,4 +445,13 @@ const registration = Mock.mock(
       message: '查询成功'
     }
   })
-export default { vehicle, user, banner, company, companyDetail, officeDetail, resume, hireList, userMsg, loginYan }
+const getResume = Mock.mock(
+  '/api/getResume', 'get', (req, res) => {
+    return {
+      code: 200,
+      data: {
+      },
+      message: '查询成功'
+    }
+  })
+export default { vehicle, user, banner, company, companyDetail, officeDetail, resume, hireList, userMsg, loginYan, registration, getResume }

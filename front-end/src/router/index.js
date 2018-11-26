@@ -14,6 +14,8 @@ import PersonalInformation from '@/page/personal-information'
 import Resume from '@/page/resume'
 import Application from '@/page/application'
 import Historys from '@/page/history'
+import AddResume from '@/page/addResume'
+import AddTechResume from '@/page/addTechResume'
 
 Vue.use(Router)
 
@@ -93,6 +95,16 @@ export default new Router({
       path: '/history',
       name: 'History',
       component: Historys
+    },
+    {
+      path: '/addResume',
+      name: 'AddResume',
+      component: AddResume
+    },
+    {
+      path: '/addTechResume',
+      name: 'AddTechResume',
+      component: AddTechResume
     }
   ]
 })

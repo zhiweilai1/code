@@ -77,7 +77,6 @@ export default {
   },
   components: {tabbar},
   created() {
-    console.log(window.sessionStorage.getItem('userMsg'))
     if (window.sessionStorage.getItem('userMsg')) {
       this.isLogin = true
       

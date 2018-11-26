@@ -450,8 +450,44 @@ const getResume = Mock.mock(
     return {
       code: 200,
       data: {
+        baseMsg: {
+          username: '周先生',
+          number: 24,
+          sex: '男',
+          status: '未实习-随时到岗',
+          phone: 17610826989,
+          email: '13298310629@163.com'
+        }
       },
       message: '查询成功'
     }
   })
-export default { vehicle, user, banner, company, companyDetail, officeDetail, resume, hireList, userMsg, loginYan, registration, getResume }
+const postBaseMessage = Mock.mock(
+  '/api/postBaseMessage', 'post', (req, res) => {
+    return {
+      code: 200,
+      data: {
+        save: true
+      },
+      message: '查询成功'
+    }
+  })
+const getBaseMessage = Mock.mock(
+  '/api/getBaseMessage', 'get', (req, res) => {
+    return {
+      code: 200,
+      data: {
+        baseMsg: {
+          username: '周先生',
+          number: 24,
+          sex: '男',
+          status: '未实习-随时到岗',
+          phone: 17610826989,
+          email: '13298310629@163.com'
+        }
+      },
+      message: '查询成功'
+    }
+  })
+export default { vehicle, user, banner,
+  company, companyDetail, officeDetail, resume, hireList, userMsg, loginYan, registration, getResume, postBaseMessage, getBaseMessage }

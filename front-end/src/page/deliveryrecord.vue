@@ -1,6 +1,6 @@
 <template>
   <div class="diliveryrecord">
-    dfads
+    浏览记录
   </div>
 </template>
 

@@ -16,6 +16,8 @@ import Application from '@/page/application'
 import Historys from '@/page/history'
 import AddResume from '@/page/addResume'
 import AddTechResume from '@/page/addTechResume'
+import AddTec from '@/page/addTec'
+import AddWorkResume from '@/page/addWorkResume'
 
 Vue.use(Router)
 
@@ -105,6 +107,16 @@ export default new Router({
       path: '/addTechResume',
       name: 'AddTechResume',
       component: AddTechResume
+    },
+    {
+      path: '/addTec',
+      name: 'AddTec',
+      component: AddTec
+    },
+    {
+      path: '/addWorkResume',
+      name: 'AddWorkResume',
+      component: AddWorkResume
     }
   ]
 })

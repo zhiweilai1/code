@@ -32,6 +32,33 @@
                 </div>
             </div>
         </div>
+        <div class="resume-tec-msg">
+            <div class="resume-title big-title">
+                教育经历
+            </div>
+            <div class="resume-tec-card" v-if="data.tecMsg &&data.tecMsg.length > 0" v-for="(item, index) in data.tecMsg" :key="index" @click="editTec(index)">
+                <div class="resume-tec-title">
+                    <div class="resume-tec-school" style="font-size: 16px; color: #666">
+                        {{item.school}}
+                    </div>
+                    <div class="resume-tec-time">
+                        <div class="resume-tec-time" >
+                            <img src="../../static/turn-icon.png" alt="" style="width: 20px;">
+                        </div>
+                        <div class="resume-tec-time" style="font-size: 14px; color: #999; margin-right: 5px;">
+                            {{item.begin}} - {{item.end}}
+                        </div>
+                    </div>
+                </div>
+                <div class="resume-tec-zhuan">
+                    {{item.level}} - {{item.profession}}
+                </div>
+                <div class="resume-tes-dec">
+                    {{item.dec}}
+                </div>
+            </div>
+            <mt-button type="default" class="add-button" @click="jumpToAddTec()">添加教育经历</mt-button>
+        </div>
     </div>
 </template>
 
@@ -53,14 +80,12 @@ export default {
     service.get('/api/getResume', {}, {
         username: userMsg.userName
     }).then((res) => {
-        console.log(res)
         if (Object.keys(res.data).length == 0) {
             MessageBox({
                 title: '提示',
                 message: '您还未有简历，是否去创建?',
                 showCancelButton: true
             }).then((action) => {
-                console.log(action)
                 if (action == 'cancel') {
                     this.$router.push({
                         path: '/person'
@@ -74,14 +99,26 @@ export default {
         } else {
             self.data = res.data
         }
+        console.log(self.data)
     })
   },
   methods: {
       modify: function() {
-            window.sessionStorage.setItem('modify', this.data.baseMsg.username)
-            this.$router.push({
-                path: '/addResume'
-            }) 
+        window.sessionStorage.setItem('modify', this.data.baseMsg.username)
+        this.$router.push({
+            path: '/addResume'
+        }) 
+      },
+      jumpToAddTec: function() {
+        this.$router.push({
+            path: '/addTec'
+        }) 
+      },
+      editTec: function(index) {
+        window.sessionStorage.setItem('tecIndex', index)
+        this.$router.push({
+            path: '/addTec'
+        })
       }
   }
 }
@@ -124,6 +161,41 @@ export default {
     width: 20px;
     height: 20px;
     display: inline-block;
+}
+
+.resume-tec-msg {
+    background-color: #fff;
+    padding: 10px;
+}
+.resume-title {
+    margin-bottom: 20px;
+}
+.resume-tec-title {
+    overflow: hidden;
+}
+.resume-tec-school {
+    float: left;
+}
+
+.resume-tec-time {
+    float: right;
+    text-align: right;
+}
+.resume-tec-zhuan {
+    font-size: 12px;
+    color: rgb(197, 196, 196);
+}
+.resume-tes-dec {
+    font-size: 14px;
+    color: #999;
+}
+.resume-tec-card {
+    margin-bottom: 10px;
+}
+.add-button {
+    width: 100%;
+    background-color: #fff;
+    margin-top: 20px;
 }
 </style>
 

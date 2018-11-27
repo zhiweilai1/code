@@ -457,13 +457,31 @@ const getResume = Mock.mock(
           status: '未实习-随时到岗',
           phone: 17610826989,
           email: '13298310629@163.com'
-        }
+        },
+        tecMsg: [{
+          school: '华北水利水电大学',
+          level: '本科',
+          profession: '网络工程',
+          dec: '它是一个非常棒的学校',
+          begin: '2013',
+          end: '2017'
+        }]
       },
       message: '查询成功'
     }
   })
 const postBaseMessage = Mock.mock(
   '/api/postBaseMessage', 'post', (req, res) => {
+    return {
+      code: 200,
+      data: {
+        save: true
+      },
+      message: '查询成功'
+    }
+  })
+const postTecMessage = Mock.mock(
+  '/api/postTecMessage', 'post', (req, res) => {
     return {
       code: 200,
       data: {
@@ -489,5 +507,7 @@ const getBaseMessage = Mock.mock(
       message: '查询成功'
     }
   })
-export default { vehicle, user, banner,
-  company, companyDetail, officeDetail, resume, hireList, userMsg, loginYan, registration, getResume, postBaseMessage, getBaseMessage }
+export default {
+  vehicle, user, banner,
+  company, companyDetail, officeDetail, resume, hireList, userMsg, loginYan, registration, getResume, postBaseMessage, getBaseMessage, postTecMessage
+}

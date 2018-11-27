@@ -26,7 +26,7 @@
         <div class="login-tel">
           <input type="text" placeholder="请选择学校" v-model="region" maxlength="80" readonly="readonly" @click="showAddressPicker" />
           <mt-popup v-model="regionVisible" position="bottom" class="region-popup">
-            <mt-picker :slots="myAddressSlots" valueKey="name" :visibleItemCount	="5" @change="addressChange" :itemHeight="40"></mt-picker>
+            <mt-picker :slots="myAddressSlots" valueKey="name" :visibleItemCount="5" @change="addressChange" :itemHeight="40"></mt-picker>
           </mt-popup>
         </div>
         <div class="login-tel">
@@ -107,7 +107,7 @@ export default {
     changeShen: function(regShen) {
       this.regShen = regShen
     },
-    showAddressPicker(){
+    showAddressPicker: function() {
       this.regionVisible = true;
     },
     getPortStu: function() {

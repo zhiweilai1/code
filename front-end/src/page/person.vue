@@ -85,7 +85,6 @@ export default {
       service.get('/api/getUserMsg', {}, {
         userName: userMsg
       }).then((res) => {
-        console.log(res)
       })
     } else {
       this.isLogin = false;

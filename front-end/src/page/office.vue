@@ -97,19 +97,17 @@ export default {
       })
     },
     pushOffic: function () {
-      console.log(this.data.id)
       if (window.sessionStorage.getItem('userMsg')) {
         service.post('/api/submit/resume', {}, {
           officeId: this.data.id
         }).then((res) => {
-          console.log(res)
           if (res.data.isSub) {
             MessageBox({
               title: '小提示',
               message: '您已投递成功,点击确定查看投递记录',
             }).then(() => {
               this.$router.push({
-                path: '/deliveryrecord'
+                path: '/application'
               })
 
             });
@@ -118,7 +116,9 @@ export default {
               title: '小提示',
               message: '您的简历未完善，点击确定去完善简历',
             }).then(() => {
-              alert('234')
+              this.$router.push({
+                path: '/resume'
+              })
             });
           }
         })

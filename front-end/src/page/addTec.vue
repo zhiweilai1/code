@@ -1,5 +1,6 @@
 <template>
     <div class="addTec">
+        <div v-title>教育经历</div>
         <div class="tec-msg-form">
             <mt-field label="学校" placeholder="请输入校名" v-model="school"></mt-field>
             <div @click="showAddressPicker()">
@@ -28,8 +29,8 @@
 <script>
 import service from 'service-api'
 import { MessageBox } from 'mint-ui'
-import { Popup } from 'mint-ui';
-import { Picker } from 'mint-ui';
+import { Popup } from 'mint-ui'
+import { Picker } from 'mint-ui'
 export default {
     name: 'AddTec',
     data() {
@@ -129,9 +130,7 @@ export default {
                         showCancelButton: true
                     }).then((action) => {
                         if (action == 'cancel') {
-                            this.$router.push({
-                                path: '/resume'
-                            })
+                            this.$router.back(-1)
                         } else {
                             this.$router.push({
                                 path: '/addWorkResume'

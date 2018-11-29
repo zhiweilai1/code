@@ -1,5 +1,6 @@
 <template>
     <div class="addResume">
+        <div v-title>基础信息</div>
         <div class="form-box">
             <mt-field label="姓名" placeholder="请输入姓名" v-model="username"></mt-field>
             <mt-radio
@@ -71,14 +72,11 @@ export default {
                         message: '保存成功，是否添加教育经历？',
                         showCancelButton: true
                     }).then((action) => {
-                        console.log(action)
                         if (action == 'cancel') {
-                            this.$router.push({
-                                path: '/resume'
-                            })
+                            this.$router.back(-1)
                         } else {
                             this.$router.push({
-                                path: '/addTechResume'
+                                path: '/AddTec'
                             }) 
                         }
                     }) 

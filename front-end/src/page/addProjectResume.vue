@@ -1,8 +1,8 @@
 <template>
     <div class="addWorkResume">
-        <div v-title>工作经历</div>
+        <div v-title>项目经历</div>
         <div class="tec-msg-form">
-            <mt-field label="公司" placeholder="请输入公司名称" v-model="company"></mt-field>
+            <mt-field label="项目" placeholder="请输入项目名称" v-model="company"></mt-field>
             <mt-field label="职位" placeholder="请输入职位名称" v-model="position"></mt-field>
             <div @click="showTimePicker(0)">
                 <mt-field label="开始时间" v-model="workBeginTime" readonly="readonly" placeholder="请选择时间" ></mt-field>
@@ -13,7 +13,7 @@
             <div @click="showTimePicker(1)">
                 <mt-field label="结束时间" v-model="workEndTime" readonly="readonly" placeholder="请选择时间" ></mt-field>
             </div>
-            <mt-field label="工作内容" placeholder="填写工作内容" type="textarea" rows="4" v-model="duties"></mt-field>
+            <mt-field label="项目描述" placeholder="填写项目描述" type="textarea" rows="4" v-model="duties"></mt-field>
         </div>
         <div class="offic-push" @click="pushTecInfo()">
             <div class="off-box off-push">
@@ -29,7 +29,7 @@ import { MessageBox } from 'mint-ui'
 import { Popup } from 'mint-ui'
 import { Picker } from 'mint-ui'
 export default {
-    name: 'AddWorkResume',
+    name: 'AddProjectResume',
     data() {
         return {
             userMsg: {},
@@ -68,18 +68,18 @@ export default {
         let userMsg = JSON.parse(window.sessionStorage.getItem('userMsg'))
         let self = this
         this.userMsg = userMsg
-        let index = window.sessionStorage.getItem('workIndex')
+        let index = window.sessionStorage.getItem('projectIndex')
         if (index) { 
             service.get('/api/getResume', {}, {
                 username: userMsg.userName
             }).then((res) => {
-                let data = res.data.workMsg[Number(index)]
-                this.company = data.company
-                this.position = data.position
-                this.duties = data.duties
+                let data = res.data.projectMsg[Number(index)]
+                this.company = data.projectName
+                this.position = data.projectPosition
+                this.duties = data.projectDesc
                 this.workBeginTime = data.begin
                 this.workEndTime = data.end
-                window.sessionStorage.removeItem('workIndex')
+                window.sessionStorage.removeItem('projectIndex')
             })
         }
     },
@@ -110,18 +110,18 @@ export default {
             return yearArr
         },
         pushTecInfo: function() {
-            service.post('/api/postWorkMessage', {}, {
+            service.post('/api/postProjectMessage', {}, {
                 username: this.userMsg.userName,
-                company: this.company,
-                position: this.position,
-                duties: this.duties,
+                projectName: this.company,
+                projectPosition: this.position,
+                projectDesc: this.duties,
                 begin: this.workBeginTime,
                 end: this.workEndTime
             }).then((res) => {
                 if (res.data.save) {
                     MessageBox({
                         title: '提示',
-                        message: '保存成功，是否添加项目经历？',
+                        message: '保存成功，是否添加自我评价？',
                         showCancelButton: true
                     }).then((action) => {
                         if (action == 'cancel') {

@@ -80,7 +80,6 @@ export default {
 
   created() {
     service.get('/api/gethirelist').then((res) => {
-      console.log(res)
       this.allList = res.data
       this.showHire()
     })

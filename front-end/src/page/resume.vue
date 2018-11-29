@@ -1,5 +1,6 @@
 <template>
     <div class="resume">
+        <div v-title>我的简历</div>
         <div class="resume-base-msg">
             <div class="resume-base-msg-left">
                 <img :src="userMsg.imgUrl" alt="">
@@ -59,6 +60,82 @@
             </div>
             <mt-button type="default" class="add-button" @click="jumpToAddTec()">添加教育经历</mt-button>
         </div>
+        <!-- 实习经历 -->
+        <div class="resume-tec-msg">
+            <div class="resume-title big-title">
+                工作经历
+            </div>
+            <div class="resume-tec-card" v-if="data.workMsg &&data.workMsg.length > 0" v-for="(item, index) in data.workMsg" :key="index" @click="editWork(index)">
+                <div class="resume-tec-title">
+                    <div class="resume-tec-school ellipsis-1" style="font-size: 16px; color: #666; width: 53%">
+                        {{item.company}}
+                    </div>
+                    <div class="resume-tec-time ellipsis-1">
+                        <div class="resume-tec-time" >
+                            <img src="../../static/turn-icon.png" alt="" style="width: 20px;">
+                        </div>
+                        <div class="resume-tec-time" style="font-size: 14px; color: #999; margin-right: 5px;">
+                            {{item.begin}} - {{item.end}}
+                        </div>
+                    </div>
+                </div>
+                <div class="resume-tec-zhuan">
+                    {{item.position}}
+                </div>
+                <div class="resume-tes-dec">
+                    {{item.duties}}
+                </div>
+            </div>
+            <mt-button type="default" class="add-button" @click="jumpToAddWork()">添加工作经历</mt-button>
+        </div>
+        <!-- 项目经历 -->
+        <div class="resume-tec-msg">
+            <div class="resume-title big-title">
+                项目经历
+            </div>
+            <div class="resume-tec-card" v-if="data.projectMsg &&data.projectMsg.length > 0" v-for="(item, index) in data.projectMsg" :key="index" @click="editProject(index)">
+                <div class="resume-tec-title">
+                    <div class="resume-tec-school ellipsis-1" style="font-size: 16px; color: #666; width: 53%">
+                        {{item.projectName}}
+                    </div>
+                    <div class="resume-tec-time ellipsis-1">
+                        <div class="resume-tec-time" >
+                            <img src="../../static/turn-icon.png" alt="" style="width: 20px;">
+                        </div>
+                        <div class="resume-tec-time" style="font-size: 14px; color: #999; margin-right: 5px;">
+                            {{item.begin}} - {{item.end}}
+                        </div>
+                    </div>
+                </div>
+                <div class="resume-tec-zhuan">
+                    {{item.projectPosition}}
+                </div>
+                <div class="resume-tes-dec">
+                    {{item.projectDesc}}
+                </div>
+            </div>
+            <mt-button type="default" class="add-button" @click="jumpToAddProject()">添加项目经历</mt-button>
+        </div>
+        <!-- 自我评价 -->
+        <div class="resume-tec-msg">
+            <div class="resume-title big-title">
+                自我评价
+            </div>
+            <div class="resume-tec-card" v-if="data.evaluation" @click="editEvaluation()">
+                <div class="resume-tec-title">
+                    <div class="resume-tec-school ellipsis-1" style="font-size: 16px; color: #666; width: 53%">
+                        {{data.evaluation}}
+                    </div>
+                    <div class="resume-tec-time ellipsis-1">
+                        <div class="resume-tec-time" >
+                            <img src="../../static/turn-icon.png" alt="" style="width: 20px;">
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            <mt-button v-else type="default" class="add-button" @click="jumpToAddEvaluation()">添加自我评价</mt-button>
+        </div>
     </div>
 </template>
 
@@ -99,7 +176,6 @@ export default {
         } else {
             self.data = res.data
         }
-        console.log(self.data)
     })
   },
   methods: {
@@ -119,6 +195,33 @@ export default {
         this.$router.push({
             path: '/addTec'
         })
+      },
+      jumpToAddWork: function() {
+        this.$router.push({
+            path: '/addWorkResume'
+        }) 
+      },
+      editWork: function(index) {
+        window.sessionStorage.setItem('workIndex', index)
+        this.$router.push({
+            path: '/addWorkResume'
+        }) 
+      },
+      jumpToAddProject: function() {
+        this.$router.push({
+            path: '/addProjectResume'
+        })
+      },
+      editProject: function(index) {
+        window.sessionStorage.setItem('projectIndex', index)
+        this.$router.push({
+            path: '/addProjectResume'
+        }) 
+      },
+      jumpToAddEvaluation: function() {
+         this.$router.push({
+            path: '/addEvaluationResume'
+        }) 
       }
   }
 }
@@ -166,6 +269,7 @@ export default {
 .resume-tec-msg {
     background-color: #fff;
     padding: 10px;
+    margin-bottom: 10px;
 }
 .resume-title {
     margin-bottom: 20px;

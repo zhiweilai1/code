@@ -1,5 +1,6 @@
 <template>
   <div class="registration">
+    <div v-title>注册</div>
     <div class="login-tou">
       <img src="../../static/login-t.png" alt="">
     </div>

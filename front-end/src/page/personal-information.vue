@@ -1,5 +1,6 @@
 <template>
     <div class="personal-information">
+        <div v-title>个人信息</div>
         <div class="personal-box" style="margin-bottom: 50px;">
             <div class="personal-box-left personal-tou">
                 头像
@@ -46,8 +47,6 @@ export default {
   },
   created() {
       let userMsg = window.sessionStorage.getItem('userMsg')
-      console.log(userMsg)
-      console.log(JSON.parse(userMsg))
       this.userMsg = JSON.parse(userMsg)
   }
 }

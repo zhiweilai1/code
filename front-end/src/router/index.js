@@ -5,7 +5,6 @@ import Hire from '@/page/hire'
 import Person from '@/page/person'
 import Company from '@/page/company'
 import Office from '@/page/office'
-import Deliveryrecord from '@/page/deliveryrecord'
 import Login from '@/page/login'
 import About from '@/page/about'
 import Lian from '@/page/lian'
@@ -15,9 +14,10 @@ import Resume from '@/page/resume'
 import Application from '@/page/application'
 import Historys from '@/page/history'
 import AddResume from '@/page/addResume'
-import AddTechResume from '@/page/addTechResume'
 import AddTec from '@/page/addTec'
 import AddWorkResume from '@/page/addWorkResume'
+import AddProjectResume from '@/page/addProjectResume'
+import AddEvaluationResume from '@/page/addEvaluationResume'
 
 Vue.use(Router)
 
@@ -52,11 +52,6 @@ export default new Router({
       path: '/office',
       name: 'Office',
       component: Office
-    },
-    {
-      path: '/deliveryrecord',
-      name: 'Deliveryrecord',
-      component: Deliveryrecord
     },
     {
       path: '/login',
@@ -104,11 +99,6 @@ export default new Router({
       component: AddResume
     },
     {
-      path: '/addTechResume',
-      name: 'AddTechResume',
-      component: AddTechResume
-    },
-    {
       path: '/addTec',
       name: 'AddTec',
       component: AddTec
@@ -117,6 +107,16 @@ export default new Router({
       path: '/addWorkResume',
       name: 'AddWorkResume',
       component: AddWorkResume
+    },
+    {
+      path: '/addProjectResume',
+      name: 'AddProjectResume',
+      component: AddProjectResume
+    },
+    {
+      path: '/addEvaluationResume',
+      name: 'AddEvaluationResume',
+      component: AddEvaluationResume
     }
   ]
 })

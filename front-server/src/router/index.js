@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import IndexPage from '@/page/index'
 import AdCompanyList from '@/page/admin/company-list'
 import AdOfficList from '@/page/admin/offic-list'
+import OfficResume from '@/page/admin/resume-list'
 
 Vue.use(Router)
 
@@ -22,6 +23,11 @@ export default new Router({
       path: '/AdOfficList',
       name: 'AdOfficList',
       component: AdOfficList
+    },
+    {
+      path: '/OfficResume',
+      name: 'OfficResume',
+      component: OfficResume
     }
   ]
 })

@@ -1,6 +1,6 @@
 <template>
   <div class="AdStudent">
-    fasdf
+    fasdffasfa
   </div>
 </template>
 <script>

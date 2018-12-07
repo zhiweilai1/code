@@ -70,7 +70,7 @@ export default {
               path: '/AdCompanyList',
               name: '公司信息'
             }, {
-              path: '/AdCompanyList',
+              path: '/AdStudent',
               name: '学生信息'
             }, {
               path: '/AdCompanyList',

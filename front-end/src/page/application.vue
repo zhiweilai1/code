@@ -45,7 +45,7 @@ export default {
     created() {
         let userMsg = JSON.parse(window.sessionStorage.getItem('userMsg'))
         service.get('/api/getApplicationList', {}, {
-            username: userMsg.userName
+            userId: userMsg.userId
         }).then((res) => {
             if (res.data.length > 0) {
                 this.dataList = res.data
@@ -64,7 +64,7 @@ export default {
             MessageBox.prompt('请输入面试评价').then(({ value, action }) => {
                 if (value && action == 'confirm') {
                     service.post('/api/posteEvaluation', {}, {
-                        id: index,
+                        offId: index,
                         value: value
                     }).then((res) => {
                         if (res.data.isSave) {

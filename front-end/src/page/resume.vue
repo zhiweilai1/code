@@ -155,7 +155,7 @@ export default {
     this.userMsg = userMsg
     let self = this
     service.get('/api/getResume', {}, {
-        username: userMsg.userName
+        userId: userMsg.userId
     }).then((res) => {
         if (Object.keys(res.data).length == 0) {
             MessageBox({

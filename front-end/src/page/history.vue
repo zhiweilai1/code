@@ -38,7 +38,7 @@ export default {
     created() {
         let userMsg = JSON.parse(window.sessionStorage.getItem('userMsg'))
         service.get('/api/getHistoryList', {}, {
-            username: userMsg.userName
+            userId: userMsg.userId
         }).then((res) => {
             if (res.data.length > 0) {
                 this.dataList = res.data

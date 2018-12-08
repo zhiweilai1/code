@@ -56,8 +56,8 @@ export default {
               this.huoContent = '获取验证码'
             }
           }, 1000)
-          service.post('/api/postLogin', {}, {
-            telphone: this.telphone
+          service.get('/api/getVerificationCode', {}, {
+            phone: this.telphone
           }).then((res) => {
             // 发送验证码请求成功
           })
@@ -70,9 +70,9 @@ export default {
       })
     },
     login: function() {
-      service.post('/api/postSubmit', {}, {
-        telphone: this.telphone,
-        yanNum: this.yanNum
+      service.post('/api/postLoginSubmit', {}, {
+        phone: this.telphone,
+        yan: this.yanNum
       }).then((res) => {
         window.sessionStorage.setItem('userMsg', JSON.stringify(res.data))
         this.$router.push({

@@ -115,7 +115,7 @@ export default {
         },
         pushTecInfo: function() {
             service.post('/api/postTecMessage', {}, {
-                username: this.userMsg.userName,
+                userId: this.userMsg.userId,
                 school: this.school,
                 level: this.level,
                 profession: this.profession,

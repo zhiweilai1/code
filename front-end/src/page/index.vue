@@ -14,7 +14,7 @@
       </mt-swipe>
     </div>
     <div class="index-company">
-      <div v-for="(item, index) in comArr" :key="index" class="com-card" @click="comMsg(item.url, item.company)">
+      <div v-for="(item, index) in comArr" :key="index" class="com-card" @click="comMsg(item.url, item.id)">
         <img :src="item.imgUrl" alt="" class="com-card-img">
         <div class="card-show-msg">
           点我了解更多》》
@@ -48,7 +48,7 @@ export default {
         '../static/banner1.jpg', '../static/banner2.jpg', '../static/banner3.jpg'
       ]
     })
-    service.get('/api/getCompany').then((res) => {
+    service.get('/api/hotPushCompany').then((res) => {
       this.comArr = res.data
     }).catch((e) => {
       this.bannerArr = [

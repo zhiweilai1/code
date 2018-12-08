@@ -99,7 +99,8 @@ export default {
     pushOffic: function () {
       if (window.sessionStorage.getItem('userMsg')) {
         service.post('/api/submit/resume', {}, {
-          officeId: this.data.id
+          officeId: this.data.id,
+          userId: window.sessionStorage.getItem('userMsg').userId
         }).then((res) => {
           if (res.data.isSub) {
             MessageBox({

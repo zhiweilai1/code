@@ -83,7 +83,7 @@ export default {
       let userMsg = window.sessionStorage.getItem('userMsg')
       this.userMsg = JSON.parse(userMsg)
       service.get('/api/getUserMsg', {}, {
-        userName: userMsg
+        userId: this.userMsg.userId
       }).then((res) => {
       })
     } else {

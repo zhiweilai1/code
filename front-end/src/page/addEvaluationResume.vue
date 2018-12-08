@@ -36,7 +36,7 @@ export default {
     methods: {
         pushTecInfo: function() {
             service.post('/api/postEvaluationMessage', {}, {
-                username: this.userMsg.userName,
+                userId: this.userMsg.userId,
                 evaluation: this.evaluation
             }).then((res) => {
                 if (res.data.save) {

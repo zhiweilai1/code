@@ -111,7 +111,7 @@ export default {
         },
         pushTecInfo: function() {
             service.post('/api/postWorkMessage', {}, {
-                username: this.userMsg.userName,
+                userId: this.userMsg.userId,
                 company: this.company,
                 position: this.position,
                 duties: this.duties,

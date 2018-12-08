@@ -47,21 +47,24 @@ const banner = Mock.mock(
 )
 
 const company = Mock.mock(
-  '/api/getCompany', 'get', (req, res) => {
+  '/api/hotPushCompany', 'get', (req, res) => {
     return {
       code: 200,
       data: [
         {
+          id: 1,
           url: '',
           imgUrl: 'http://img00.deviantart.net/0305/i/2012/356/8/9/scenic_environment_creation_in_vue_by_2753productions-d5os5qd.jpg',
           company: '京东'
         },
         {
+          id: 1,
           url: 'https://m.mi.com/',
           imgUrl: 'http://img00.deviantart.net/0305/i/2012/356/8/9/scenic_environment_creation_in_vue_by_2753productions-d5os5qd.jpg',
           company: '小米'
         },
         {
+          id: 1,
           url: '',
           imgUrl: 'http://img00.deviantart.net/0305/i/2012/356/8/9/scenic_environment_creation_in_vue_by_2753productions-d5os5qd.jpg',
           company: '滴滴'
@@ -77,6 +80,7 @@ const companyDetail = Mock.mock(
     return {
       code: 200,
       data: {
+        id: 1,
         backImg: '../../static/banner3.jpg',
         companyImg: '../../static/bai.jpeg',
         companyName: '北京嘀嘀无限科技发展有限公司',
@@ -165,7 +169,7 @@ const userMsg = Mock.mock(
         userImg: '../../static/banner3.jpg',
         Identity: 1
       },
-      message: '查询成功'
+      messagfe: '查询成功'
     }
   })
 const hireList = Mock.mock(
@@ -417,14 +421,14 @@ const hireList = Mock.mock(
     }
   })
 const loginYan = Mock.mock(
-  '/api/postLogin', 'post', (req, res) => {
+  '/api/getVerificationCode', 'get', (req, res) => {
     return {
       code: 200,
       message: '查询成功'
     }
   })
 const login = Mock.mock(
-  '/api/postSubmit', 'post', (req, res) => {
+  '/api/postLoginSubmit', 'post', (req, res) => {
     return {
       code: 200,
       data: {

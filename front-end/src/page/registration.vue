@@ -131,8 +131,8 @@ export default {
               this.stuhuoContent = '获取验证码'
             }
           }, 1000)
-          service.post('/api/postLogin', {}, {
-            stutelphone: this.stutelphone
+          service.get('/api/getVerificationCode', {}, {
+            phone: this.stutelphone
           }).then((res) => {
             // 发送验证码请求成功
           })
@@ -159,8 +159,8 @@ export default {
               this.teahuoContent = '获取验证码'
             }
           }, 1000)
-          service.post('/api/postLogin', {}, {
-            teatelphone: this.teatelphone
+          service.get('/api/getVerificationCode', {}, {
+            phone: this.teatelphone
           }).then((res) => {
             // 发送验证码请求成功
           })
@@ -206,6 +206,7 @@ export default {
       let params = {}
       if (this.egShen == 0) {
         params = {
+          Identity: 0,
           tel: this.stutelphone,
           yan: this.stuyanNum,
           school: this.region,
@@ -213,6 +214,7 @@ export default {
         }
       } else {
         params = {
+          Identity: 1,
           tel: this.teatelphone,
           yan: this.teayanNum
         }

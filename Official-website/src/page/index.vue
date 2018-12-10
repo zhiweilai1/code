@@ -6,7 +6,7 @@
     </el-carousel-item>
   </el-carousel>
   <div class="foot">
-    <a href="http://www.miitbeian.gov.cn">豫ICP备18007792</a>
+    <a href="http://www.miitbeian.gov.cn">豫ICP备18007792号-1</a>
   </div>
   </div>
 </template>

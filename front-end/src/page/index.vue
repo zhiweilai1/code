@@ -2,15 +2,11 @@
   <div class="index">
     <div class="index-banner">
       <mt-swipe :auto="4000">
-        <mt-swipe-item>
-          <img :src="bannerArr[0]" alt="" class="banner-img">
+        
+        <mt-swipe-item v-for="item in bannerArr" :key="item">
+            <img :src="item.bannerImage" alt="" class="banner-img">          
         </mt-swipe-item>
-        <mt-swipe-item>
-          <img :src="bannerArr[1]" alt="" class="banner-img">
-        </mt-swipe-item>
-        <mt-swipe-item>
-          <img :src="bannerArr[2]" alt="" class="banner-img">
-        </mt-swipe-item>
+        
       </mt-swipe>
     </div>
     <div class="index-company">
@@ -41,14 +37,14 @@ export default {
   components: {tabbar},
   created () {
     let self = this
-    service.get('/api/getBanner').then((res) => {
+    service.post('/api/getBanner').then((res) => {
+      console.log(res)
       this.bannerArr = res.data
     }).catch((e) => {
-      this.bannerArr = [
-        '../static/banner1.jpg', '../static/banner2.jpg', '../static/banner3.jpg'
-      ]
+      console.log(e)
+      this.bannerArr = e.data
     })
-    service.get('/api/hotPushCompany').then((res) => {
+    service.post('/api/hotPushCompany').then((res) => {
       this.comArr = res.data
     }).catch((e) => {
       this.bannerArr = [

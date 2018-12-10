@@ -5,7 +5,7 @@ import App from './App'
 import router from './router'
 import MintUI from 'mint-ui'
 import 'mint-ui/lib/style.css'
-import mockdata from './mock'
+// import mockdata from './mock'
 
 Vue.config.productionTip = false
 

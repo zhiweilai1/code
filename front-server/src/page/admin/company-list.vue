@@ -12,7 +12,7 @@
           <el-input v-model="formInline.companyName" placeholder="公司名称" size="small"></el-input>
         </el-form-item>
         <el-form-item label="公司账户">
-          <el-input v-model="formInline.account_number" placeholder="公司账户" size="small"></el-input>
+          <el-input v-model="formInline.accountNumber" placeholder="公司账户" size="small"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="companyList()" size="small">查询</el-button>
@@ -35,7 +35,7 @@
         width="250">
       </el-table-column>
       <el-table-column
-        prop="account_number"
+        prop="accountNumber"
         label="公司账户">
       </el-table-column>
       <el-table-column
@@ -83,10 +83,10 @@
     <el-dialog title="添加公司" :visible.sync="isAddCompany">
       <el-form :model="ruleForm" :rules="rules" ref="ruleForm">
         <el-form-item label="公司名称" prop="name">
-          <el-input v-model="ruleForm.name" size="small"></el-input>
+          <el-input v-model="ruleForm.companyName" size="small"></el-input>
         </el-form-item>
-        <el-form-item label="公司账户" prop="account_number">
-          <el-input v-model="ruleForm.account_number" size="small"></el-input>
+        <el-form-item label="公司账户" prop="accountNumber">
+          <el-input v-model="ruleForm.accountNumber" size="small"></el-input>
         </el-form-item>
         <el-form-item label="初始密码" prop="password">
           <el-input v-model="ruleForm.password" disabled size="small"></el-input>
@@ -121,7 +121,7 @@
           公司账户
         </el-col>
         <el-col :span="20">
-          {{companyDetail.account_number}}
+          {{companyDetail.accountNumber}}
         </el-col>
       </el-row>
       <el-row>
@@ -179,8 +179,8 @@
         <el-form-item label="公司名称" prop="name">
           <el-input v-model="editorFrom.name" size="small"></el-input>
         </el-form-item>
-        <el-form-item label="公司账户" prop="account_number">
-          <el-input v-model="editorFrom.account_number" size="small"></el-input>
+        <el-form-item label="公司账户" prop="accountNumber">
+          <el-input v-model="editorFrom.accountNumber" size="small"></el-input>
         </el-form-item>
         <el-form-item label="账户密码" prop="password">
           <el-input v-model="editorFrom.password" disabled size="small"></el-input>
@@ -204,20 +204,20 @@ export default {
       height: 300,
       isAddCompany: false,
       ruleForm: {
-        name: '',
-        account_number: '',
+        companyName: '',
+        accountNumber: '',
         password: '666666'
       },
       formLabelWidth: '120px',
       rules: {
         name: [{ required: true, message: '请输入公司名称', trigger: 'blur' }],
-        account_number: [
+        accountNumber: [
           { required: true, message: '请填写公司账户', trigger: 'blur' }
         ]
       },
       formInline: {
         companyName: '',
-        account_number: ''
+        accountNumber: ''
       },
       tableList: [],
       companyDetail: {},
@@ -226,7 +226,7 @@ export default {
       editorFrom: {
         id: '',
         name: '',
-        account_number: '',
+        accountNumber: '',
         password: ''
       }
     }
@@ -293,23 +293,23 @@ export default {
       let self = this
       service.get('/api/getCompanyList').then(res => {      self.comLoad = false
         let suitArr = []
-        if (!self.formInline.companyName && !self.formInline.account_number) {
+        if (!self.formInline.companyName && !self.formInline.accountNumber) {
           suitArr = res.data
-        } else if (self.formInline.companyName && !self.formInline.account_number) {
+        } else if (self.formInline.companyName && !self.formInline.accountNumber) {
           for (let i = 0; i < res.data.length; i++) {
             if (res.data[i].companyName.indexOf(self.formInline.companyName) > -1) {
               suitArr.push(res.data[i])
             }
           }
-        } else if (!self.formInline.companyName && self.formInline.account_number) {
+        } else if (!self.formInline.companyName && self.formInline.accountNumber) {
           for (let i = 0; i < res.data.length; i++) {
-            if (res.data[i].account_number.indexOf(self.formInline.account_number) > -1) {
+            if (res.data[i].accountNumber.indexOf(self.formInline.accountNumber) > -1) {
               suitArr.push(res.data[i])
             }
           }
         } else {
           for (let i = 0; i < res.data.length; i++) {
-            if (res.data[i].account_number.indexOf(self.formInline.account_number) > -1 && res.data[i].companyName.indexOf(self.formInline.companyName) > -1) {
+            if (res.data[i].accountNumber.indexOf(self.formInline.accountNumber) > -1 && res.data[i].companyName.indexOf(self.formInline.companyName) > -1) {
               suitArr.push(res.data[i])
             }
           }
@@ -321,7 +321,7 @@ export default {
       this.editorFrom = {
         id: row.id,
         name: row.companyName,
-        account_number: row.account_number,
+        accountNumber: row.accountNumber,
         password: row.password
       }
       this.editorVisible = true

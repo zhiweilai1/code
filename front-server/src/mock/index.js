@@ -37,7 +37,7 @@ const getCompanyList = Mock.mock('/api/getCompanyList', 'get', (req, res) => {
     data: [{
       id: 1,
       companyName: '北京嘀嘀无限科技发展有限公司',
-      account_number: '12345678',
+      accountNumber: '12345678',
       password: 666666,
       isShow: true,
       companydet: '电子商务、B2C',

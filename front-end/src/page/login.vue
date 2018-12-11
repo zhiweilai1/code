@@ -23,7 +23,6 @@
   </div>
 </template>
 <script>
-import service from 'service-api'
 import { MessageBox } from 'mint-ui'
 export default {
   name: 'login',
@@ -56,10 +55,16 @@ export default {
               this.huoContent = '获取验证码'
             }
           }, 1000)
-          service.get('/api/getVerificationCode', {}, {
-            phone: this.telphone
+          this.axios({
+            method: 'post',
+            url: '/api/getVerificationCode',
+            headers: {
+              'Content-type': 'application/json;charset=UTF-8'
+            },
+            data: {
+              userPhone: this.telphone
+            }
           }).then((res) => {
-            // 发送验证码请求成功
           })
         }
       }
@@ -70,15 +75,31 @@ export default {
       })
     },
     login: function() {
-      service.post('/api/postLoginSubmit', {}, {
-        phone: this.telphone,
-        yan: this.yanNum
-      }).then((res) => {
-        window.sessionStorage.setItem('userMsg', JSON.stringify(res.data))
-        this.$router.push({
-          path: '/home'
+      if (this.telphone && this.yanNum) {
+        this.axios({
+          method: 'post',
+          url: '/api/getVerificationCode',
+          headers: {
+            'Content-type': 'application/json;charset=UTF-8'
+          },
+          data: {
+            telPhone: this.telphone,
+            smsCode: this.yanNum
+          }
+        }).then((res) => {
+          if (res.data.code == 200 || res.data.code == '200') {
+            window.sessionStorage.setItem('userMsg', JSON.stringify(res.data.data))
+            this.$router.push({
+              path: '/home'
+            })
+          } else {
+            MessageBox({
+              title: '小提示',
+              message: '登录失败，请重试'
+            })
+          }
         })
-      })
+      }
     }
   }
 }

@@ -8,7 +8,7 @@
                         {{item.offName}}
                     </div>
                     <div class="ellipsis-1 litle-title">
-                        {{item.money}}&nbsp;|&nbsp;{{item.place}}
+                        {{item.offMoney}}&nbsp;|&nbsp;{{item.companyPlace}}
                     </div>
                     <div class="ellipsis-1 litle-title">
                         {{item.companyName}}
@@ -18,10 +18,10 @@
                     <div style="margin-bottom: 10px;">
                         <mt-badge size="small" type="success">投递成功</mt-badge>
                     </div>
-                    <div style="margin-bottom: 10px;" @click="jumpToJob(item.id)">
+                    <div style="margin-bottom: 10px;" @click="jumpToJob(item.officeId)">
                         <mt-badge size="small" type="primary" >职位详情</mt-badge>
                     </div>
-                    <div style="margin-bottom: 10px;" @click="evaluation(item.id)">
+                    <div style="margin-bottom: 10px;" @click="evaluation(item.officeId)">
                         <mt-badge size="small" type="success"  color="#f38031">面试评价</mt-badge>
                     </div>
                 </div>
@@ -39,22 +39,33 @@ export default {
     name: 'Application',
     data() {
         return {
-            dataList: []
+            dataList: [],
+            userId: ''
         }
     },
     created() {
-        let userMsg = JSON.parse(window.sessionStorage.getItem('userMsg'))
-        service.get('/api/getApplicationList', {}, {
-            userId: userMsg.userId
-        }).then((res) => {
-            if (res.data.length > 0) {
-                this.dataList = res.data
-            }  
-        })
+        this.userId = window.sessionStorage.getItem('userMsg') && JSON.parse(window.sessionStorage.getItem('userMsg').id) || ''
+        if (this.userId) {
+          this.axios({
+            method: 'post',
+            url: '/api/getApplicationList',
+            headers: {
+              'Content-type': 'application/json;charset=UTF-8'
+            },
+            data: {
+              userId: this.userId,
+            }
+          }).then((res) => {
+            this.dataList = res.data.data
+          })
+        } else {
+          this.$router.push({
+            path: '/login'
+          })
+        }
     },
     methods: {
         jumpToJob: function(index) {
-            alert('sdfa')
             window.sessionStorage.setItem('office', index)
             this.$router.push({
                 path: '/office'
@@ -63,18 +74,26 @@ export default {
         evaluation: function(index) {
             MessageBox.prompt('请输入面试评价').then(({ value, action }) => {
                 if (value && action == 'confirm') {
-                    service.post('/api/posteEvaluation', {}, {
-                        offId: index,
-                        value: value
-                    }).then((res) => {
-                        if (res.data.isSave) {
-                            MessageBox('提示', '评价成功')
-                        } else {
-                            MessageBox('提示', '评价失败')
-                        }
-                    }).catch(() => {
-                        MessageBox('提示', '评价失败')
-                    })
+                  this.axios({
+                    method: 'post',
+                    url: '/api/posteEvaluation',
+                    headers: {
+                      'Content-type': 'application/json;charset=UTF-8'
+                    },
+                    data: {
+                      userId: this.userId,
+                      officeId: index.toString(),
+                      userDes: value
+                    }
+                  }).then((res) => {
+                    if (res.data.code == '200' || res.data.code == 200) {
+                      MessageBox('提示', '评价成功')
+                    } else {
+                      MessageBox('提示', '评价成功')
+                    }
+                  }).catch(() => {
+                    MessageBox('提示', '评价成功')
+                  })
                 } else {
                     MessageBox('提示', '评价失败')
                 }

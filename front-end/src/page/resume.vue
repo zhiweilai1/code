@@ -3,14 +3,14 @@
         <div v-title>我的简历</div>
         <div class="resume-base-msg">
             <div class="resume-base-msg-left">
-                <img :src="userMsg.imgUrl" alt="">
+                <img :src="userMsg.headImgurl" alt="">
             </div>
             <div class="resume-base-msg-right">
                 <div>
-                    {{data.baseMsg.username}}&nbsp;<img src="../../static/re-icon.png" alt="" class="resume-icon" @click="modify()">
+                    {{data.baseMsg.userName}}&nbsp;<img src="../../static/re-icon.png" alt="" class="resume-icon" @click="modify()">
                 </div>
                 <div class="litle-title" style="font-weight: 200">
-                    {{data.baseMsg.sex}}&nbsp;|&nbsp;{{data.baseMsg.number}}&nbsp;|&nbsp;{{data.baseMsg.status}}
+                    {{data.baseMsg.userSex}}&nbsp;|&nbsp;{{data.baseMsg.userAge}}&nbsp;|&nbsp;{{data.baseMsg.userStatus}}
                 </div>
             </div>
             <div class="resume-base-left">
@@ -19,7 +19,7 @@
                         <img src="../../static/phone-icon.png" alt="" class="resume-icon">
                     </div>
                     <div style="float: left;">
-                        &nbsp;{{data.baseMsg.phone}}
+                        &nbsp;{{data.baseMsg.userPhone}}
                     </div>
                     
                 </div>
@@ -28,7 +28,7 @@
                         <img src="../../static/email-icon.png" alt="" class="resume-icon">
                     </div>
                     <div style="float: left;">
-                        &nbsp;{{data.baseMsg.email}}
+                        &nbsp;{{data.baseMsg.userEmail}}
                     </div>
                 </div>
             </div>
@@ -37,25 +37,25 @@
             <div class="resume-title big-title">
                 教育经历
             </div>
-            <div class="resume-tec-card" v-if="data.tecMsg &&data.tecMsg.length > 0" v-for="(item, index) in data.tecMsg" :key="index" @click="editTec(index)">
+            <div class="resume-tec-card" v-if="data.tecMsg &&data.tecMsg.length > 0" v-for="(item, index) in data.tecMsg" :key="index" @click="editTec(item)">
                 <div class="resume-tec-title">
                     <div class="resume-tec-school" style="font-size: 16px; color: #666">
-                        {{item.school}}
+                        {{item.userSchool}}
                     </div>
                     <div class="resume-tec-time">
                         <div class="resume-tec-time" >
                             <img src="../../static/turn-icon.png" alt="" style="width: 20px;">
                         </div>
                         <div class="resume-tec-time" style="font-size: 14px; color: #999; margin-right: 5px;">
-                            {{item.begin}} - {{item.end}}
+                            {{item.beginTime}} - {{item.endTime}}
                         </div>
                     </div>
                 </div>
                 <div class="resume-tec-zhuan">
-                    {{item.level}} - {{item.profession}}
+                    {{item.schoolLevel}} - {{item.userProfession}}
                 </div>
                 <div class="resume-tes-dec">
-                    {{item.dec}}
+                    {{item.schoolDes}}
                 </div>
             </div>
             <mt-button type="default" class="add-button" @click="jumpToAddTec()">添加教育经历</mt-button>
@@ -65,25 +65,25 @@
             <div class="resume-title big-title">
                 工作经历
             </div>
-            <div class="resume-tec-card" v-if="data.workMsg &&data.workMsg.length > 0" v-for="(item, index) in data.workMsg" :key="index" @click="editWork(index)">
+            <div class="resume-tec-card" v-if="data.workMsg &&data.workMsg.length > 0" v-for="(item, index) in data.workMsg" :key="index" @click="editWork(item)">
                 <div class="resume-tec-title">
-                    <div class="resume-tec-school ellipsis-1" style="font-size: 16px; color: #666; width: 53%">
-                        {{item.company}}
+                    <div class="resume-tec-school ellipsis-1" style="font-size: 16px; color: #666; width: 40%">
+                        {{item.companyName}}
                     </div>
                     <div class="resume-tec-time ellipsis-1">
                         <div class="resume-tec-time" >
                             <img src="../../static/turn-icon.png" alt="" style="width: 20px;">
                         </div>
                         <div class="resume-tec-time" style="font-size: 14px; color: #999; margin-right: 5px;">
-                            {{item.begin}} - {{item.end}}
+                            {{item.beginTime}} - {{item.endTime}}
                         </div>
                     </div>
                 </div>
                 <div class="resume-tec-zhuan">
-                    {{item.position}}
+                    {{item.userPosition}}
                 </div>
                 <div class="resume-tes-dec">
-                    {{item.duties}}
+                    {{item.userDuties}}
                 </div>
             </div>
             <mt-button type="default" class="add-button" @click="jumpToAddWork()">添加工作经历</mt-button>
@@ -93,9 +93,9 @@
             <div class="resume-title big-title">
                 项目经历
             </div>
-            <div class="resume-tec-card" v-if="data.projectMsg &&data.projectMsg.length > 0" v-for="(item, index) in data.projectMsg" :key="index" @click="editProject(index)">
+            <div class="resume-tec-card" v-if="data.projectMsg &&data.projectMsg.length > 0" v-for="(item, index) in data.projectMsg" :key="index" @click="editProject(item)">
                 <div class="resume-tec-title">
-                    <div class="resume-tec-school ellipsis-1" style="font-size: 16px; color: #666; width: 53%">
+                    <div class="resume-tec-school ellipsis-1" style="font-size: 16px; color: #666; width: 40%">
                         {{item.projectName}}
                     </div>
                     <div class="resume-tec-time ellipsis-1">
@@ -103,7 +103,7 @@
                             <img src="../../static/turn-icon.png" alt="" style="width: 20px;">
                         </div>
                         <div class="resume-tec-time" style="font-size: 14px; color: #999; margin-right: 5px;">
-                            {{item.begin}} - {{item.end}}
+                            {{item.beginTime}} - {{item.endTime}}
                         </div>
                     </div>
                 </div>
@@ -121,10 +121,10 @@
             <div class="resume-title big-title">
                 自我评价
             </div>
-            <div class="resume-tec-card" v-if="data.evaluation" @click="editEvaluation()">
+            <div class="resume-tec-card" v-if="data.myDes" @click="jumpToAddEvaluation()">
                 <div class="resume-tec-title">
-                    <div class="resume-tec-school ellipsis-1" style="font-size: 16px; color: #666; width: 53%">
-                        {{data.evaluation}}
+                    <div class="resume-tec-school ellipsis-1" style="font-size: 16px; color: #666; width: 90%">
+                        {{data.myDes.myDes}}
                     </div>
                     <div class="resume-tec-time ellipsis-1">
                         <div class="resume-tec-time" >
@@ -140,7 +140,6 @@
 </template>
 
 <script>
-import service from 'service-api'
 import { MessageBox } from 'mint-ui';
 export default {
   name: "Resume",
@@ -151,13 +150,34 @@ export default {
     }
   },
   created() {
-    let userMsg = JSON.parse(window.sessionStorage.getItem('userMsg'))
-    this.userMsg = userMsg
-    let self = this
-    service.get('/api/getResume', {}, {
-        userId: userMsg.userId
-    }).then((res) => {
-        if (Object.keys(res.data).length == 0) {
+    if (window.sessionStorage.getItem('userMsg')) {
+        let userMsg = JSON.parse(window.sessionStorage.getItem('userMsg'))
+        this.axios({
+          method: 'post',
+          url: '/api/getUserMsg',
+          headers: {
+            'Content-type': 'application/json;charset=UTF-8'
+          },
+          data: {
+            userId: userMsg.id
+          }
+        }).then((res) => {
+          this.userMsg = res.data.data
+        })
+
+        this.axios({
+          method: 'post',
+          url: '/api/getMyResume',
+          headers: {
+            'Content-type': 'application/json;charset=UTF-8'
+          },
+          data: {
+            userId: userMsg.id
+          }
+        }).then((res) => {
+          if (res.data.code == 200 || res.data.code == '200') {
+            this.data = res.data.data
+          } else {
             MessageBox({
                 title: '提示',
                 message: '您还未有简历，是否去创建?',
@@ -173,14 +193,18 @@ export default {
                     }) 
                 }
             })
-        } else {
-            self.data = res.data
-        }
-    })
+          }
+          
+        })
+    } else {
+      this.$router.push({
+        path: '/login'
+      }) 
+    }
   },
   methods: {
       modify: function() {
-        window.sessionStorage.setItem('modify', this.data.baseMsg.username)
+        window.sessionStorage.setItem('modify', JSON.stringify(this.data.baseMsg))
         this.$router.push({
             path: '/addResume'
         }) 
@@ -191,7 +215,7 @@ export default {
         }) 
       },
       editTec: function(index) {
-        window.sessionStorage.setItem('tecIndex', index)
+        window.sessionStorage.setItem('tecIndex', JSON.stringify(index))
         this.$router.push({
             path: '/addTec'
         })
@@ -202,10 +226,10 @@ export default {
         }) 
       },
       editWork: function(index) {
-        window.sessionStorage.setItem('workIndex', index)
+        window.sessionStorage.setItem('workIndex', JSON.stringify(index))
         this.$router.push({
             path: '/addWorkResume'
-        }) 
+        })
       },
       jumpToAddProject: function() {
         this.$router.push({
@@ -213,14 +237,15 @@ export default {
         })
       },
       editProject: function(index) {
-        window.sessionStorage.setItem('projectIndex', index)
+        window.sessionStorage.setItem('projectIndex', JSON.stringify(index))
         this.$router.push({
             path: '/addProjectResume'
         }) 
       },
       jumpToAddEvaluation: function() {
-         this.$router.push({
-            path: '/addEvaluationResume'
+        window.sessionStorage.setItem('myDes', JSON.stringify(this.data.myDes) || '')
+        this.$router.push({
+          path: '/addEvaluationResume'
         }) 
       }
   }

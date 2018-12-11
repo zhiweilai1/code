@@ -131,10 +131,16 @@ export default {
               this.stuhuoContent = '获取验证码'
             }
           }, 1000)
-          service.get('/api/getVerificationCode', {}, {
-            phone: this.stutelphone
+          this.axios({
+            method: 'post',
+            url: '/api/getVerificationCode',
+            headers: {
+              'Content-type': 'application/json;charset=UTF-8'
+            },
+            data: {
+              userPhone: this.telphone
+            }
           }).then((res) => {
-            // 发送验证码请求成功
           })
         }
       }
@@ -159,10 +165,16 @@ export default {
               this.teahuoContent = '获取验证码'
             }
           }, 1000)
-          service.get('/api/getVerificationCode', {}, {
-            phone: this.teatelphone
+          this.axios({
+            method: 'post',
+            url: '/api/getVerificationCode',
+            headers: {
+              'Content-type': 'application/json;charset=UTF-8'
+            },
+            data: {
+              userPhone: this.telphone
+            }
           }).then((res) => {
-            // 发送验证码请求成功
           })
         }
       }
@@ -207,20 +219,29 @@ export default {
       if (this.egShen == 0) {
         params = {
           Identity: 0,
-          tel: this.stutelphone,
-          yan: this.stuyanNum,
-          school: this.region,
-          guanlian: this.guantea
+          telPhone: this.stutelphone,
+          smsCode: this.stuyanNum,
+          userSchool: this.region,
+          userTeacher: this.guantea
         }
       } else {
         params = {
           Identity: 1,
-          tel: this.teatelphone,
-          yan: this.teayanNum
+          telPhone: this.teatelphone,
+          smsCode: this.teayanNum
         }
       }
-      service.post('/api/registration', {}, params).then((res) => {
-        if (res.data.isReg) {
+
+
+      this.axios({
+        method: 'post',
+        url: '/api/registration',
+        headers: {
+          'Content-type': 'application/json;charset=UTF-8'
+        },
+        data: params
+      }).then((res) => {
+        if (res.data.code == 200 || res.data.code == '200') {
           MessageBox.alert('注册成功').then(action => {
             this.$router.push({
               path: '/login'

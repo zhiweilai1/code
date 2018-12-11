@@ -7,8 +7,8 @@
         <i class="mintui mintui-search"></i>
         <input
         ref="input"
-        @input="searchHire"
-        @keyup.enter="searchHire"
+        
+        @keyup.enter="showHire"
         @click="searchRecordShow"
         type="search"
         v-model="currentValue"
@@ -18,26 +18,35 @@
     </div>
     </div>
     <div class="hire-type">
-      <div class="hire-type-content" @click="showHireType()">
-        {{hireType}}
+      <div class="selectBox" style="width: 400px; line-height: 40px; padding-left: 10px;">
+      <div class="selectBox_show" v-on:click.stop="arrowDown">
+        <i class="icon icon_arrowDown"></i>
+        <p title="全部类型">{{unitName}}</p>
+        <input type="hidden" name="unit" v-model="unitModel">
       </div>
-      <drop-list :config="configData" ref="droplist"></drop-list>
+      <div class="selectBox_list" v-show="isShowSelect"
+           style="max-height: 240px; width: 398px; display: block; background: #fff">
+        <div class="selectBox_listLi" v-for="(item, index) in dataList" :key="index"
+             @click.stop="select(item, index)">{{item.value}}
+        </div>
+      </div>
+    </div>
     </div>
     <div class="hire-list" v-if="haveOff">
-      <div class="hire-detail" v-for="(item, index) in showList" :key="index" @click="jumpToDetail(item.id)">
+      <div class="hire-detail" v-for="(item, index) in showList" :key="index" @click="jumpToDetail(item.officeId)">
         <div class="hire-detail-left">
           <img :src="item.companyImg" alt="">
         </div>
         <div class="hire-detail-right">
           <div class="company-off-card-title">
              <div class="company-off-card-title-left ellipsis-1">{{item.offName}}</div>
-             <div class="company-off-card-title-right">{{item.money}}</div>
+             <div class="company-off-card-title-right">{{item.offMoney}}</div>
           </div>
           <div class="litle-title hire-company ellipsis-1">
             {{item.companyName}}
           </div>
           <div class="litle-title ellipsis-1">
-            {{item.pushTime}}&nbsp;{{item.place}}&nbsp;{{item.type}}
+            {{ item.pushTime | time}}&nbsp;{{item.offPlace}}&nbsp;{{item.companyType}}
           </div>
         </div>
       </div>
@@ -51,101 +60,106 @@
 <script>
 import tabbar from '../components/tabbar'
 import DropList from 'vue-droplist'
-import service from 'service-api'
+import moment from 'moment'
 export default {
   name: 'hire',
+  filters: {
+    time: (value) => {
+      return moment(value).format('YYYY-MM-DD')
+    }
+  },
+  // @input="showHire"  防止
   data () {
     return {
       iconArr: ['../../static/home-normal.png', '../../static/hire-check.png', '../../static/personal-normal .png'],
       currentValue: '',
       haveOff: true, 
-      hireType: '全部职位',
-      allList: [],
+      hireType: '',
       showList: [],
-      configData : {
-        position: {  // 设置显示位置，position
-          top: '52px', 
-          right: '0'
-        },
-        width: '40%', // 设置宽度
-        list: [ // 设置下拉列表数据和对应的点击事件
-          {text: '全部职位', action: this.quanzhi},
-          {text: '高级技工', action: this.gaogong},
-          {text: '普通技工', action: this.pugogn},
-          {text: 'UI设计师', action: this.uishi}
-        ]
-      }
+      isShowSelect: false,
+      dataList: [
+        {key: '', value: "全部类型"},
+        {key: 0, value: "苹果"},
+        {key: 1, value: "香蕉"}
+      ],
+      unitName:'全部类型',
+      unitModel: 0
+
     }
   },
 
   created() {
-    service.get('/api/gethirelist').then((res) => {
-      this.allList = res.data
-      this.showHire()
-    })
+    this.showHire()
+    this.offTypeList()
   },
   components: {tabbar, DropList},
   methods: {
+
+    arrowDown() {
+      this.isShowSelect = !this.isShowSelect;
+    },
+    select(item, index) {
+      this.isShowSelect = false;
+      this.unitModel = index;
+      this.unitName = item.value;
+      this.hireType = item.key
+      this.showHire()
+    },
+
+    offTypeList: function() {
+      this.axios({
+        method: 'post',
+        url: '/api/getOfficType',
+        headers: {
+          'Content-type': 'application/json;charset=UTF-8'
+        }
+      }).then((res) => {
+        let data = res.data.data
+        let arr = [{
+          key: '',
+          value: '全部类型'
+        }]
+        for (let i = 0; i < data.length; i++) {
+          arr.push({
+            key: data[i].typeName,
+            value: data[i].typeName
+          })
+        }
+        this.dataList = arr
+      })
+    },
     searchRecordShow: function () {
       this.visible = true;
     },
 
-    showHireType: function () {
-      this.$refs.droplist.show()
-    },
-    quanzhi: function () {
-      this.hireType = '全部职位'
-      this.showHire()
-    },
-    gaogong: function () {
-      this.hireType = '高级技工'
-      this.showHire()
-    },
-    pugogn: function () {
-      this.hireType = '普通技工'
-      this.showHire()
-    },
-    uishi: function () {
-      this.hireType = 'UI设计师'
-      this.showHire()
-    },
     searchHire: function () {
       this.showHire()
       
     },
     showHire: function () {
-      let linArr = []
-      if (this.hireType == '全部职位') {
-        if (!this.currentValue) {
-          linArr = this.allList
-        } else {
-          for (let i = 0; i < this.allList.length; i++) {
-            if (this.allList[i].offName.indexOf(this.currentValue) > -1 || this.allList[i].companyName.indexOf(this.currentValue) > -1) {
-              linArr.push(this.allList[i])
-            }
-          }
+
+      this.axios({
+        method: 'post',
+        url: '/api/getHireOffice',
+        headers: {
+          'Content-type': 'application/json;charset=UTF-8'
+        },
+        data: {
+          offType: this.hireType,
+          searchContent: this.currentValue
         }
-      } else {
-        if (!this.currentValue) {
-          for (let i = 0; i < this.allList.length; i++) {
-            if (this.allList[i].type == this.hireType) {
-              linArr.push(this.allList[i])
-            }
-          }
+      }).then((res) => {
+        let data = res.data.data
+        if (data.length > 0) {
+          this.haveOff = true
+          this.showList = data
         } else {
-          for (let i = 0; i < this.allList.length; i++) {
-            if (this.allList[i].type == this.hireType && (this.allList[i].offName.indexOf(this.currentValue) > -1 || this.allList[i].companyName.indexOf(this.currentValue) > -1)) {
-              linArr.push(this.allList[i])
-            }
-          }
+          this.haveOff = false
         }
-      }
-      if (linArr.length > 0) {
-        this.haveOff = true
-        this.showList = linArr
-      } else {
-        this.haveOff = false
-      }
+        
+      })
+      
+      
     },
     jumpToDetail: function (oid) {
       window.sessionStorage.setItem('office', oid)

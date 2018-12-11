@@ -5,16 +5,16 @@
       <div class="offic-main-title">
         <!-- 名称及位置 -->
         <div class="company-off-card-title">
-          <div class="company-off-card-title-left">{{data.offName}}</div>
-          <div class="company-off-card-title-right">{{data.money}}</div>
+          <div class="company-off-card-title-left">{{data.officeDeatil.offName}}</div>
+          <div class="company-off-card-title-right">{{data.officeDeatil.offMoney}}</div>
         </div>
         <div class="company-off-card-place">
-          {{data.isshi ? '实习' : '全职'}}&nbsp;|&nbsp;{{data.place}}&nbsp;|&nbsp;{{data.experience}}&nbsp;|&nbsp;{{data.education}}
+          {{data.officeDeatil.isExer ? '实习' : '全职'}}&nbsp;|&nbsp;{{data.officeDeatil.offPlace}}&nbsp;|&nbsp;{{data.officeDeatil.offExperience}}&nbsp;|&nbsp;{{data.officeDeatil.offEducation}}
         </div>
         <div>
           <div style="display: inline-block; color: #888">职位福利:</div>
           <div style="display: inline-block">
-            <span class="company-welfare" v-for="item in data.welfareArr" :key="item">
+            <span class="company-welfare" v-for="item in data.company.welfareArr" :key="item">
               <mt-badge size="normal">{{item}}</mt-badge>
             </span>
           </div>
@@ -22,22 +22,22 @@
       </div>
       <div class="offic-main-title">
         <!-- 公司信息 -->
-        <div class="offic-main-company" @click="jumpToCompany(data.companyId)">
+        <div class="offic-main-company" @click="jumpToCompany(data.company.companyId)">
           <div class="off-main-company-img">
-            <img :src="data.companyImg" alt="" class="img company-img">
+            <img :src="data.company.companyImg" alt="" class="img company-img">
           </div>
           <div class="off-main-company-title">
             <div class="ellipsis-1 normal-title">
-              {{data.companyName}}
+              {{data.company.companyName}}
             </div>
             <div class="ellipsis-1 litle-title">
-              {{data.companydet}}&nbsp;|&nbsp;{{data.companyType}}&nbsp;|&nbsp;{{data.companyPer}}
+              {{data.company.companyDet}}&nbsp;|&nbsp;{{data.company.companyType}}&nbsp;|&nbsp;{{data.company.companyPer}}
             </div>
           </div>
           <img src="../../static/turn-icon.png" alt="" class="offic-main-turn">
         </div>
         <div class="offic-main-company-place litle-title">
-          {{data.companyPlace}}
+          {{data.company.companyPlace}}
         </div>
       </div>
       <div class="offic-main-title">
@@ -47,13 +47,13 @@
         </div>
         <div class="offic-zhize">
           <div class="litle-title">岗位职责:</div>
-          <p class="litle-title zhi-content" v-for="(item, index) in data.Responsibilities" :key="index">
+          <p class="litle-title zhi-content" v-for="(item, index) in data.officeDeatil.offResponsibilities" :key="index">
             {{index + 1}}、{{item}}
           </p>
         </div>
         <div class="offic-yaoqiu">
           <div class="litle-title">任职要求:</div>
-          <p class="litle-title zhi-content" v-for="(item, index) in data.requirements" :key="index">
+          <p class="litle-title zhi-content" v-for="(item, index) in data.officeDeatil.offRequirements" :key="index">
             {{index + 1}}、{{item}}
           </p>
         </div>
@@ -81,15 +81,44 @@ export default {
     }
   },
   created() {
+    // 需要加一个判断来显示立即投递
     let self = this
     let params = {
       officeId: window.sessionStorage.getItem('office')
     }
-    service.get('/api/getOfficContent', {}, params).then((res) => {
-      self.data = res.data
+    this.axios({
+      method: 'post',
+      url: '/api/getOfficContent',
+      headers: {
+        'Content-type': 'application/json;charset=UTF-8'
+      },
+      data: params
+    }).then((res) => {
+      let data = res.data.data
+      data.company.welfareArr = data.company.welfareArr.split(',')
+      data.officeDeatil.offResponsibilities = data.officeDeatil.offResponsibilities.split(',')
+      data.officeDeatil.offRequirements = data.officeDeatil.offRequirements.split(',')
+      self.data = data
     })
+    this.postHistory()
   },
   methods: {
+    postHistory: function() {
+      if (window.sessionStorage.getItem('userMsg')) {
+        this.axios({
+          method: 'post',
+          url: '/api/setHistory',
+          headers: {
+            'Content-type': 'application/json;charset=UTF-8'
+          },
+          data: {
+            officeId: window.sessionStorage.getItem('office'),
+            userId: JSON.parse(window.sessionStorage.getItem('userMsg')).id
+          }
+        }).then((res) => {})
+      }
+      
+    },
     jumpToCompany: function (cId) {
       window.sessionStorage.setItem('compony', cId)
       this.$router.push({
@@ -98,31 +127,44 @@ export default {
     },
     pushOffic: function () {
       if (window.sessionStorage.getItem('userMsg')) {
-        service.post('/api/submit/resume', {}, {
-          officeId: this.data.id,
-          userId: window.sessionStorage.getItem('userMsg').userId
-        }).then((res) => {
-          if (res.data.isSub) {
-            MessageBox({
-              title: '小提示',
-              message: '您已投递成功,点击确定查看投递记录',
-            }).then(() => {
-              this.$router.push({
-                path: '/application'
+        if (JSON.parse(window.sessionStorage.getItem('userMsg')).id == '1' ) {
+          MessageBox({
+            title: '小提示',
+            message: '抱歉,您是老师，暂不能提交简历',
+          }).then(() => {
+            this.$router.push({
+              path: '/login'
+            })
+          })
+        } else {
+          this.axios({
+            method: 'post',
+            url: '/api/getOfficContent',
+            headers: {
+              'Content-type': 'application/json;charset=UTF-8'
+            },
+            data: {
+              officeId: this.dat.officeDeatil.id,
+              userId: window.sessionStorage.getItem('userMsg').id
+            }
+          }).then((res) => {
+            if (res.data.code == 200 || res.data.code == '200') {
+              MessageBox({
+                title: '小提示',
+                message: '您已投递成功',
               })
-
-            });
-          } else {
-            MessageBox({
-              title: '小提示',
-              message: '您的简历未完善，点击确定去完善简历',
-            }).then(() => {
-              this.$router.push({
-                path: '/resume'
+            } else {
+              MessageBox({
+                title: '小提示',
+                message: '您的简历未完善，点击确定去完善简历',
+              }).then(() => {
+                this.$router.push({
+                  path: '/resume'
+                })
               })
-            });
-          }
-        })
+            }
+          })
+        }
       } else {
         MessageBox({
           title: '小提示',

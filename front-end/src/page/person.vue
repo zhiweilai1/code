@@ -5,14 +5,14 @@
       <!-- 已登录 -->
       <div class="login-card">
         <div class="login-card-left">
-          <img :src="userMsg.imgUrl" alt="">
+          <img :src="userMsg.headImgurl" alt="">
         </div>
         <div class="login-card-right">
           <div style="font-size: 20px;margin-bottom: 10px;">
-            {{userMsg.userName}}
+            {{userMsg.nickName}}
           </div>
           <div class="litle-title" style="color: #fff">
-            {{userMsg.telphone}}
+            {{userMsg.telPhone}}
           </div>
         </div>
       </div>
@@ -72,7 +72,7 @@ export default {
     return {
       iconArr: ['../../static/home-normal.png', '../../static/hire-normal.png', '../../static/personal-check .png'],
       isLogin: false,
-      userMsg: {}
+      userMsg: {},
     }
   },
   components: {tabbar},
@@ -80,12 +80,21 @@ export default {
     if (window.sessionStorage.getItem('userMsg')) {
       this.isLogin = true
       
-      let userMsg = window.sessionStorage.getItem('userMsg')
-      this.userMsg = JSON.parse(userMsg)
-      service.get('/api/getUserMsg', {}, {
-        userId: this.userMsg.userId
+      let userMsg = JSON.parse(window.sessionStorage.getItem('userMsg'))
+
+      this.axios({
+        method: 'post',
+        url: '/api/getUserMsg',
+        headers: {
+          'Content-type': 'application/json;charset=UTF-8'
+        },
+        data: {
+          userId: userMsg.id
+        }
       }).then((res) => {
+        this.userMsg = res.data.data
       })
+      
     } else {
       this.isLogin = false;
     }

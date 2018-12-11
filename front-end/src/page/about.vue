@@ -10,7 +10,6 @@
   </div>
 </template>
 <script>
-import service from 'service-api'
 export default {
   name: 'About',
   data() {
@@ -19,8 +18,14 @@ export default {
     }
   },
   created() {
-    service.get('/api/about').then((res) => {
-      this.data = res.data
+    this.axios({
+      method: 'post',
+      url: '/api/about',
+      headers: {
+        'Content-type': 'application/json;charset=UTF-8'
+      }
+    }).then((res) => {
+      this.data = res.data.data.aboutDes
     })
   }
 

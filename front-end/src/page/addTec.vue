@@ -2,21 +2,21 @@
     <div class="addTec">
         <div v-title>教育经历</div>
         <div class="tec-msg-form">
-            <mt-field label="学校" placeholder="请输入校名" v-model="school"></mt-field>
+            <mt-field label="学校" placeholder="请输入校名" v-model="userSchool"></mt-field>
             <div @click="showAddressPicker()">
-                <mt-field label="学历" v-model="level" readonly="readonly" placeholder="请选择学历" ></mt-field>
+                <mt-field label="学历" v-model="schoolLevel" readonly="readonly" placeholder="请选择学历" ></mt-field>
             </div>
             <mt-popup v-model="regionVisible" position="bottom" class="region-popup">
                 <mt-picker :slots="myAddressSlots" valueKey="name" :visibleItemCount="5" @change="addressChange" :itemHeight="40"></mt-picker>
             </mt-popup>
-            <mt-field label="专业" v-model="profession" placeholder="请输入专业"></mt-field>
+            <mt-field label="专业" v-model="userProfession" placeholder="请输入专业"></mt-field>
             <div @click="showTimePicker()">
                 <mt-field label="时间段" v-model="schoolTime" readonly="readonly" placeholder="请选择时间段" ></mt-field>
             </div>
             <mt-popup v-model="timeVisible" position="bottom" class="region-popup">
                 <mt-picker :slots="myTimeSlots" valueKey="timeName" :visibleItemCount="5" @change="timeChange" :itemHeight="40"></mt-picker>
             </mt-popup>
-            <mt-field label="在校经历" placeholder="在校经历" type="textarea" rows="4" v-model="dec"></mt-field>
+            <mt-field label="在校经历" placeholder="在校经历" type="textarea" rows="4" v-model="schoolDes"></mt-field>
         </div>
         <div class="offic-push" @click="pushTecInfo()">
             <div class="off-box off-push">
@@ -35,10 +35,9 @@ export default {
     name: 'AddTec',
     data() {
         return {
-            userMsg: {},
-            school: '',
-            level: '',
-            profession: '',
+            userSchool: '',
+            schoolLevel: '',
+            userProfession: '',
             regionVisible: false,
             myAddressSlots: [
                 {
@@ -87,62 +86,68 @@ export default {
                 textAlign: 'center'
                 }
             ],
-            dec: ''
+            schoolDes: '',
+            id: '',
+            userId: ''
         }
     },
     created() {
-        let userMsg = JSON.parse(window.sessionStorage.getItem('userMsg'))
-        let self = this
-        this.userMsg = userMsg
-        let index = window.sessionStorage.getItem('tecIndex')
-        if (index) { 
-            service.get('/api/getResume', {}, {
-                username: userMsg.userName
-            }).then((res) => {
-                let data = res.data.tecMsg[Number(index)]
-                this.school = data.school
-                this.level = data.level
-                this.profession = data.profession
-                this.dec = data.dec
-                this.schoolTime = data.begin + '-' + data.end
-                window.sessionStorage.removeItem('tecIndex')
-            })
-        }
+      let tecMsg = window.sessionStorage.getItem('tecIndex') && JSON.parse(window.sessionStorage.getItem('tecIndex')) || undefined
+      this.userId = window.sessionStorage.getItem('userMsg') && JSON.parse(window.sessionStorage.getItem('userMsg')).id || ''
+      if (tecMsg) {
+        this.id = tecMsg.id
+        this.userId = tecMsg.userId
+        this.userSchool = tecMsg.userSchool
+        this.schoolLevel = tecMsg.schoolLevel
+        this.userProfession = tecMsg.userProfession
+        this.schoolDes = tecMsg.schoolDes
+        this.schoolTime = tecMsg.beginTime + '-' + tecMsg.endTime
+        window.sessionStorage.removeItem('tecIndex')
+      }
     },
     methods: {
         showAddressPicker: function() {
             this.regionVisible = true;
         },
         pushTecInfo: function() {
-            service.post('/api/postTecMessage', {}, {
-                userId: this.userMsg.userId,
-                school: this.school,
-                level: this.level,
-                profession: this.profession,
-                dec: this.dec,
-                begin: this.schoolTime.split('-')[0],
-                end: this.schoolTime.split('-')[1]
-            }).then((res) => {
-                if (res.data.save) {
-                    MessageBox({
-                        title: '提示',
-                        message: '保存成功，是否添加工作经历？',
-                        showCancelButton: true
-                    }).then((action) => {
-                        if (action == 'cancel') {
-                            this.$router.back(-1)
-                        } else {
-                            this.$router.push({
-                                path: '/addWorkResume'
-                            }) 
-                        }
-                    }) 
+
+          this.axios({
+            method: 'post',
+            url: '/api/makeUserTec',
+            headers: {
+              'Content-type': 'application/json;charset=UTF-8'
+            },
+            data: {
+              id: this.id,
+              userId: this.userId,
+              userSchool: this.userSchool,
+              schoolLevel: this.schoolLevel,
+              userProfession: this.userProfession,
+              schoolDes: this.schoolDes,
+              beginTime: this.schoolTime.split('-')[0],
+              endTime: this.schoolTime.split('-')[1]
+            }
+          }).then((res) => {
+            if (res.data.code == '200' || res.data.code == 200) {
+              MessageBox({
+                title: '提示',
+                message: '保存成功，是否添加工作经历？',
+                showCancelButton: true
+              }).then((action) => {
+                if (action == 'cancel') {
+                  this.$router.back(-1)
+                } else {
+                  this.$router.push({
+                    path: '/addWorkResume'
+                  }) 
                 }
-            })
+              }) 
+            }
+          })
         },
         addressChange(picker, values){
             if (this.regionInit){
-                this.level = values[0]["name"]
+                this.schoolLevel = values[0]["name"]
             }else {
                 this.regionInit = true;
             }

@@ -4,14 +4,14 @@
       <mt-swipe :auto="4000">
         
         <mt-swipe-item v-for="item in bannerArr" :key="item">
-            <img :src="item.bannerImage" alt="" class="banner-img">          
+            <img :src="item.bannerImage" alt="" class="banner-img" @click="jumpToUrl(item.bannerUrl)">          
         </mt-swipe-item>
         
       </mt-swipe>
     </div>
     <div class="index-company">
-      <div v-for="(item, index) in comArr" :key="index" class="com-card" @click="comMsg(item.url, item.id)">
-        <img :src="item.imgUrl" alt="" class="com-card-img">
+      <div v-for="item in comArr" :key="item" class="com-card" @click="comMsg(item.companyUrl, item.companyId)">
+        <img :src="item.companyImg" alt="" class="com-card-img">
         <div class="card-show-msg">
           点我了解更多》》
         </div>
@@ -38,32 +38,14 @@ export default {
   created () {
     let self = this
     service.post('/api/getBanner').then((res) => {
-      console.log(res)
       this.bannerArr = res.data
     }).catch((e) => {
-      console.log(e)
-      this.bannerArr = e.data
+      this.bannerArr = e.data  //伪代码
     })
     service.post('/api/hotPushCompany').then((res) => {
       this.comArr = res.data
     }).catch((e) => {
-      this.bannerArr = [
-              {
-                  url: '',
-                  imgUrl: 'http://img00.deviantart.net/0305/i/2012/356/8/9/scenic_environment_creation_in_vue_by_2753productions-d5os5qd.jpg',
-                  company: '京东'
-              },
-              {
-                url: 'https://m.mi.com/',
-                imgUrl: 'http://img00.deviantart.net/0305/i/2012/356/8/9/scenic_environment_creation_in_vue_by_2753productions-d5os5qd.jpg',
-                company: '小米'
-            },
-            {
-                url: '',
-                imgUrl: 'http://img00.deviantart.net/0305/i/2012/356/8/9/scenic_environment_creation_in_vue_by_2753productions-d5os5qd.jpg',
-                company: '滴滴'
-            },
-            ]
+      this.comArr = e.data //伪代码
     })
   },
   methods: {
@@ -78,6 +60,11 @@ export default {
         })
       }
       
+    },
+    jumpToUrl: function(url) {
+      if (url) {
+        window.location.href = url
+      }
     }
   }
     

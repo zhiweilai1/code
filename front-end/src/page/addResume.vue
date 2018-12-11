@@ -2,19 +2,19 @@
     <div class="addResume">
         <div v-title>基础信息</div>
         <div class="form-box">
-            <mt-field label="姓名" placeholder="请输入姓名" v-model="username"></mt-field>
+            <mt-field label="姓名" placeholder="请输入姓名" v-model="userName"></mt-field>
             <mt-radio
                 title="性别"
-                v-model="sex"
+                v-model="userSex"
                 :options="['男', '女']">
             </mt-radio>
-            <mt-field label="年龄" placeholder="请输入年龄" type="number" v-model="number"></mt-field>
-            <mt-field label="手机号" placeholder="请输入手机号" type="tel" v-model="phone"></mt-field>
-            <mt-field label="邮箱" placeholder="请输入手机号" type="email" v-model="email"></mt-field>
+            <mt-field label="年龄" placeholder="请输入年龄" type="number" v-model="userAge"></mt-field>
+            <mt-field label="手机号" placeholder="请输入手机号" type="tel" v-model="userPhone"></mt-field>
+            <mt-field label="邮箱" placeholder="请输入手机号" type="email" v-model="userEmail"></mt-field>
             <mt-radio
                 title="求职状态"
-                v-model="status"
-                :options="['未实习-随时到岗', '实习中-考虑机会', '正式工作-考虑机会']">
+                v-model="userStatus"
+                :options="['未实习-随时到岗', '实习中-考虑机会', '正式工作-考虑机会', '已离职-随时到岗']">
             </mt-radio>
         </div>
         <div class="offic-push" @click="pushbaseInfo()">
@@ -31,57 +31,69 @@ export default {
     name: 'AddResume',
     data() {
         return {
-            username: '',
-            number: '',
-            sex: '男',
-            status: '未实习-随时到岗',
-            phone: '',
-            email: ''
+            userName: '',
+            userAge: '',
+            userSex: '男',
+            userStatus: '未实习-随时到岗',
+            userPhone: '',
+            userEmail: '',
+            userId: ''
         }
     },
     created() {
-        let baseMsg = window.sessionStorage.getItem('modify') || undefined
+        let baseMsg = window.sessionStorage.getItem('modify') && JSON.parse(window.sessionStorage.getItem('modify')) || undefined
         let self = this
         if (baseMsg) {
-            service.get('/api/getBaseMessage', {}, {
-                username: baseMsg
-            }).then((res) => {
-                self.username = res.data.baseMsg.username
-                self.number = res.data.baseMsg.number
-                self.sex = res.data.baseMsg.sex
-                self.status = res.data.baseMsg.status
-                self.phone = res.data.baseMsg.phone
-                self.email = res.data.baseMsg.email
-                window.sessionStorage.removeItem('modify')
-            })
+          self.userId = baseMsg.userId
+          self.userName = baseMsg.userName
+          self.userAge = baseMsg.userAge
+          self.userSex = baseMsg.userSex
+          self.userStatus = baseMsg.userStatus
+          self.userPhone = baseMsg.userPhone
+          self.userEmail = baseMsg.userEmail
+          window.sessionStorage.removeItem('modify')
         }
     },
     methods: {
         pushbaseInfo: function() {
-            service.post('/api/postBaseMessage', {}, {
-                username: this.username,
-                number: this.number,
-                sex: this.sex,
-                status: this.status,
-                phone: this.phone,
-                email: this.email
-            }).then((res) => {
-                if (res.data.save) {
-                    MessageBox({
-                        title: '提示',
-                        message: '保存成功，是否添加教育经历？',
-                        showCancelButton: true
-                    }).then((action) => {
-                        if (action == 'cancel') {
-                            this.$router.back(-1)
-                        } else {
-                            this.$router.push({
-                                path: '/AddTec'
-                            }) 
-                        }
-                    }) 
+          this.axios({
+            method: 'post',
+            url: '/api/makeUserInfo',
+            headers: {
+              'Content-type': 'application/json;charset=UTF-8'
+            },
+            data: {
+              userId: this.userId,
+              userName: this.userName,
+              userAge: this.userAge,
+              userSex: this.userSex,
+              userStatus: this.userStatus,
+              userPhone: this.userPhone,
+              userEmail: this.userEmail
+            }
+          }).then((res) => {
+            if (res.data.code == 200 || res.data.code == '200') {
+              MessageBox({
+                title: '提示',
+                message: '保存成功，是否添加教育经历？',
+                showCancelButton: true
+              }).then((action) => {
+                if (action == 'cancel') {
+                  this.$router.back(-1)
+                } else {
+                  this.$router.push({
+                    path: '/AddTec'
+                  }) 
                 }
-            })
+              }) 
+            } else {
+              MessageBox({
+                title: '提示',
+                message: '提交失败',
+                showCancelButton: true
+              })
+            }
+          })
         }
     }
 }

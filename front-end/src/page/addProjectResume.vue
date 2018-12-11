@@ -2,8 +2,8 @@
     <div class="addWorkResume">
         <div v-title>项目经历</div>
         <div class="tec-msg-form">
-            <mt-field label="项目" placeholder="请输入项目名称" v-model="company"></mt-field>
-            <mt-field label="职位" placeholder="请输入职位名称" v-model="position"></mt-field>
+            <mt-field label="项目" placeholder="请输入项目名称" v-model="projectName"></mt-field>
+            <mt-field label="职位" placeholder="请输入职位名称" v-model="projectPosition"></mt-field>
             <div @click="showTimePicker(0)">
                 <mt-field label="开始时间" v-model="workBeginTime" readonly="readonly" placeholder="请选择时间" ></mt-field>
             </div>
@@ -13,7 +13,7 @@
             <div @click="showTimePicker(1)">
                 <mt-field label="结束时间" v-model="workEndTime" readonly="readonly" placeholder="请选择时间" ></mt-field>
             </div>
-            <mt-field label="项目描述" placeholder="填写项目描述" type="textarea" rows="4" v-model="duties"></mt-field>
+            <mt-field label="项目描述" placeholder="填写项目描述" type="textarea" rows="4" v-model="projectDesc"></mt-field>
         </div>
         <div class="offic-push" @click="pushTecInfo()">
             <div class="off-box off-push">
@@ -32,10 +32,9 @@ export default {
     name: 'AddProjectResume',
     data() {
         return {
-            userMsg: {},
-            company: '',
-            position: '',
-            duties: '',
+            projectName: '',
+            projectPosition: '',
+            projectDesc: '',
             workBeginTime: '',
             workEndTime: '',
             timeVisible: false,
@@ -61,27 +60,25 @@ export default {
                 textAlign: 'center'
                 }
             ],
-            timeType: 0
+            timeType: 0,
+            id: '',
+            userId: ''
         }
     },
     created() {
-        let userMsg = JSON.parse(window.sessionStorage.getItem('userMsg'))
-        let self = this
-        this.userMsg = userMsg
-        let index = window.sessionStorage.getItem('projectIndex')
-        if (index) { 
-            service.get('/api/getResume', {}, {
-                username: userMsg.userName
-            }).then((res) => {
-                let data = res.data.projectMsg[Number(index)]
-                this.company = data.projectName
-                this.position = data.projectPosition
-                this.duties = data.projectDesc
-                this.workBeginTime = data.begin
-                this.workEndTime = data.end
-                window.sessionStorage.removeItem('projectIndex')
-            })
-        }
+      let projectMsg = window.sessionStorage.getItem('projectIndex') && JSON.parse(window.sessionStorage.getItem('projectIndex')) || undefined
+      this.userId = window.sessionStorage.getItem('userMsg') && JSON.parse(window.sessionStorage.getItem('userMsg')).id || ''
+      if (projectMsg) {
+        this.id = projectMsg.id
+        this.userId = projectMsg.userId
+        this.projectName = projectMsg.projectName
+        this.projectPosition = projectMsg.projectPosition
+        this.projectDesc = projectMsg.projectDesc
+        this.workBeginTime = projectMsg.beginTime
+        this.workEndTime = projectMsg.endTime
+        window.sessionStorage.removeItem('projectIndex')
+      }
+
     },
     methods: {
         showTimePicker: function(type) {
@@ -110,30 +107,38 @@ export default {
             return yearArr
         },
         pushTecInfo: function() {
-            service.post('/api/postProjectMessage', {}, {
-                userId: this.userMsg.userId,
-                projectName: this.company,
-                projectPosition: this.position,
-                projectDesc: this.duties,
-                begin: this.workBeginTime,
-                end: this.workEndTime
-            }).then((res) => {
-                if (res.data.save) {
-                    MessageBox({
-                        title: '提示',
-                        message: '保存成功，是否添加自我评价？',
-                        showCancelButton: true
-                    }).then((action) => {
-                        if (action == 'cancel') {
-                            this.$router.back(-1)
-                        } else {
-                            this.$router.push({
-                                path: '/addWorkResume'
-                            }) 
-                        }
-                    }) 
+          this.axios({
+            method: 'post',
+            url: '/api/makeUserProject',
+            headers: {
+              'Content-type': 'application/json;charset=UTF-8'
+            },
+            data: {
+              id: this.id,
+              userId: this.userId,
+              projectName: this.projectName,
+              projectPosition: this.projectPosition,
+              projectDesc: this.projectDesc,
+              beginTime: this.workBeginTime,
+              endTime: this.workEndTime
+            }
+          }).then((res) => {
+            if (res.data.code == '200' || res.data.code == 200) {
+              MessageBox({
+                title: '提示',
+                message: '保存成功，是否添加自我评价？',
+                showCancelButton: true
+              }).then((action) => {
+                if (action == 'cancel') {
+                  this.$router.back(-1)
+                } else {
+                  this.$router.push({
+                    path: '/addWorkResume'
+                  }) 
                 }
-            })
+              }) 
+            }
+          })
         },
     }
 }

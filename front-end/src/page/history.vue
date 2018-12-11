@@ -2,20 +2,20 @@
     <div class="application">
         <div v-title>历史记录</div>
         <div v-if="dataList.length > 0">
-            <div class="hire-detail" v-for="(item, index) in dataList" :key="index" @click="jumpToDetail(item.id)">
+            <div class="hire-detail" v-for="(item, index) in dataList" :key="index" @click="jumpToDetail(item.officeId)">
                 <div class="hire-detail-left">
                 <img :src="item.companyImg" alt="">
                 </div>
                 <div class="hire-detail-right">
                 <div class="company-off-card-title">
                     <div class="company-off-card-title-left ellipsis-1">{{item.offName}}</div>
-                    <div class="company-off-card-title-right">{{item.money}}</div>
+                    <div class="company-off-card-title-right">{{item.offMoney}}</div>
                 </div>
                 <div class="litle-title hire-company ellipsis-1">
                     {{item.companyName}}
                 </div>
                 <div class="litle-title ellipsis-1">
-                    {{item.pushTime}}&nbsp;{{item.place}}&nbsp;{{item.type}}
+                    {{item.pushTime | time}}&nbsp;{{item.offPlace}}&nbsp;{{item.offType}}
                 </div>
                 </div>
             </div>
@@ -26,24 +26,39 @@
     </div>
 </template>
 <script>
-import service from 'service-api'
+import moment from 'moment'
 import { MessageBox } from 'mint-ui'
 export default {
     name: 'History',
     data() {
-        return {
-            dataList: []
-        }
+      return {
+        dataList: [],
+        userId: ''
+      }
+    },
+    filters: {
+      time: (value) => {
+        return moment(value).format('YYYY-MM-DD')
+      }
     },
     created() {
-        let userMsg = JSON.parse(window.sessionStorage.getItem('userMsg'))
-        service.get('/api/getHistoryList', {}, {
-            userId: userMsg.userId
-        }).then((res) => {
-            if (res.data.length > 0) {
-                this.dataList = res.data
-            }  
-        })
+
+      this.userId = window.sessionStorage.getItem('userMsg') && JSON.parse(window.sessionStorage.getItem('userMsg').id) || '3'
+
+      this.axios({
+        method: 'post',
+        url: '/api/getHistoryList',
+        headers: {
+          'Content-type': 'application/json;charset=UTF-8'
+        },
+        data: {
+          userId: this.userId
+        }
+      }).then((res) => {
+        if (res.data.code == '200' || res.data.code == 200) {
+          this.dataList = res.data.data
+        }
+      })
     },
     methods: {
         jumpToDetail: function (oid) {

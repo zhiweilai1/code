@@ -6,7 +6,7 @@
                 头像
             </div>
             <div class="personal-box-right">
-                <img :src="userMsg.imgUrl" alt="" class="personal-img">
+                <img :src="userMsg.headImgurl" alt="" class="personal-img">
             </div>
         </div>
         <div class="personal-box" style="border-bottom: 1px solid rgba(215, 215, 215, 1);">
@@ -14,7 +14,15 @@
                 昵称
             </div>
             <div class="personal-box-right">
-                {{userMsg.userName}}
+                {{userMsg.nickName}}
+            </div>
+        </div>
+        <div class="personal-box" style="border-bottom: 1px solid rgba(215, 215, 215, 1);">
+            <div class="personal-box-left">
+                性别
+            </div>
+            <div class="personal-box-right">
+                {{userMsg.userSex}}
             </div>
         </div>
         <div class="personal-box" style="border-bottom: 1px solid rgba(215, 215, 215, 1);">
@@ -22,7 +30,7 @@
                 手机号
             </div>
             <div class="personal-box-right">
-                {{userMsg.telphone}}
+                {{userMsg.telPhone}}
             </div>
         </div>
         <div class="personal-box" style="border-bottom: 1px solid rgba(215, 215, 215, 1);">
@@ -30,9 +38,26 @@
                 学校
             </div>
             <div class="personal-box-right">
-                {{userMsg.school}}
+                {{userMsg.userSchool}}
             </div>
         </div>
+        <div class="personal-box" style="border-bottom: 1px solid rgba(215, 215, 215, 1);">
+            <div class="personal-box-left">
+                老师
+            </div>
+            <div class="personal-box-right">
+                {{userMsg.userTeacher}}
+            </div>
+        </div>
+        <div class="personal-box" style="border-bottom: 1px solid rgba(215, 215, 215, 1);">
+            <div class="personal-box-left">
+                地区
+            </div>
+            <div class="personal-box-right">
+                {{userMsg.userCountry}}-{{userMsg.userProvince}}-{{userMsg.userCity}}
+            </div>
+        </div>
+
 
     </div>
 </template>
@@ -46,8 +71,25 @@ export default {
     }
   },
   created() {
-      let userMsg = window.sessionStorage.getItem('userMsg')
-      this.userMsg = JSON.parse(userMsg)
+      if (window.sessionStorage.getItem('userMsg')) {
+      this.isLogin = true
+      
+      let userMsg = JSON.parse(window.sessionStorage.getItem('userMsg'))
+
+      this.axios({
+        method: 'post',
+        url: '/api/getUserMsg',
+        headers: {
+          'Content-type': 'application/json;charset=UTF-8'
+        },
+        data: {
+          userId: userMsg.id
+        }
+      }).then((res) => {
+        this.userMsg = res.data.data
+      })
+      
+    }
   }
 }
 </script>

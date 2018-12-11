@@ -7,6 +7,10 @@ import MintUI from 'mint-ui'
 import 'mint-ui/lib/style.css'
 // import mockdata from './mock'
 
+import axios from 'axios'
+
+Vue.prototype.axios = axios
+
 Vue.config.productionTip = false
 
 Vue.use(MintUI)

@@ -2,11 +2,9 @@
   <div class="company">
     <div v-title>公司简介</div>
     <div class="banner-img-box">
-      <img :src="backImg" alt="" class="company-back-img">
-      <img :src="imgUrl" alt="" class="banner-img">
-      <div class="company-name">
-        {{companyName}}
-      </div>
+      <img :src="backImg" alt class="company-back-img">
+      <img :src="imgUrl" alt class="banner-img">
+      <div class="company-name">{{companyName}}</div>
     </div>
     <mt-navbar v-model="selected">
       <mt-tab-item id="1">公司概况</mt-tab-item>
@@ -18,52 +16,37 @@
       <mt-tab-container-item id="1">
         <div class="company-card">
           <!-- 公司简介 -->
-          <div class="company-card-title">
-            公司简介
-          </div>
+          <div class="company-card-title">公司简介</div>
           <div class="company-part-box">
             <div class="company-part">
               <div class="company-part-child" style="margin-right: 5px;">
-                <img src="../../static/qiu-icon.png" alt="" class="company-part-icon">
+                <img src="../../static/qiu-icon.png" alt class="company-part-icon">
               </div>
-              <div class="company-part-child">
-                {{companydet}}
-              </div>
+              <div class="company-part-child">{{companydet}}</div>
             </div>
             <div class="company-part">
               <div class="company-part-child" style="margin-right: 5px;">
-                <img src="../../static/lou-icon.png" alt="" class="company-part-icon">
+                <img src="../../static/lou-icon.png" alt class="company-part-icon">
               </div>
-              <div class="company-part-child">
-                {{companyType}}
-              </div>
-            </div><div class="company-part">
+              <div class="company-part-child">{{companyType}}</div>
+            </div>
+            <div class="company-part">
               <div class="company-part-child" style="margin-right: 5px;">
-                <img src="../../static/per-icon.png" alt="" class="company-part-icon">
+                <img src="../../static/per-icon.png" alt class="company-part-icon">
               </div>
-              <div class="company-part-child">
-                {{companyPer}}
-              </div>
+              <div class="company-part-child">{{companyPer}}</div>
             </div>
           </div>
-          <div class="company-intra">
-            {{intruduce}}
-          </div>
+          <div class="company-intra">{{intruduce}}</div>
         </div>
         <div class="company-card">
           <!-- 工作地点 -->
-          <div class="company-card-title">
-            工作地点
-          </div>
-          <div>
-            {{officPlace}}
-          </div>
+          <div class="company-card-title">工作地点</div>
+          <div>{{officPlace}}</div>
         </div>
         <div class="company-card">
           <!-- 企业福利 -->
-          <div class="company-card-title">
-            企业福利
-          </div>
+          <div class="company-card-title">企业福利</div>
           <div>
             <span class="company-welfare" v-for="item in welfareArr" :key="item">
               <mt-badge size="normal">{{item}}</mt-badge>
@@ -72,30 +55,30 @@
         </div>
       </mt-tab-container-item>
       <mt-tab-container-item id="2">
-       <div class="company-off">
-         {{officeNum}}个职位正在热招
-       </div>
-       <div class="company-list-box">
-         <div v-for="(item, index) in offList" :key="index" class="company-off-card" @click="jumpToOff(item)">
-           <div class="company-off-card-title">
-             <div class="company-off-card-title-left">{{item.name}}</div>
-             <div class="company-off-card-title-right">{{item.money}}</div>
-           </div>
-           <div class="company-off-card-place">
-             {{item.place}}&nbsp;|&nbsp;{{item.experience}}&nbsp;|&nbsp;{{item.education}}
-           </div>
-           <div class="company-off-card-time">
-             {{item.pushTime}}
-           </div>
-         </div>
-       </div>
+        <div class="company-off">{{officeNum}}个职位正在热招</div>
+        <div class="company-list-box">
+          <div
+            v-for="(item, index) in offList"
+            :key="index"
+            class="company-off-card"
+            @click="jumpToOff(item)"
+          >
+            <div class="company-off-card-title">
+              <div class="company-off-card-title-left">{{item.offName}}</div>
+              <div class="company-off-card-title-right">{{item.offMoney}}</div>
+            </div>
+            <div
+              class="company-off-card-place"
+            >{{item.offPlace}}&nbsp;|&nbsp;{{item.offExperience}}&nbsp;|&nbsp;{{item.offEducation}}</div>
+            <div class="company-off-card-time">{{item.pushTime}}</div>
+          </div>
+        </div>
       </mt-tab-container-item>
     </mt-tab-container>
   </div>
 </template>
 
 <script>
-import service from 'service-api'
 export default {
   name: 'Company',
   data() {
@@ -112,35 +95,42 @@ export default {
       companyType: '',
       companyPer: '',
       offList: []
-    }
+    };
   },
   created() {
     let self = this
     let params = {
-      companyId: window.sessionStorage.getItem('conpany')
+      companyId: window.sessionStorage.getItem('compony')
     }
-    service.get('/api/getCompany/detail', {}, params).then((res) => {
-      self.backImg = res.data.backImg
-      self.companyName = res.data.companyName
-      self.companyName = res.data.companyName
-      self.imgUrl = res.data.companyImg
-      self.companydet = res.data.companydet
-      self.companyType = res.data.companyType
-      self.companyPer = res.data.companyPer
-      self.intruduce = res.data.companyIntru
-      self.officPlace = res.data.companyPlace
-      self.welfareArr = res.data.welfareArr
-      self.officeNum = res.data.offList.length
-      self.offList = res.data.offList
+
+    this.axios({
+      method: 'post',
+      url: '/api/getCompany/detail',
+      headers: {
+        'Content-type': 'application/json;charset=UTF-8'
+      },
+      data: params
+    }).then((res) => {
+      let data = res.data.data
+      self.backImg = data.company.backImg
+      self.companyName = data.company.companyName
+      self.imgUrl = data.company.companyImg
+      self.companydet = data.company.companyDet
+      self.companyType = data.company.companyType
+      self.companyPer = data.company.companyPer
+      self.intruduce = data.company.companyIntru
+      self.officPlace = data.company.companyPlace
+      self.welfareArr = data.company.welfareArr.split(',')
+      self.officeNum = data.officeList.length
+      self.offList = data.officeList
     })
   },
   methods: {
-    jumpToOff: function (offic) {
+    jumpToOff: function(offic) {
       window.sessionStorage.setItem('office', offic.id)
       this.$router.push({
         path: '/office'
       })
-
     }
   }
 }
@@ -162,7 +152,7 @@ export default {
   position: absolute;
   left: 0;
   top: 0;
-  z-index: 0
+  z-index: 0;
 }
 .banner-img {
   width: 70px;
@@ -171,7 +161,7 @@ export default {
   position: absolute;
   left: calc(50% - 35px);
   top: 50px;
-  z-index: 2
+  z-index: 2;
 }
 
 .company-name {
@@ -254,7 +244,7 @@ export default {
   text-overflow: ellipsis;
   text-align: right;
   font-size: 17px;
-  color: #26a2ff
+  color: #26a2ff;
 }
 .company-off-card-place {
   font-size: 14px;

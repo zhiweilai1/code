@@ -6,10 +6,9 @@
     </div>
     <div class="about-detail">
       <div v-if="data.length > 0" v-for="item in data" :key="item" class="about-detail-content">
-        {{item}}
-      </div>
-      <div v-else>
-        17610826989
+        <div style="text-align: left; padding-left: 20px;">{{item.contractPerson}}</div>
+        <div>{{item.contractPhone}}</div>
+        <div>{{item.contractEmail}}</div>
       </div>
     </div>
   </div>
@@ -24,8 +23,14 @@ export default {
     }
   },
   created() {
-    service.get('/api/contact').then((res) => {
-      this.data = res.data
+    this.axios({
+      method: 'post',
+      url: '/api/contact',
+      headers: {
+        'Content-type': 'application/json;charset=UTF-8'
+      }
+    }).then((res) => {
+      this.data = res.data.data
     })
   }
 

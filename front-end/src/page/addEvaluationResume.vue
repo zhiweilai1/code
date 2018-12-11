@@ -20,21 +20,39 @@ export default {
         }
     },
     created() {
-        let userMsg = JSON.parse(window.sessionStorage.getItem('userMsg'))
-        let self = this
-        this.userMsg = userMsg
-        let index = window.sessionStorage.getItem('evaluationIndex')
-        if (index) { 
-            service.get('/api/getResume', {}, {
-                username: userMsg.userName
-            }).then((res) => {
-                self.evaluation = res.data.evaluation
-                window.sessionStorage.removeItem('evaluationIndex')
-            })
-        }
+      this.userId = window.sessionStorage.getItem('userMsg') && JSON.parse(window.sessionStorage.getItem('userMsg')).id || ''
+      let myDes = window.sessionStorage.getItem('myDes') && JSON.parse(window.sessionStorage.getItem('myDes')) || undefined
+      if (myDes) {
+        this.evaluation = myDes.myDes
+        window.sessionStorage.removeItem('myDes')
+      }
     },
     methods: {
         pushTecInfo: function() {
+          this.axios({
+            method: 'post',
+            url: '/api/makeUserDes',
+            headers: {
+              'Content-type': 'application/json;charset=UTF-8'
+            },
+            data: {
+              userId: this.userId,
+              myDes: this.evaluation
+            }
+          }).then((res) => {
+            if (res.data.code == '200' || res.data.code == 200) {
+              MessageBox({
+                title: '提示',
+                message: '保存成功',
+              }).then((action) => {
+                this.$router.push({
+                  path: '/person'
+                })
+              }) 
+            }
+          })
+
+
             service.post('/api/postEvaluationMessage', {}, {
                 userId: this.userMsg.userId,
                 evaluation: this.evaluation

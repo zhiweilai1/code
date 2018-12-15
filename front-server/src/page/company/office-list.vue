@@ -1,5 +1,8 @@
 <template>
   <div class="AdOfficList" v-loading="offloading">
+    <div style="margin-bottom: 20px;">
+      <el-button type="primary" @click="addOfficVisible = true">添加职位</el-button>
+    </div>
     <el-table
       :data="officListData"
       :height="height"
@@ -29,10 +32,16 @@
         </template>
       </el-table-column>
       <el-table-column
-        prop="isShow"
         label="投递人数">
         <template slot-scope="scope">
           <span class="offic-person" @click="handleOfficPerson(scope.$index, scope.row)">{{scope.row.person}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column
+        label="操作">
+        <template slot-scope="scope">
+          <el-button type="primary" size="mini">编辑</el-button>
+          <el-button type="danger" size="mini">删除</el-button>
         </template>
       </el-table-column>
       
@@ -43,7 +52,7 @@
       :visible.sync="dialogVisible"
       width="60%"
       top="3vh"
-      :before-close="handleClose">
+    >
       <div class="offic-main">
       <div class="offic-main-title">
         <!-- 名称及位置 -->
@@ -102,12 +111,68 @@
     </div>
     </el-dialog>
 
+    <el-dialog
+      title="添加职位"
+      :visible.sync="addOfficVisible"
+      width="40%"
+      >
+      <div>
+        <el-form ref="form" :model="addForm" label-width="80px">
+          <el-form-item label="职位名称">
+            <el-input v-model="addForm.offName"></el-input>
+          </el-form-item>
+          <el-form-item label="职位薪资">
+            <el-input v-model="addForm.offMoney"></el-input>
+          </el-form-item>
+          <el-form-item label="职位类型">
+            <el-select v-model="addForm.offType" placeholder="职位类型">
+              <el-option v-for="(item, index) in offType" :key="index" :label="item.typeName" :value="item.typeName"></el-option>
+              
+            </el-select>
+          </el-form-item>
+          <el-form-item label="工作经验">
+            <el-select v-model="addForm.offExperience" placeholder="请选择工作经验">
+              <el-option label="半年内" value="半年内"></el-option>
+              <el-option label="一年内" value="一年内"></el-option>
+              <el-option label="一到三年" value="一到三年"></el-option>
+              <el-option label="三到五年" value="三到五年"></el-option>
+              <el-option label="五年以上" value="五年以上"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="学历">
+            <el-select v-model="addForm.offEducation" placeholder="请选择学历">
+              <el-option label="初中" value="初中"></el-option>
+              <el-option label="高中" value="高中"></el-option>
+              <el-option label="大专" value="大专"></el-option>
+              <el-option label="本科" value="本科"></el-option>
+              <el-option label="硕士" value="硕士"></el-option>
+              <el-option label="博士" value="博士"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="职位地点">
+            <el-input v-model="addForm.offPlace"></el-input>
+          </el-form-item>
+          <el-form-item label="岗位职责">
+            <el-input type="textarea" v-model="addForm.offResponsibilities" placeholder="多条内容请以“，”分隔"></el-input>
+          </el-form-item>
+          <el-form-item label="任职要求">
+            <el-input type="textarea" v-model="addForm.offRequirements" placeholder="多条内容请以“，”分隔"></el-input>
+          </el-form-item>
+        </el-form>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="addOfficVisible = false">取 消</el-button>
+        <el-button type="primary" @click="addOfficOk()">确 定</el-button>
+      </span>
+    </el-dialog>
+
+
   </div>
 </template>
 <script>
 import service from 'service-api'
 export default {
-  name: 'AdOfficList',
+  name: 'office-list',
   data() {
     return {
       height: 300,
@@ -115,7 +180,28 @@ export default {
       offloading: false,
       officListData: [],
       dialogVisible: false,
-      dialogItem: {}
+      dialogItem: {},
+      addOfficVisible: false,
+      offType: [],
+
+      form: {
+          name: '',
+          region: '',
+          date1: '',
+          date2: '',
+          resource: '',
+          desc: ''
+        },
+      addForm: {
+        id: '',
+        offName: '',
+        offMoney: '',
+        offExperience: '',
+        offEducation: '',
+        offPlace: '',
+        offResponsibilities: '',
+        offRequirements: ''
+      }
     }
   },
   created() {
@@ -129,18 +215,32 @@ export default {
       this.$router.push({
         path: '/login'
       })
-    } else if (userName.isIdentity == '1') {
-      this.$router.push({
-        path: '/'
-      })
     } else {
       this.officList()
     }
+    this.getOffType()
   },
   methods: {
+    getOffType: function () {
+      this.axios({
+        method: 'post',
+        url: '/api/getOfficType',
+        headers: {
+          'Content-type': 'application/json;charset=UTF-8'
+        }
+      }).then((res) => {
+        if (res.data.code == 200) {
+          this.offType = res.data.data
+        } else {
+          this.$message.error('请求失败，请重试')
+        }
+      }).catch(() => {
+        this.$message.error('请求失败，请重试')
+      })
+    },
+    
     officList: function() {
       this.offloading = true
-
       this.axios({
         method: 'post',
         url: '/api/getOfficList',
@@ -168,6 +268,25 @@ export default {
       this.$router.push({
         path: '/officResume'
       })
+    },
+    addOfficOk: function () {
+      this.axios({
+        method: 'post',
+        url: '/api/getOfficType',
+        headers: {
+          'Content-type': 'application/json;charset=UTF-8'
+        }
+      }).then((res) => {
+        if (res.data.code == 200) {
+          this.offType = res.data.data
+        } else {
+          this.$message.error('请求失败，请重试')
+        }
+      }).catch(() => {
+        this.$message.error('请求失败，请重试')
+      })
+
+      this.addOfficVisible = false
     }
   }
 }

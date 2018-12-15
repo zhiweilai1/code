@@ -95,7 +95,7 @@ export default {
           } else {
             MessageBox({
               title: '小提示',
-              message: '登录失败，请重试'
+              message: '登录失败，请重试',
             })
           }
         })

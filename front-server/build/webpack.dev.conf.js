@@ -1,4 +1,5 @@
 'use strict'
+const mockProxyMiddleware = require('mock-proxy-middleware')
 const utils = require('./utils')
 const webpack = require('webpack')
 const config = require('../config')

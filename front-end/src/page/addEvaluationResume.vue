@@ -51,23 +51,6 @@ export default {
               }) 
             }
           })
-
-
-            service.post('/api/postEvaluationMessage', {}, {
-                userId: this.userMsg.userId,
-                evaluation: this.evaluation
-            }).then((res) => {
-                if (res.data.save) {
-                    MessageBox({
-                        title: '提示',
-                        message: '保存成功',
-                    }).then((action) => {
-                        this.$router.push({
-                            path: '/person'
-                        })
-                    }) 
-                }
-            })
         },
     }
 }

@@ -76,7 +76,7 @@ export default {
                 if (value && action == 'confirm') {
                   this.axios({
                     method: 'post',
-                    url: '/api/posteEvaluation',
+                    url: '/api/postEvaluation',
                     headers: {
                       'Content-type': 'application/json;charset=UTF-8'
                     },

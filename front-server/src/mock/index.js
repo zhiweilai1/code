@@ -17,25 +17,24 @@ const updateCompany = Mock.mock('/api/updateCompany', 'post', (req, res) => {
     message: '查询成功'
   }
 })
-const deleteCompany = Mock.mock('/api/deleteCompany', 'get', (req, res) => {
+const deleteCompany = Mock.mock('/api/deleteCompany', 'post', (req, res) => {
+  return {
+    code: 200,
+    message: '查询成功'
+  }
+})
+const isShow = Mock.mock('/api/isShowContact', 'post', (req, res) => {
   return {
     code: 200,
     data: true,
     message: '查询成功'
   }
 })
-const isShow = Mock.mock('/api/isShow', 'post', (req, res) => {
-  return {
-    code: 200,
-    data: true,
-    message: '查询成功'
-  }
-})
-const getCompanyList = Mock.mock('/api/getCompanyList', 'get', (req, res) => {
+const getCompanyList = Mock.mock('/api/getCompanyList', 'post', (req, res) => {
   return {
     code: 200,
     data: [{
-      id: 1,
+      companyId: 1,
       companyName: '北京嘀嘀无限科技发展有限公司',
       accountNumber: '12345678',
       password: 666666,
@@ -50,7 +49,7 @@ const getCompanyList = Mock.mock('/api/getCompanyList', 'get', (req, res) => {
   }
 })
 
-const getOfficList = Mock.mock('/api/getOfficList', 'get', (req, res) => {
+const getOfficList = Mock.mock('/api/getOfficList', 'post', (req, res) => {
   return {
     code: 200,
     data: [{
@@ -310,7 +309,7 @@ const getOfficList = Mock.mock('/api/getOfficList', 'get', (req, res) => {
   }
 })
 
-const getResumeList = Mock.mock('/api/getResumeList', 'get', (req, res) => {
+const getResumeList = Mock.mock('/api/getResumeList', 'post', (req, res) => {
   return {
     code: 200,
     data: [{
@@ -445,8 +444,87 @@ const getResumeList = Mock.mock('/api/getResumeList', 'get', (req, res) => {
     message: '查询成功'
   }
 })
+const login = Mock.mock('/api/adminLogin', 'post', (req, res) => {
+  return {
+    code: 200,
+    data: {
+      isIdentity: '1',
+      username: 17610826989
+    },
+    message: '查询成功'
+  }
+})
+
+
+const getBanner = Mock.mock('/api/getBanner', 'post', (req, res) => {
+  return {
+    code: 200,
+    data: [{
+      bannerUrl: 'http://www.baidu.com',
+      bannerImage: 'https://img01.sogoucdn.com/app/a/200742/ae8ead56-6e29-428c-8e85-eb658e791eef.jpg'
+    }],
+    message: '查询成功'
+  }
+})
+
+const deleteBannerImg = Mock.mock('/api/deleteBannerImg', 'post', (req, res) => {
+  return {
+    code: 200,
+    message: '查询成功'
+  }
+})
+
+const pushBannerImg = Mock.mock('/api/pushBannerImg', 'post', (req, res) => {
+  return {
+    code: 200,
+    message: '查询成功'
+  }
+})
+
+
+const hotPushCompany = Mock.mock('/api/hotPushCompany', 'post', (req, res) => {
+  return {
+    code: 200,
+    data: [{
+      "companyId": 2,
+      "companyImg": "https://img01.sogoucdn.com/app/a/200742/ae8ead56-6e29-428c-8e85-eb658e791eef.jpg",
+      "companyName": "航天科技",
+      "companyUrl": "http://special.zhaopin.com/pagepublish/14271011/index.html"
+    }],
+    message: '查询成功'
+  }
+})
+
+const deletehotPushCompany = Mock.mock('/api/deletehotPushCompany', 'post', (req, res) => {
+  return {
+    code: 200,
+    message: '查询成功'
+  }
+})
+
+const pushhotPushCompany = Mock.mock('/api/pushhotPushCompany', 'post', (req, res) => {
+  return {
+    code: 200,
+    message: '查询成功'
+  }
+})
+
+const getOfficType = Mock.mock('/api/getOfficType', 'post', (req, res) => {
+  return {
+    "msg": "查询成功",
+    "code": 200,
+    "data": [
+      {
+        "typeName": "高级技工"
+      },
+      {
+        "typeName": "高级技工"
+      }
+    ]
+  }
+})
 
 export default {
   addCompany,
-  getCompanyList, updateCompany, deleteCompany, isShow, getOfficList, getResumeList
+  getCompanyList, updateCompany, deleteCompany, isShow, getOfficList, getResumeList, login, getBanner, deleteBannerImg, pushBannerImg, hotPushCompany, deletehotPushCompany, pushhotPushCompany, getOfficType
 }

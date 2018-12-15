@@ -138,7 +138,7 @@ export default {
               'Content-type': 'application/json;charset=UTF-8'
             },
             data: {
-              userPhone: this.telphone
+              userPhone: this.stutelphone
             }
           }).then((res) => {
           })
@@ -172,7 +172,7 @@ export default {
               'Content-type': 'application/json;charset=UTF-8'
             },
             data: {
-              userPhone: this.telphone
+              userPhone: this.teatelphone
             }
           }).then((res) => {
           })

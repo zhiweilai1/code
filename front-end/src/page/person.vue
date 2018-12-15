@@ -16,24 +16,41 @@
           </div>
         </div>
       </div>
-      <mt-cell title="个人资料" is-link :to="{path:'/personal-information'}">
-        <img slot="icon" src="../../static/ge-zi-icon.png" width="24" height="24" style="margin-right: 10px;">
-      </mt-cell>
-      <mt-cell title="我的简历" is-link :to="{path:'/resume'}">
-        <img slot="icon" src="../../static/jian-icon.png" width="24" height="24" style="margin-right: 10px;">
-      </mt-cell>
-      <mt-cell title="我的申请" is-link :to="{path:'/application'}">
-        <img slot="icon" src="../../static/shen-icon.png" width="24" height="24" style="margin-right: 10px;">
-      </mt-cell>
-      <mt-cell title="浏览记录" is-link :to="{path:'/history'}">
-        <img slot="icon" src="../../static/lan-icon.png" width="24" height="24" style="margin-right: 10px;">
-      </mt-cell>
-      <mt-cell title="关于我们" is-link :to="{path:'/about'}">
-        <img slot="icon" src="../../static/about-us.png" width="24" height="24" style="margin-right: 10px;">
-      </mt-cell>
-      <mt-cell title="联系我们" is-link :to="{path:'/lian'}">
-        <img slot="icon" src="../../static/lian-icon.png" width="24" height="24" style="margin-right: 10px;">
-      </mt-cell>
+      <div v-if="userMsg.id == '0'">
+        <mt-cell title="个人资料" is-link :to="{path:'/personal-information'}">
+          <img slot="icon" src="../../static/ge-zi-icon.png" width="24" height="24" style="margin-right: 10px;">
+        </mt-cell>
+        <mt-cell title="我的简历" is-link :to="{path:'/resume'}">
+          <img slot="icon" src="../../static/jian-icon.png" width="24" height="24" style="margin-right: 10px;">
+        </mt-cell>
+        <mt-cell title="我的申请" is-link :to="{path:'/application'}">
+          <img slot="icon" src="../../static/shen-icon.png" width="24" height="24" style="margin-right: 10px;">
+        </mt-cell>
+        <mt-cell title="浏览记录" is-link :to="{path:'/history'}">
+          <img slot="icon" src="../../static/lan-icon.png" width="24" height="24" style="margin-right: 10px;">
+        </mt-cell>
+        <mt-cell title="关于我们" is-link :to="{path:'/about'}">
+          <img slot="icon" src="../../static/about-us.png" width="24" height="24" style="margin-right: 10px;">
+        </mt-cell>
+        <mt-cell title="联系我们" is-link :to="{path:'/lian'}">
+          <img slot="icon" src="../../static/lian-icon.png" width="24" height="24" style="margin-right: 10px;">
+        </mt-cell>
+      </div>
+      <div v-else>
+        <mt-cell title="个人资料" is-link :to="{path:'/personal-information'}">
+          <img slot="icon" src="../../static/ge-zi-icon.png" width="24" height="24" style="margin-right: 10px;">
+        </mt-cell>
+        <mt-cell title="浏览记录" is-link :to="{path:'/history'}">  
+          <img slot="icon" src="../../static/lan-icon.png" width="24" height="24" style="margin-right: 10px;">
+        </mt-cell>
+        <mt-cell title="关于我们" is-link :to="{path:'/about'}">
+          <img slot="icon" src="../../static/about-us.png" width="24" height="24" style="margin-right: 10px;">
+        </mt-cell>
+        <mt-cell title="联系我们" is-link :to="{path:'/lian'}">
+          <img slot="icon" src="../../static/lian-icon.png" width="24" height="24" style="margin-right: 10px;">
+        </mt-cell>
+      </div>
+      
     </div>
     <div v-else>
       <!-- 未登录 -->

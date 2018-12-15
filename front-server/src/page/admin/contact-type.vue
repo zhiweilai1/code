@@ -1,0 +1,115 @@
+<template>
+  <div class="contact-type">
+    <div class="contact-box">
+      <h3>配置联系人</h3>
+      <el-form :inline="true" label-width="100px" class="demo-dynamic">
+        <div v-for="(domain, index) in domains" :key="index">
+          <el-form-item
+          label="联系人"
+          :prop="'domains.' + index + '.contractPerson'"  
+        >
+          <el-input v-model="domain.contractPerson"></el-input>
+        </el-form-item>
+        <el-form-item
+          label="电话"
+          :prop="'domains.' + index + '.contractPhone'"  
+        >
+          <el-input v-model="domain.contractPhone"></el-input>
+        </el-form-item>
+        <el-form-item
+          label="邮箱"
+          :prop="'domains.' + index + '.contractEmail'"  
+        >
+          <el-input v-model="domain.contractEmail"></el-input>
+        </el-form-item>
+          <el-button @click.prevent="removeDomain(domain)">删除</el-button>
+          <el-button type="primary" @click="submitForm(domain)">提交</el-button>
+        </div>
+      </el-form>
+      <el-button @click="addDomain">添加联系方式</el-button>
+    </div>
+    <div class="contact-box">
+      <h3>配置职位分类</h3>
+      <el-form :inline="true" label-width="100px" class="demo-dynamic">
+        <div v-for="(officItem, index) in officType" :key="index">
+          <el-form-item
+          label="职位类型"
+          :prop="'domains.' + index + '.typeName'"  
+        >
+          <el-input v-model="officItem.typeName"></el-input>
+        </el-form-item>
+        <el-button @click.prevent="removeOffic(officItem)">删除</el-button>
+        </div>
+      </el-form>
+      <el-button @click="addOffic">添加分类</el-button>
+      <el-button type="primary" @click="submitOfficForm(officItem)">提交</el-button>
+
+    </div>
+    
+
+  </div>
+</template>
+<script>
+export default {
+  name: 'AdContact',
+  data() {
+    return {
+      domains: [{
+        contractPerson: '',
+        contractPhone: '',
+        contractEmail: ''
+      }],
+      officType: [{
+        typeName: ''
+      }]
+    }
+    
+  },
+  methods: {
+    submitForm(domain) {
+      console.log(domain)
+    },
+
+    removeDomain(item) {
+      var index = this.domains.indexOf(item)
+      if (index !== -1) {
+        this.domains.splice(index, 1)
+      }
+    },
+    addDomain() {
+      this.domains.push({
+        contractPerson: '',
+        contractPhone: '',
+        contractEmail: ''
+      });
+    },
+    submitOfficForm(domain) {
+      console.log(domain)
+    },
+
+    removeOffic(item) {
+      var index = this.officType.indexOf(item)
+      if (index !== -1) {
+        this.officType.splice(index, 1)
+      }
+    },
+    addOffic() {
+      this.officType.push({
+        typeName: ''
+      });
+    }
+  }
+}
+</script>
+<style>
+.contact-type {
+  padding: 10px;
+}
+.contact-box {
+  border: 1px solid #999;
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+</style>
+

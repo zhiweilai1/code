@@ -5,6 +5,11 @@ import AdCompanyList from '@/page/admin/company-list'
 import AdOfficList from '@/page/admin/offic-list'
 import OfficResume from '@/page/admin/resume-list'
 import AdStudent from '@/page/admin/student-list'
+import Login from '@/page/login'
+import AdTeacher from '@/page/admin/teacher-list'
+import Banner from '@/page/admin/banner'
+import AdContact from '@/page/admin/contact-type'
+import CoOfficList from '@/page/company/office-list'
 
 Vue.use(Router)
 
@@ -34,6 +39,31 @@ export default new Router({
       path: '/AdStudent',
       name: 'AdStudent',
       component: AdStudent
+    },
+    {
+      path: '/Login',
+      name: 'Login',
+      component: Login
+    },
+    {
+      path: '/AdTeacher',
+      name: 'AdTeacher',
+      component: AdTeacher
+    },
+    {
+      path: '/Banner',
+      name: 'Banner',
+      component: Banner
+    },
+    {
+      path: '/AdContact',
+      name: 'AdContact',
+      component: AdContact
+    },
+    {
+      path: '/CoOfficList',
+      name: 'CoOfficList',
+      component: CoOfficList
     }
   ]
 })

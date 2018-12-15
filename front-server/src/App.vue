@@ -35,63 +35,72 @@ export default {
     }
   },
   created() {
-        let userName = JSON.parse(window.sessionStorage.getItem('userMsg'))
-        // if (!userName) {
-        //     this.$router.push({
-        //         path: '/login'
-        //     })
-        // } else if (userName.type == 'company') {
-        //     this.layMenu = [{
-        //       name: '信息管理',
-        //       icon: 'el-icon-menu',
-        //       child: [{
-        //         path: '/AdCompanyList',
-        //         name: '职位管理'
-        //       }, {
-        //         path: '/AdCompanyList',
-        //         name: '简历管理'
-        //       }]
-        //     }, {
-        //       name: '账户管理',
-        //       icon: 'el-icon-setting',
-        //       child: [{
-        //         path: '/AdCompanyList',
-        //         name: '公司账户'
-        //       }, {
-        //         path: '/AdCompanyList',
-        //         name: '账户管理'
-        //       }]
-        //     }]
-        // } else {
+    this.getMenuList()
+    let menuList = setInterval(() => {
+      this.getMenuList()
+      if (window.sessionStorage.getItem('userMsg')) {
+        clearInterval(menuList)
+      }
+    }, 1000)
+  },
+  methods: {
+    getMenuList: function() {
+      let userName = window.sessionStorage.getItem('userMsg') && JSON.parse(window.sessionStorage.getItem('userMsg')) || undefined
+      if (!userName) {
+        this.layMenu = [{
+          name: '登录',
+          icon: 'el-icon-menu',
+        }]
+        this.$router.push({
+          path: '/login'
+        })
+      } else if (userName.isIdentity == '1') {
           this.layMenu = [{
             name: '信息管理',
             icon: 'el-icon-menu',
             child: [{
-              path: '/AdCompanyList',
-              name: '公司信息'
-            }, {
-              path: '/AdStudent',
-              name: '学生信息'
-            }, {
-              path: '/AdCompanyList',
-              name: '教师信息'
+              path: '/CoOfficList',
+              name: '职位管理'
             }]
           }, {
-            name: '平台配置',
+            name: '账户管理',
             icon: 'el-icon-setting',
             child: [{
               path: '/AdCompanyList',
-              name: '首页轮播'
+              name: '公司账户'
             }, {
               path: '/AdCompanyList',
-              name: '首页热招'
-            }, {
-              path: '/AdCompanyList',
-              name: '联系方式'
+              name: '账户管理'
             }]
           }]
-        }
-    // }
+      } else {
+        this.layMenu = [{
+          name: '信息管理',
+          icon: 'el-icon-menu',
+          child: [{
+            path: '/AdCompanyList',
+            name: '公司信息'
+          }, {
+            path: '/AdStudent',
+            name: '学生信息'
+          }, {
+            path: '/AdTeacher',
+            name: '教师信息'
+          }]
+        }, {
+          name: '平台配置',
+          icon: 'el-icon-setting',
+          child: [{
+            path: '/Banner',
+            name: '首页轮播'
+          }, {
+            path: '/AdContact',
+            name: '联系方式及类型'
+          }]
+        }]
+      }
+    }
+  }
 }
 </script>
 

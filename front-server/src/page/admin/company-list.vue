@@ -48,7 +48,26 @@
           <el-button
             size="mini"
             type="primary"
-            @click="handleOffic(scope.$index, scope.row)">点击查看</el-button>
+            @click="handleOffic(scope.$index, scope.row)">点击查看
+          </el-button>
+        </template>
+      </el-table-column>
+      <el-table-column
+        label="设置首页热门公司">
+        <template slot-scope="scope">
+          <el-switch
+            v-model="scope.row.isHot"
+            active-color="#13ce66"
+            inactive-color="#ff4949"
+          >
+          </el-switch>
+          <el-input style="margin-top: 10px" v-model="scope.row.xuanUrl" placeholder="(选填)宣传url" size="mini"></el-input>
+          <el-button
+            size="mini"
+            type="primary"
+            style="margin-top: 10px"
+            @click="handleHotOffic(scope.$index, scope.row)">提交热门
+          </el-button>
         </template>
       </el-table-column>
       <el-table-column
@@ -195,7 +214,6 @@
   </div>
 </template>
 <script>
-import service from 'service-api'
 export default {
   name: 'CompanyList',
   data() {
@@ -224,7 +242,7 @@ export default {
       detailVisible: false,
       editorVisible: false,
       editorFrom: {
-        id: '',
+        companyId: '',
         name: '',
         accountNumber: '',
         password: ''
@@ -233,18 +251,18 @@ export default {
   },
   created() {
     this.height = window.innerHeight - 120
-    let userName = JSON.parse(window.sessionStorage.getItem('userMsg'))
-    // if (!userName) {
-    //     this.$router.push({
-    //         path: '/login'
-    //     })
-    // } else if (userName.type == 'company') {
-    //     this.$router.push({
-    //         path: '/'
-    //     })
-    // } else {
-    this.companyList()
-    // }
+    let userName = window.sessionStorage.getItem('userMsg') && JSON.parse(window.sessionStorage.getItem('userMsg')) || undefined
+    if (!userName) {
+      this.$router.push({
+        path: '/login'
+      })
+    } else if (userName.isIdentity == '1') {
+      this.$router.push({
+        path: '/'
+      })
+    } else {
+      this.companyList()
+    }
   },
   methods: {
     addCompany: function() {
@@ -253,15 +271,26 @@ export default {
     submitAddCompanyForm: function(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          service.post('/api/addCompany', {}, this.ruleForm).then(res => {
-            if (res && res.data.isSave) {
+          this.axios({
+            method: 'post',
+            url: '/api/addCompany',
+            headers: {
+              'Content-type': 'application/json;charset=UTF-8'
+            },
+            data: this.ruleForm
+          }).then((res) => {
+            if (res.data.code == 200) {
               this.$message({
                 message: '恭喜您，添加成功',
                 type: 'success'
               })
               this.companyList()
               this.isAddCompany = false
+            } else {
+              this.$message.error('请求失败，请重试')
             }
+          }).catch(() => {
+            this.$message.error('请求失败，请重试')
           })
         } else {
           return false
@@ -272,15 +301,27 @@ export default {
     submitEditorForm: function(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          service.post('/api/updateCompany', {}, this.editorFrom).then(res => {
-            if (res && res.data.isSave) {
+
+          this.axios({
+            method: 'post',
+            url: '/api/updateCompany',
+            headers: {
+              'Content-type': 'application/json;charset=UTF-8'
+            },
+            data: this.editorFrom
+          }).then((res) => {
+            if (res.data.code == 200) {
               this.$message({
                 message: '恭喜您，修改成功',
                 type: 'success'
               })
               this.companyList()
               this.editorVisible = false
+            } else {
+              this.$message.error('请求失败，请重试')
             }
+          }).catch(() => {
+            this.$message.error('请求失败，请重试')
           })
         } else {
           return false
@@ -291,35 +332,36 @@ export default {
     companyList: function() {
       this.comLoad = true
       let self = this
-      service.get('/api/getCompanyList').then(res => {      self.comLoad = false
-        let suitArr = []
-        if (!self.formInline.companyName && !self.formInline.accountNumber) {
-          suitArr = res.data
-        } else if (self.formInline.companyName && !self.formInline.accountNumber) {
-          for (let i = 0; i < res.data.length; i++) {
-            if (res.data[i].companyName.indexOf(self.formInline.companyName) > -1) {
-              suitArr.push(res.data[i])
-            }
-          }
-        } else if (!self.formInline.companyName && self.formInline.accountNumber) {
-          for (let i = 0; i < res.data.length; i++) {
-            if (res.data[i].accountNumber.indexOf(self.formInline.accountNumber) > -1) {
-              suitArr.push(res.data[i])
-            }
-          }
-        } else {
-          for (let i = 0; i < res.data.length; i++) {
-            if (res.data[i].accountNumber.indexOf(self.formInline.accountNumber) > -1 && res.data[i].companyName.indexOf(self.formInline.companyName) > -1) {
-              suitArr.push(res.data[i])
-            }
-          }
+
+      this.axios({
+        method: 'post',
+        url: '/api/getCompanyList',
+        headers: {
+          'Content-type': 'application/json;charset=UTF-8'
+        },
+        data: {
+          companyName: this.formInline.companyName,
+          accountNumber: this.formInline.accountNumber
         }
-        self.tableList = suitArr
+      }).then((res) => {
+        this.comLoad = false
+        if (res.data.code == 200) {
+          this.tableList = res.data.data
+        } else {
+          this.$message.error('请求失败，请重试')
+        }
+      }).catch(() => {
+        this.$message.error('请求失败，请重试')
       })
+
+    },
+    handleHotOffic: function(index, row) {
+      console.log(row)
+      // 添加个接口，是否是热招职位
     },
     handleEdit: function(index, row) {
       this.editorFrom = {
-        id: row.id,
+        companyId: row.companyId,
         name: row.companyName,
         accountNumber: row.accountNumber,
         password: row.password
@@ -327,16 +369,27 @@ export default {
       this.editorVisible = true
     },
     handleDelete: function(index, row) {
-      service.get('/api/deleteCompany', {}, {
-        id: row.id
+      this.axios({
+        method: 'post',
+        url: '/api/deleteCompany',
+        headers: {
+          'Content-type': 'application/json;charset=UTF-8'
+        },
+        data: {
+          companyId: row.companyId
+        }
       }).then((res) => {
-        if (res.data) {
+        if (res.data.code == 200) {
           this.$message({
-            message: '恭喜您，删除成功',
+            message: '恭喜您，修改成功',
             type: 'success'
           })
           this.companyList()
+        } else {
+          this.$message.error('提交失败，请重试')
         }
+      }).catch(() => {
+        this.$message.error('提交失败，请重试')
       })
       
     },
@@ -345,23 +398,35 @@ export default {
       this.detailVisible = true
     },
     handleOffic: function(index, row) {
-      window.sessionStorage.setItem('adcompanyId', row.id)
+      window.sessionStorage.setItem('adcompanyId', row.companyId)
       this.$router.push({
         path: '/AdOfficList'
       })
     },
     isShowEditor: function(e, row) {
-      service.post('/api/isShow', {}, {
-        isShow: e,
-        id: row.id
+
+      this.axios({
+        method: 'post',
+        url: '/api/isShowContact',
+        headers: {
+          'Content-type': 'application/json;charset=UTF-8'
+        },
+        data: {
+          isShow: e,
+          companyId: row.companyId
+        }
       }).then((res) => {
-        if (res.data) {
+        if (res.data.code == 200) {
           this.$message({
             message: '恭喜您，修改成功',
             type: 'success'
           })
           this.companyList()
+        } else {
+          this.$message.error('提交失败，请重试')
         }
+      }).catch(() => {
+        this.$message.error('提交失败，请重试')
       })
     }
   }

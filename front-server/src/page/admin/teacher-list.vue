@@ -8,15 +8,10 @@
         <el-form-item label="电话">
           <el-input v-model="formInline.phone" placeholder="电话" size="small"></el-input>
         </el-form-item>
-        <el-form-item label="年龄">
-          <el-input v-model="formInline.age" placeholder="年龄" size="small"></el-input>
-        </el-form-item>
         <el-form-item label="性别">
           <el-input v-model="formInline.sex" placeholder="男或女" size="small"></el-input>
         </el-form-item>
-        <el-form-item label="学校">
-          <el-input v-model="formInline.school" placeholder="学校" size="small"></el-input>
-        </el-form-item>
+        
         <el-form-item>
           <el-button type="primary" @click="resumeList()" size="small">查询</el-button>
         </el-form-item>
@@ -123,7 +118,7 @@
 <script>
 import service from 'service-api'
 export default {
-  name: 'OfficResume',
+  name: 'AdTeacher',
   data() {
     return {
       height: 300,
@@ -131,18 +126,13 @@ export default {
       formInline: {
         name: '',
         phone: '',
-        age: '',
-        sex: '',
-        school: ''
+        sex: ''
       },
-      resumeListData: [],
-      adResumeId: '',
+      resumeListData: []
     }
   },
   created() {
-    this.height = window.innerHeight - 150
-    let adResumeId = window.sessionStorage.getItem('adOffic')
-    this.adResumeId = adResumeId
+    this.height = window.innerHeight - 80
     let userName = window.sessionStorage.getItem('userMsg') && JSON.parse(window.sessionStorage.getItem('userMsg')) || undefined
     if (!userName) {
       this.$router.push({
@@ -161,13 +151,11 @@ export default {
       this.resumeloading = true
       this.axios({
         method: 'post',
-        url: '/api/getResumeList',
+        url: '/api/getTeacherList',
         headers: {
           'Content-type': 'application/json;charset=UTF-8'
         },
-        data: Object.assign({
-          officeId: this.adResumeId
-        }, this.formInline)
+        data: this.formInline
       }).then((res) => {
         this.resumeloading = false
         if (res.data.code == 200) {

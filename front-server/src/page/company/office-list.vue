@@ -1,7 +1,7 @@
 <template>
   <div class="AdOfficList" v-loading="offloading">
     <div style="margin-bottom: 20px;">
-      <el-button type="primary" @click="addOfficVisible = true">添加职位</el-button>
+      <el-button type="primary" @click="addOfficButton()">添加职位</el-button>
     </div>
     <el-table
       :data="officListData"
@@ -40,8 +40,8 @@
       <el-table-column
         label="操作">
         <template slot-scope="scope">
-          <el-button type="primary" size="mini">编辑</el-button>
-          <el-button type="danger" size="mini">删除</el-button>
+          <el-button type="primary" size="mini" @click="editorOffic(scope.$index, scope.row)">编辑</el-button>
+          <el-button type="danger" size="mini" @click="deleteOffic(scope.$index, scope.row)">删除</el-button>
         </template>
       </el-table-column>
       
@@ -74,7 +74,7 @@
       </div>
       <div class="offic-main-title">
         <!-- 公司信息 -->
-        <div class="offic-main-company" @click="jumpToCompany(dialogItem.companyId)">
+        <div class="offic-main-company">
           
           <div class="off-main-company-title">
             <div class="ellipsis-1 normal-title">
@@ -112,7 +112,7 @@
     </el-dialog>
 
     <el-dialog
-      title="添加职位"
+      title="职位详情"
       :visible.sync="addOfficVisible"
       width="40%"
       >
@@ -127,7 +127,7 @@
           <el-form-item label="职位类型">
             <el-select v-model="addForm.offType" placeholder="职位类型">
               <el-option v-for="(item, index) in offType" :key="index" :label="item.typeName" :value="item.typeName"></el-option>
-              
+
             </el-select>
           </el-form-item>
           <el-form-item label="工作经验">
@@ -176,7 +176,6 @@ export default {
   data() {
     return {
       height: 300,
-      adComId: '',
       offloading: false,
       officListData: [],
       dialogVisible: false,
@@ -200,7 +199,8 @@ export default {
         offEducation: '',
         offPlace: '',
         offResponsibilities: '',
-        offRequirements: ''
+        offRequirements: '',
+        add: true
       }
     }
   },
@@ -208,9 +208,8 @@ export default {
     
 
     this.height = window.innerHeight - 30
-    let adComId = window.sessionStorage.getItem('adcompanyId')
-    this.adComId = adComId
     let userName = window.sessionStorage.getItem('userMsg') && JSON.parse(window.sessionStorage.getItem('userMsg')) || undefined
+    this.userName = userName
     if (!userName) {
       this.$router.push({
         path: '/login'
@@ -221,6 +220,41 @@ export default {
     this.getOffType()
   },
   methods: {
+    deleteOffic: function (index, row) {
+      console.log(row)
+      this.axios({
+        method: 'post',
+        url: '/api/back/deleteOfficByCompanyId',
+        headers: {
+          'Content-type': 'application/json;charset=UTF-8'
+        },
+        data: {
+          officeId: row.officeId
+        }
+      }).then((res) => {
+        if (res.data.code == 200) {
+          this.officList()
+        } else {
+          this.$message.error('请求失败，请重试')
+        }
+      }).catch(() => {
+        this.$message.error('请求失败，请重试')
+      })
+    },
+    addOfficButton: function () {
+       this.addOfficVisible = true
+       this.addForm = {
+        companyId: this.userName.userId,
+        offName: '',
+        offMoney: '',
+        offExperience: '',
+        offEducation: '',
+        offPlace: '',
+        offResponsibilities: '',
+        offRequirements: '',
+        add: true
+       }
+    },
     getOffType: function () {
       this.axios({
         method: 'post',
@@ -238,14 +272,22 @@ export default {
         this.$message.error('请求失败，请重试')
       })
     },
+    editorOffic: function (index, row) {
+      this.addForm = row
+      this.addForm.add = false
+      this.addOfficVisible = true
+    },
     
     officList: function() {
       this.offloading = true
       this.axios({
         method: 'post',
-        url: '/api/getOfficList',
+        url: '/api/back/getOfficList',
         headers: {
           'Content-type': 'application/json;charset=UTF-8'
+        },
+        data:{
+          companyId: this.userName.userId
         }
       }).then((res) => {
         this.offloading = false
@@ -270,21 +312,63 @@ export default {
       })
     },
     addOfficOk: function () {
-      this.axios({
-        method: 'post',
-        url: '/api/getOfficType',
-        headers: {
-          'Content-type': 'application/json;charset=UTF-8'
-        }
-      }).then((res) => {
-        if (res.data.code == 200) {
-          this.offType = res.data.data
-        } else {
+      if (this.addForm.add) {
+        this.axios({
+          method: 'post',
+          url: '/api/back/addCompanyOffic',
+          headers: {
+            'Content-type': 'application/json;charset=UTF-8'
+          },
+          data: {
+            offName: this.addForm.offName,
+            offMoney: this.addForm.offMoney,
+            offPlace: this.addForm.offPlace,
+            offExperience: this.addForm.offExperience,
+            offEducation: this.addForm.offEducation,
+            offResponsibilities: this.addForm.offResponsibilities,
+            offType: this.addForm.offType,
+            offRequirements: this.addForm.offRequirements,
+            companyId: this.userName.userId,
+            isHot: 1
+          }
+        }).then((res) => {
+          if (res.data.code == 200) {
+            this.officList()
+          } else {
+            this.$message.error('请求失败，请重试')
+          }
+        }).catch(() => {
           this.$message.error('请求失败，请重试')
-        }
-      }).catch(() => {
-        this.$message.error('请求失败，请重试')
-      })
+        })
+      } else {
+        this.axios({
+          method: 'post',
+          url: '/api/back/upDateCompanyOffic',
+          headers: {
+            'Content-type': 'application/json;charset=UTF-8'
+          },
+          data: {
+            offName: this.addForm.offName,
+            offMoney: this.addForm.offMoney,
+            offPlace: this.addForm.offPlace,
+            offExperience: this.addForm.offExperience,
+            offEducation: this.addForm.offEducation,
+            offResponsibilities: this.addForm.offResponsibilities,
+            offType: this.addForm.offType,
+            offRequirements: this.addForm.offRequirements,
+            officeId: this.addForm.officeId
+          }
+        }).then((res) => {
+          if (res.data.code == 200) {
+            this.officList()
+          } else {
+            this.$message.error('请求失败，请重试')
+          }
+        }).catch(() => {
+          this.$message.error('请求失败，请重试')
+        })
+      }
+      
 
       this.addOfficVisible = false
     }

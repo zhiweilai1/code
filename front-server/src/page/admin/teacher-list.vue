@@ -2,14 +2,8 @@
   <div class="OfficResume" v-loading="resumeloading">
     <div class="company-form">
       <el-form :inline="true" :model="formInline" class="demo-form-inline">
-        <el-form-item label="姓名">
-          <el-input v-model="formInline.name" placeholder="姓名" size="small"></el-input>
-        </el-form-item>
         <el-form-item label="电话">
-          <el-input v-model="formInline.phone" placeholder="电话" size="small"></el-input>
-        </el-form-item>
-        <el-form-item label="性别">
-          <el-input v-model="formInline.sex" placeholder="男或女" size="small"></el-input>
+          <el-input v-model="formInline.userPhone" placeholder="电话" size="small"></el-input>
         </el-form-item>
         
         <el-form-item>
@@ -20,73 +14,31 @@
 
     <el-table
     :data="resumeListData"
+    @expand-change="resumeChild"
     :height="height"
     style="width: 100%">
     <el-table-column type="expand">
       <template slot-scope="props">
         <el-form label-position="left" inline class="demo-table-expand">
-          <el-form-item label="姓名">
-            <span>{{ props.row.baseMsg.username }}</span>
-          </el-form-item>
-          <el-form-item label="年龄">
-            <span>{{ props.row.baseMsg.number }}</span>
-          </el-form-item>
-          <el-form-item label="性别">
-            <span>{{ props.row.baseMsg.sex }}</span>
-          </el-form-item>
-          <el-form-item label="电话">
-            <span>{{ props.row.baseMsg.phone }}</span>
-          </el-form-item>
-          <el-form-item label="状态">
-            <span>{{ props.row.baseMsg.status }}</span>
-          </el-form-item>
-          <div v-for="(item, index) in props.row.tecMsg" :key="index">
-            <el-form-item  label="学校">
-              <span>{{ item.school }}</span>
-            </el-form-item>
-            <el-form-item  label="学历">
-              <span>{{ item.level }}</span>
-            </el-form-item>
-            <el-form-item  label="专业">
-              <span>{{ item.profession }}</span>
-            </el-form-item>
-            <el-form-item  label="在校时间">
-              <span>{{ item.begin }} - {{ item.end }}</span>
-            </el-form-item>
-            <el-form-item  label="在校表现">
-              <span>{{ item.dec }}</span>
-            </el-form-item>
+          <div v-if="rowChildren.length > 0" v-for="(item, index) in rowChildren" :key="index">
+            <div>
+              <el-form-item label="姓名">
+                <span>{{ item.user_name }}</span>
+              </el-form-item>
+              <el-form-item label="年龄">
+                <span>{{ item.user_age }}</span>
+              </el-form-item>
+              <el-form-item label="性别">
+                <span>{{ item.user_sex }}</span>
+              </el-form-item>
+              <el-form-item label="电话">
+                <span>{{ item.user_phone }}</span>
+              </el-form-item>
+              <el-form-item label="状态">
+                <span>{{ item.user_status }}</span>
+              </el-form-item>
+            </div>
           </div>
-          <div v-for="(item, index) in props.row.workMsg" :key="index">
-            <el-form-item  label="公司名称">
-              <span>{{ item.company }}</span>
-            </el-form-item>
-            <el-form-item  label="职位">
-              <span>{{ item.position }}</span>
-            </el-form-item>
-            <el-form-item  label="工作时间">
-              <span>{{ item.begin }} - {{ item.end }}</span>
-            </el-form-item>
-            <el-form-item  label="工作职责">
-              <span>{{ item.duties }}</span>
-            </el-form-item>
-          </div>
-          <div v-for="(item, index) in props.row.projectMsg" :key="index">
-            <el-form-item  label="项目名称">
-              <span>{{ item.projectName }}</span>
-            </el-form-item>
-            <el-form-item  label="项目职责">
-              <span>{{ item.projectPosition }}</span>
-            </el-form-item>
-            <el-form-item  label="项目时间">
-              <span>{{ item.begin }} - {{ item.end }}</span>
-            </el-form-item>
-            <el-form-item  label="项目描述">
-              <span>{{ item.projectDesc }}</span>
-            </el-form-item>
-          </div>
-          
-          
         </el-form>
       </template>
     </el-table-column>
@@ -96,20 +48,20 @@
       >
       </el-table-column>
       <el-table-column
-        prop="baseMsg.username"
+        prop="nick_name"
         label="姓名"
       >
       </el-table-column>
       <el-table-column
-        prop="baseMsg.number"
+        prop="user_age"
         label="年龄">
       </el-table-column>
       <el-table-column
-        prop="baseMsg.sex"
+        prop="user_sex"
         label="性别">
       </el-table-column>
       <el-table-column
-        prop="baseMsg.phone"
+        prop="tel_phone"
         label="电话">
       </el-table-column>
   </el-table>
@@ -124,11 +76,10 @@ export default {
       height: 300,
       resumeloading: false,
       formInline: {
-        name: '',
-        phone: '',
-        sex: ''
+        userPhone: ''
       },
-      resumeListData: []
+      resumeListData: [],
+      rowChildren: []
     }
   },
   created() {
@@ -151,7 +102,7 @@ export default {
       this.resumeloading = true
       this.axios({
         method: 'post',
-        url: '/api/getTeacherList',
+        url: '/api/back/getTeacherList',
         headers: {
           'Content-type': 'application/json;charset=UTF-8'
         },
@@ -167,6 +118,30 @@ export default {
         this.resumeloading = false
         this.$message.error('请求失败，请重试')
       })
+    },
+    resumeChild: function (row, expandedRows) {
+      if (expandedRows.length > 0) {
+        this.axios({
+          method: 'post',
+          url: '/api/back/getTecContactStu',
+          headers: {
+            'Content-type': 'application/json;charset=UTF-8'
+          },
+          data: {
+            userId: row.id,
+          }
+        }).then((res) => {
+          this.resumeloading = false
+          if (res.data.code == 200) {
+            this.rowChildren = res.data.data
+          } else {
+            this.$message.error('请求失败，请重试')
+          }
+        }).catch(() => {
+          this.resumeloading = false
+          this.$message.error('请求失败，请重试')
+        })
+      }
     }
   }
 }

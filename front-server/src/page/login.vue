@@ -10,7 +10,7 @@
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="onSubmit">登录</el-button>
-          <el-button>忘记密码</el-button>
+          <el-button @click="forgetPassword()">忘记密码</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -59,6 +59,11 @@ export default {
         this.data = res.data.data
       }).catch(() => {
         this.$message.error('抱歉，登录错误，请重试')
+      })
+    },
+    forgetPassword: function () {
+      this.$router.push({
+        path: '/Forget'
       })
     }
   }

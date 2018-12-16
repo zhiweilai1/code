@@ -39,10 +39,11 @@
           <el-input v-model="officItem.typeName"></el-input>
         </el-form-item>
         <el-button @click.prevent="removeOffic(officItem)">删除</el-button>
+        <el-button type="primary" @click="submitOfficForm(officItem)">提交</el-button>
         </div>
       </el-form>
       <el-button @click="addOffic">添加分类</el-button>
-      <el-button type="primary" @click="submitOfficForm(officItem)">提交</el-button>
+      
 
     </div>
     
@@ -65,9 +66,68 @@ export default {
     }
     
   },
+  created() {
+    this.getContact()
+    this.getOfficType()
+  },
   methods: {
+    getContact: function () {
+      this.axios({
+        method: 'post',
+        url: '/api/contact',
+        headers: {
+          'Content-type': 'application/json;charset=UTF-8'
+        },
+      }).then((res) => {
+        this.offloading = false
+        if (res.data.code == 200) {
+          this.domains = res.data.data
+        } else {
+          this.$message.error('请求失败，请重试')
+        }
+      }).catch(() => {
+        this.offloading = false
+        this.$message.error('请求失败，请重试')
+      })
+    },
+    getOfficType: function () {
+      this.axios({
+        method: 'post',
+        url: '/api/getOfficType',
+        headers: {
+          'Content-type': 'application/json;charset=UTF-8'
+        },
+      }).then((res) => {
+        this.offloading = false
+        if (res.data.code == 200) {
+          this.officType = res.data.data
+        } else {
+          this.$message.error('请求失败，请重试')
+        }
+      }).catch(() => {
+        this.offloading = false
+        this.$message.error('请求失败，请重试')
+      })
+    },
     submitForm(domain) {
-      console.log(domain)
+      this.axios({
+        method: 'post',
+        url: '/api/back/postContact',
+        headers: {
+          'Content-type': 'application/json;charset=UTF-8'
+        },
+        data: domain
+      }).then((res) => {
+        this.offloading = false
+        if (res.data.code == 200) {
+          this.getContact()
+        } else {
+          this.$message.error('请求失败，请重试')
+        }
+      }).catch(() => {
+        this.offloading = false
+        this.$message.error('请求失败，请重试')
+      })
     },
 
     removeDomain(item) {
@@ -84,7 +144,24 @@ export default {
       });
     },
     submitOfficForm(domain) {
-      console.log(domain)
+      this.axios({
+        method: 'post',
+        url: '/api/back/addOfficType',
+        headers: {
+          'Content-type': 'application/json;charset=UTF-8'
+        },
+        data: domain
+      }).then((res) => {
+        this.offloading = false
+        if (res.data.code == 200) {
+          this.getOfficType()
+        } else {
+          this.$message.error('请求失败，请重试')
+        }
+      }).catch(() => {
+        this.offloading = false
+        this.$message.error('请求失败，请重试')
+      })
     },
 
     removeOffic(item) {

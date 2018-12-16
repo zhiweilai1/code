@@ -10,6 +10,8 @@ import AdTeacher from '@/page/admin/teacher-list'
 import Banner from '@/page/admin/banner'
 import AdContact from '@/page/admin/contact-type'
 import CoOfficList from '@/page/company/office-list'
+import CoSet from '@/page/company/company-set'
+import Forget from '@/page/Forget'
 
 Vue.use(Router)
 
@@ -64,6 +66,16 @@ export default new Router({
       path: '/CoOfficList',
       name: 'CoOfficList',
       component: CoOfficList
+    },
+    {
+      path: '/CoSet',
+      name: 'CoSet',
+      component: CoSet
+    },
+    {
+      path: '/Forget',
+      name: 'Forget',
+      component: Forget
     }
   ]
 })

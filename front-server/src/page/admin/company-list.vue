@@ -25,7 +25,7 @@
       border
       style="width: 100%">
       <el-table-column
-        prop="id"
+        prop="companyId"
         label="ID"
         width="50">
       </el-table-column>
@@ -35,11 +35,11 @@
         width="250">
       </el-table-column>
       <el-table-column
-        prop="accountNumber"
+        prop="userName"
         label="公司账户">
       </el-table-column>
       <el-table-column
-        prop="password"
+        prop="userPassword"
         label="账户密码">
       </el-table-column>
       <el-table-column
@@ -61,7 +61,7 @@
             inactive-color="#ff4949"
           >
           </el-switch>
-          <el-input style="margin-top: 10px" v-model="scope.row.xuanUrl" placeholder="(选填)宣传url" size="mini"></el-input>
+          <el-input style="margin-top: 10px" v-model="scope.row.companyUrl" placeholder="(选填)宣传url" size="mini"></el-input>
           <el-button
             size="mini"
             type="primary"
@@ -75,7 +75,7 @@
         label="允许查看联系方式">
         <template slot-scope="scope">
           <el-switch
-            v-model="scope.row.isShow"
+            v-model="scope.row.isRead"
             active-color="#13ce66"
             inactive-color="#ff4949"
             @change="isShowEditor($event, scope.row)">
@@ -101,14 +101,14 @@
 
     <el-dialog title="添加公司" :visible.sync="isAddCompany">
       <el-form :model="ruleForm" :rules="rules" ref="ruleForm">
-        <el-form-item label="公司名称" prop="name">
+        <el-form-item label="公司名称" prop="companyName">
           <el-input v-model="ruleForm.companyName" size="small"></el-input>
         </el-form-item>
-        <el-form-item label="公司账户" prop="accountNumber">
-          <el-input v-model="ruleForm.accountNumber" size="small"></el-input>
+        <el-form-item label="公司账户" prop="userName">
+          <el-input v-model="ruleForm.userName" size="small"></el-input>
         </el-form-item>
-        <el-form-item label="初始密码" prop="password">
-          <el-input v-model="ruleForm.password" disabled size="small"></el-input>
+        <el-form-item label="初始密码" prop="userPassword">
+          <el-input v-model="ruleForm.userPassword" disabled size="small"></el-input>
         </el-form-item>
 
         <el-form-item>
@@ -124,7 +124,7 @@
           ID
         </el-col>
         <el-col :span="20">
-          {{companyDetail.id}}
+          {{companyDetail.companyId}}
         </el-col>
       </el-row>
       <el-row>
@@ -140,7 +140,7 @@
           公司账户
         </el-col>
         <el-col :span="20">
-          {{companyDetail.accountNumber}}
+          {{companyDetail.userName}}
         </el-col>
       </el-row>
       <el-row>
@@ -148,7 +148,7 @@
           账户密码
         </el-col>
         <el-col :span="20">
-          {{companyDetail.password}}
+          {{companyDetail.userPassword}}
         </el-col>
       </el-row>
       <el-row>
@@ -164,7 +164,7 @@
           公司方向
         </el-col>
         <el-col :span="20">
-          {{companyDetail.companydet}}
+          {{companyDetail.companyDet}}
         </el-col>
       </el-row>
       <el-row>
@@ -173,6 +173,14 @@
         </el-col>
         <el-col :span="20">
           {{companyDetail.companyPer}}
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="4">
+          公司福利
+        </el-col>
+        <el-col :span="20">
+          {{companyDetail.welfareArr}}
         </el-col>
       </el-row>
       <el-row>
@@ -198,11 +206,11 @@
         <el-form-item label="公司名称" prop="name">
           <el-input v-model="editorFrom.name" size="small"></el-input>
         </el-form-item>
-        <el-form-item label="公司账户" prop="accountNumber">
-          <el-input v-model="editorFrom.accountNumber" size="small"></el-input>
+        <el-form-item label="公司账户" prop="userName">
+          <el-input v-model="editorFrom.userName" size="small"></el-input>
         </el-form-item>
-        <el-form-item label="账户密码" prop="password">
-          <el-input v-model="editorFrom.password" disabled size="small"></el-input>
+        <el-form-item label="账户密码" prop="userPassword">
+          <el-input v-model="editorFrom.userPassword" disabled size="small"></el-input>
         </el-form-item>
 
         <el-form-item>
@@ -223,13 +231,13 @@ export default {
       isAddCompany: false,
       ruleForm: {
         companyName: '',
-        accountNumber: '',
-        password: '666666'
+        userName: '',
+        userPassword: '666666'
       },
       formLabelWidth: '120px',
       rules: {
-        name: [{ required: true, message: '请输入公司名称', trigger: 'blur' }],
-        accountNumber: [
+        companyName: [{ required: true, message: '请输入公司名称', trigger: 'blur' }],
+        userName: [
           { required: true, message: '请填写公司账户', trigger: 'blur' }
         ]
       },
@@ -244,8 +252,8 @@ export default {
       editorFrom: {
         companyId: '',
         name: '',
-        accountNumber: '',
-        password: ''
+        userName: '',
+        userPassword: ''
       }
     }
   },
@@ -273,7 +281,7 @@ export default {
         if (valid) {
           this.axios({
             method: 'post',
-            url: '/api/addCompany',
+            url: '/api/back/addCompany',
             headers: {
               'Content-type': 'application/json;charset=UTF-8'
             },
@@ -304,11 +312,16 @@ export default {
 
           this.axios({
             method: 'post',
-            url: '/api/updateCompany',
+            url: '/api/back/updateCompany',
             headers: {
               'Content-type': 'application/json;charset=UTF-8'
             },
-            data: this.editorFrom
+            data: {
+              userName: this.editorFrom.userName,
+              companyName: this.editorFrom.name,
+              userPassword: this.editorFrom.userPassword,
+              companyId: this.editorFrom.companyId
+            }
           }).then((res) => {
             if (res.data.code == 200) {
               this.$message({
@@ -335,13 +348,13 @@ export default {
 
       this.axios({
         method: 'post',
-        url: '/api/getCompanyList',
+        url: '/api/back/getCompanyList',
         headers: {
           'Content-type': 'application/json;charset=UTF-8'
         },
         data: {
           companyName: this.formInline.companyName,
-          accountNumber: this.formInline.accountNumber
+          userName: this.formInline.accountNumber
         }
       }).then((res) => {
         this.comLoad = false
@@ -356,22 +369,44 @@ export default {
 
     },
     handleHotOffic: function(index, row) {
-      console.log(row)
-      // 添加个接口，是否是热招职位
+      this.axios({
+        method: 'post',
+        url: '/api/back/setHotCompany',
+        headers: {
+          'Content-type': 'application/json;charset=UTF-8'
+        },
+        data: {
+          companyId: row.companyId,
+          isHot: row.isHot,
+          companyUrl: row.companyUrl
+        }
+      }).then((res) => {
+        if (res.data.code == 200) {
+          this.$message({
+            message: '恭喜您，修改成功',
+            type: 'success'
+          })
+          this.companyList()
+        } else {
+          this.$message.error('提交失败，请重试')
+        }
+      }).catch(() => {
+        this.$message.error('提交失败，请重试')
+      })
     },
     handleEdit: function(index, row) {
       this.editorFrom = {
         companyId: row.companyId,
         name: row.companyName,
-        accountNumber: row.accountNumber,
-        password: row.password
+        userName: row.userName,
+        userPassword: row.userPassword
       }
       this.editorVisible = true
     },
     handleDelete: function(index, row) {
       this.axios({
         method: 'post',
-        url: '/api/deleteCompany',
+        url: '/api/back/deleteCompany',
         headers: {
           'Content-type': 'application/json;charset=UTF-8'
         },
@@ -407,12 +442,12 @@ export default {
 
       this.axios({
         method: 'post',
-        url: '/api/isShowContact',
+        url: '/api/back/isShow',
         headers: {
           'Content-type': 'application/json;charset=UTF-8'
         },
         data: {
-          isShow: e,
+          isRead: e,
           companyId: row.companyId
         }
       }).then((res) => {

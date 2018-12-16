@@ -3,20 +3,16 @@
     <div class="company-form">
       <el-form :inline="true" :model="formInline" class="demo-form-inline">
         <el-form-item label="姓名">
-          <el-input v-model="formInline.name" placeholder="姓名" size="small"></el-input>
+          <el-input v-model="formInline.userName" placeholder="姓名" size="small"></el-input>
         </el-form-item>
-        <el-form-item label="电话">
-          <el-input v-model="formInline.phone" placeholder="电话" size="small"></el-input>
-        </el-form-item>
+        
         <el-form-item label="年龄">
-          <el-input v-model="formInline.age" placeholder="年龄" size="small"></el-input>
+          <el-input v-model="formInline.userAge" placeholder="年龄" size="small"></el-input>
         </el-form-item>
         <el-form-item label="性别">
-          <el-input v-model="formInline.sex" placeholder="男或女" size="small"></el-input>
+          <el-input v-model="formInline.userSex" placeholder="男或女" size="small"></el-input>
         </el-form-item>
-        <el-form-item label="学校">
-          <el-input v-model="formInline.school" placeholder="学校" size="small"></el-input>
-        </el-form-item>
+       
         <el-form-item>
           <el-button type="primary" @click="resumeList()" size="small">查询</el-button>
         </el-form-item>
@@ -26,26 +22,27 @@
     <el-table
     :data="resumeListData"
     :height="height"
+    @expand-change="resumeChild"
     style="width: 100%">
     <el-table-column type="expand">
       <template slot-scope="props">
         <el-form label-position="left" inline class="demo-table-expand">
           <el-form-item label="姓名">
-            <span>{{ props.row.baseMsg.username }}</span>
+            <span>{{ rowChildren.baseMsg.userName }}</span>
           </el-form-item>
           <el-form-item label="年龄">
-            <span>{{ props.row.baseMsg.number }}</span>
+            <span>{{ rowChildren.baseMsg.userAge }}</span>
           </el-form-item>
           <el-form-item label="性别">
-            <span>{{ props.row.baseMsg.sex }}</span>
+            <span>{{ rowChildren.baseMsg.userSex }}</span>
           </el-form-item>
           <el-form-item label="电话">
-            <span>{{ props.row.baseMsg.phone }}</span>
+            <span>{{ rowChildren.baseMsg.userPhone }}</span>
           </el-form-item>
           <el-form-item label="状态">
-            <span>{{ props.row.baseMsg.status }}</span>
+            <span>{{ rowChildren.baseMsg.userStatus }}</span>
           </el-form-item>
-          <div v-for="(item, index) in props.row.tecMsg" :key="index">
+          <div v-if="rowChildren.tecMsg.length > 0" v-for="(item, index) in rowChildren.tecMsg" :key="index">
             <el-form-item  label="学校">
               <span>{{ item.school }}</span>
             </el-form-item>
@@ -62,7 +59,7 @@
               <span>{{ item.dec }}</span>
             </el-form-item>
           </div>
-          <div v-for="(item, index) in props.row.workMsg" :key="index">
+          <div v-if="rowChildren.workMsg.length > 0" v-for="(item, index) in rowChildren.workMsg" :key="index">
             <el-form-item  label="公司名称">
               <span>{{ item.company }}</span>
             </el-form-item>
@@ -76,7 +73,7 @@
               <span>{{ item.duties }}</span>
             </el-form-item>
           </div>
-          <div v-for="(item, index) in props.row.projectMsg" :key="index">
+          <div v-if="rowChildren.projectMsg.length > 0" v-for="(item, index) in rowChildren.projectMsg" :key="index">
             <el-form-item  label="项目名称">
               <span>{{ item.projectName }}</span>
             </el-form-item>
@@ -96,26 +93,34 @@
       </template>
     </el-table-column>
     <el-table-column
-        prop="id"
+        prop="userId"
         label="ID"
       >
       </el-table-column>
       <el-table-column
-        prop="baseMsg.username"
+        prop="userName"
         label="姓名"
       >
       </el-table-column>
       <el-table-column
-        prop="baseMsg.number"
+        prop="userAge"
         label="年龄">
       </el-table-column>
       <el-table-column
-        prop="baseMsg.sex"
+        prop="userSex"
         label="性别">
       </el-table-column>
       <el-table-column
-        prop="baseMsg.phone"
+        prop="userPhone"
         label="电话">
+      </el-table-column>
+      <el-table-column
+        prop="userEmail"
+        label="邮箱">
+      </el-table-column>
+      <el-table-column
+        prop="userStatus"
+        label="状态">
       </el-table-column>
   </el-table>
   </div>
@@ -129,14 +134,13 @@ export default {
       height: 300,
       resumeloading: false,
       formInline: {
-        name: '',
-        phone: '',
-        age: '',
-        sex: '',
-        school: ''
+        userName: '',
+        userAge: '',
+        userSex: '',
       },
       resumeListData: [],
       adResumeId: '',
+      rowChildren: {}
     }
   },
   created() {
@@ -161,7 +165,7 @@ export default {
       this.resumeloading = true
       this.axios({
         method: 'post',
-        url: '/api/getResumeList',
+        url: '/api/back/getResumeList',
         headers: {
           'Content-type': 'application/json;charset=UTF-8'
         },
@@ -179,6 +183,31 @@ export default {
         this.resumeloading = false
         this.$message.error('请求失败，请重试')
       })
+    },
+    resumeChild: function (row, expandedRows) {
+      console.log(row, expandedRows)
+      if (expandedRows.length > 0) {
+        this.axios({
+          method: 'post',
+          url: '/api/getMyResume',
+          headers: {
+            'Content-type': 'application/json;charset=UTF-8'
+          },
+          data: {
+            userId: row.userId,
+          }
+        }).then((res) => {
+          this.resumeloading = false
+          if (res.data.code == 200) {
+            this.rowChildren = res.data.data
+          } else {
+            this.$message.error('请求失败，请重试')
+          }
+        }).catch(() => {
+          this.resumeloading = false
+          this.$message.error('请求失败，请重试')
+        })
+      }
     }
   }
 }

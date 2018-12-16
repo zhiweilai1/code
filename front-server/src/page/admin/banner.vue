@@ -24,7 +24,8 @@ export default {
   data() {
     return {
         fileList: [],
-        bannerUrl: ''
+        bannerUrl: '',
+        fileName: ''
       }
   },
   created() {
@@ -57,7 +58,7 @@ export default {
         console.log(file)
       },
       handleFile: function(file) {
-        console.log(file)
+        this.fileName = file.name
         let reader = new FileReader()
         reader.onload = () => {
           let _base64 = reader.result        
@@ -69,17 +70,36 @@ export default {
       updateImg: function(base) {
         this.axios({
           method: 'post',
-          url: '/api/pushBannerImg',
+          url: '/api/back/upload',
           headers: {
             'Content-type': 'application/json;charset=UTF-8'
           },
           data: {
-            img: base,
-            url: this.bannerUrl
+            baseString: base,
+            fileName: this.fileName
           }
         }).then((res) => {
           if (res.data.code == 200) {
-            this.imgList()
+            this.axios({
+              method: 'post',
+              url: '/api/back/putBanner',
+              headers: {
+                'Content-type': 'application/json;charset=UTF-8'
+              },
+              data: {
+                bannerImage: res.data.data,
+                bannerUrl: this.bannerUrl
+              }
+            }).then((res) => {
+              if (res.data.code == 200) {
+                this.imgList()
+              }else {
+                this.$message.error('上传失败，请重试')
+              }
+            }).catch(() => {
+              this.$message.error('上传失败，请重试')
+            })
+            
           } else {
             this.$message.error('上传失败，请重试')
           }

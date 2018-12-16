@@ -54,7 +54,9 @@ export default {
         this.$router.push({
           path: '/login'
         })
-      } else if (userName.isIdentity == '1') {
+      } else 
+      // if (userName.isIdentity == '1') 
+      {
           this.layMenu = [{
             name: '信息管理',
             icon: 'el-icon-menu',
@@ -66,38 +68,35 @@ export default {
             name: '账户管理',
             icon: 'el-icon-setting',
             child: [{
-              path: '/AdCompanyList',
-              name: '公司账户'
-            }, {
-              path: '/AdCompanyList',
-              name: '账户管理'
+              path: '/CoSet',
+              name: '公司设置'
             }]
           }]
-      } else {
-        this.layMenu = [{
-          name: '信息管理',
-          icon: 'el-icon-menu',
-          child: [{
-            path: '/AdCompanyList',
-            name: '公司信息'
-          }, {
-            path: '/AdStudent',
-            name: '学生信息'
-          }, {
-            path: '/AdTeacher',
-            name: '教师信息'
-          }]
-        }, {
-          name: '平台配置',
-          icon: 'el-icon-setting',
-          child: [{
-            path: '/Banner',
-            name: '首页轮播'
-          }, {
-            path: '/AdContact',
-            name: '联系方式及类型'
-          }]
-        }]
+      // } else {
+      //   this.layMenu = [{
+      //     name: '信息管理',
+      //     icon: 'el-icon-menu',
+      //     child: [{
+      //       path: '/AdCompanyList',
+      //       name: '公司信息'
+      //     }, {
+      //       path: '/AdStudent',
+      //       name: '学生信息'
+      //     }, {
+      //       path: '/AdTeacher',
+      //       name: '教师信息'
+      //     }]
+      //   }, {
+      //     name: '平台配置',
+      //     icon: 'el-icon-setting',
+      //     child: [{
+      //       path: '/Banner',
+      //       name: '首页轮播'
+      //     }, {
+      //       path: '/AdContact',
+      //       name: '联系方式及类型'
+      //     }]
+      //   }]
       }
     }
   }

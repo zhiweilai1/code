@@ -19,7 +19,7 @@
         prop="place"
         label="职位类型">
         <template slot-scope="scope">
-          {{scope.row.isshi ? '实习' : '全职'}}
+          {{scope.row.isExer ? '实习' : '全职'}}
         </template>
       </el-table-column>
       <el-table-column
@@ -49,10 +49,10 @@
         <!-- 名称及位置 -->
         <div class="company-off-card-title">
           <div class="company-off-card-title-left">{{dialogItem.offName}}</div>
-          <div class="company-off-card-title-right">{{dialogItem.money}}</div>
+          <div class="company-off-card-title-right">{{dialogItem.offMoney}}</div>
         </div>
         <div class="company-off-card-place">
-          {{dialogItem.isshi ? '实习' : '全职'}}&nbsp;|&nbsp;{{dialogItem.place}}&nbsp;|&nbsp;{{dialogItem.experience}}&nbsp;|&nbsp;{{dialogItem.education}}
+          {{dialogItem.isExer ? '实习' : '全职'}}&nbsp;|&nbsp;{{dialogItem.offPlace}}&nbsp;|&nbsp;{{dialogItem.offExperience}}&nbsp;|&nbsp;{{dialogItem.offEducation}}
         </div>
         <div>
           <div style="display: inline-block; color: #888">职位福利:</div>
@@ -65,14 +65,14 @@
       </div>
       <div class="offic-main-title">
         <!-- 公司信息 -->
-        <div class="offic-main-company" @click="jumpToCompany(dialogItem.companyId)">
+        <div class="offic-main-company" >
           
           <div class="off-main-company-title">
             <div class="ellipsis-1 normal-title">
               {{dialogItem.companyName}}
             </div>
             <div class="ellipsis-1 litle-title">
-              {{dialogItem.companydet}}&nbsp;|&nbsp;{{dialogItem.companyType}}&nbsp;|&nbsp;{{dialogItem.companyPer}}
+              {{dialogItem.companyDet}}&nbsp;|&nbsp;{{dialogItem.companyType}}&nbsp;|&nbsp;{{dialogItem.companyPer}}
             </div>
           </div>
           
@@ -88,13 +88,13 @@
         </div>
         <div class="offic-zhize">
           <div class="litle-title">岗位职责:</div>
-          <p class="litle-title zhi-content" v-for="(item, index) in dialogItem.Responsibilities" :key="index">
+          <p class="litle-title zhi-content" v-for="(item, index) in dialogItem.offResponsibilities" :key="index">
             {{index + 1}}、{{item}}
           </p>
         </div>
         <div class="offic-yaoqiu">
           <div class="litle-title">任职要求:</div>
-          <p class="litle-title zhi-content" v-for="(item, index) in dialogItem.requirements" :key="index">
+          <p class="litle-title zhi-content" v-for="(item, index) in dialogItem.offRequirements" :key="index">
             {{index + 1}}、{{item}}
           </p>
         </div>
@@ -143,9 +143,12 @@ export default {
 
       this.axios({
         method: 'post',
-        url: '/api/getOfficList',
+        url: '/api/back/getOfficList',
         headers: {
           'Content-type': 'application/json;charset=UTF-8'
+        },
+        data: {
+          companyId: this.adComId
         }
       }).then((res) => {
         this.offloading = false
@@ -161,7 +164,11 @@ export default {
     },
     handleOffic: function(index, row) {
       this.dialogVisible = true
+      row.welfareArr = row.welfareArr.split(',')
+      row.offResponsibilities = row.offResponsibilities.split(',')
+      row.offRequirements = row.offRequirements.split(',')
       this.dialogItem = row
+      row.welfareArr = row.welfareArr.split(',')
     },
     handleOfficPerson: function(index, row) {
       window.sessionStorage.setItem('adOffic', row.officeId)

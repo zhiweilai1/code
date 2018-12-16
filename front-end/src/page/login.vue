@@ -78,7 +78,7 @@ export default {
       if (this.telphone && this.yanNum) {
         this.axios({
           method: 'post',
-          url: '/api/getVerificationCode',
+          url: '/api/postLoginSubmit',
           headers: {
             'Content-type': 'application/json;charset=UTF-8'
           },

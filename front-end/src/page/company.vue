@@ -127,7 +127,7 @@ export default {
   },
   methods: {
     jumpToOff: function(offic) {
-      window.sessionStorage.setItem('office', offic.id)
+      window.sessionStorage.setItem('office', offic.officeId)
       this.$router.push({
         path: '/office'
       })

@@ -58,10 +58,12 @@ export default {
       domains: [{
         contractPerson: '',
         contractPhone: '',
-        contractEmail: ''
+        contractEmail: '',
+        id: ''
       }],
       officType: [{
-        typeName: ''
+        typeName: '',
+        id: ''
       }]
     }
     
@@ -131,16 +133,42 @@ export default {
     },
 
     removeDomain(item) {
-      var index = this.domains.indexOf(item)
-      if (index !== -1) {
-        this.domains.splice(index, 1)
+
+      if (item.id) {
+        this.axios({
+          method: 'post',
+          url: '/api/back/delContact',
+          headers: {
+            'Content-type': 'application/json;charset=UTF-8'
+          },
+          data: {
+            id: item.id
+          }
+        }).then((res) => {
+          this.offloading = false
+          if (res.data.code == 200) {
+            this.getContact()
+          } else {
+            this.$message.error('请求失败，请重试')
+          }
+        }).catch(() => {
+          this.offloading = false
+          this.$message.error('请求失败，请重试')
+        })
+      } else {
+        var index = this.domains.indexOf(item)
+        if (index !== -1) {
+          this.domains.splice(index, 1)
+        }
       }
+      
     },
     addDomain() {
       this.domains.push({
         contractPerson: '',
         contractPhone: '',
-        contractEmail: ''
+        contractEmail: '',
+        id: ''
       });
     },
     submitOfficForm(domain) {
@@ -165,14 +193,39 @@ export default {
     },
 
     removeOffic(item) {
-      var index = this.officType.indexOf(item)
-      if (index !== -1) {
-        this.officType.splice(index, 1)
+      if (item.id) {
+        this.axios({
+          method: 'post',
+          url: '/api/back/delOfficType',
+          headers: {
+            'Content-type': 'application/json;charset=UTF-8'
+          },
+          data: {
+            id: item.id
+          }
+        }).then((res) => {
+          this.offloading = false
+          if (res.data.code == 200) {
+            this.getOfficType()
+          } else {
+            this.$message.error('请求失败，请重试')
+          }
+        }).catch(() => {
+          this.offloading = false
+          this.$message.error('请求失败，请重试')
+        })
+      } else {
+        var index = this.officType.indexOf(item)
+        if (index !== -1) {
+          this.officType.splice(index, 1)
+        }
       }
+      
     },
     addOffic() {
       this.officType.push({
-        typeName: ''
+        typeName: '',
+        id: ''
       });
     }
   }

@@ -8,14 +8,14 @@
       
       <div class="login-yan">
         <div class="login-yan-left">
-          <input type="number" v-model="telphone" placeholder="请输入手机号">
+          <input  v-model="telphone" placeholder="请输入手机号" class="number-input">
         </div>
         <div class="login-yan-right">
           <mt-button size="small" type="primary" :disabled="isPort" @click="getPort()">{{huoContent}}</mt-button>
         </div>
       </div>
       <div class="login-tel">
-        <input type="number" v-model="yanNum" placeholder="请输入验证码">
+        <input  v-model="yanNum" placeholder="请输入验证码" class="number-input">
       </div>
     </div>
     <mt-button type="primary" class="login-button" @click="login()">登录</mt-button>
@@ -40,7 +40,7 @@ export default {
         MessageBox('提示', '您还未输入手机号')
         return false
       } else {
-        if(!(/^1[34578]\d{9}$/.test(this.telphone))){ 
+        if(!(/^1[345789]\d{9}$/.test(this.telphone))){ 
           MessageBox('提示', '手机号码有误，请重填');  
           return false;
         } else {

@@ -16,7 +16,7 @@
           </div>
         </div>
       </div>
-      <div v-if="userMsg.id == '0'">
+      <div v-if="userMsg.isIdentity == '0'">
         <mt-cell title="个人资料" is-link :to="{path:'/personal-information'}">
           <img slot="icon" src="../../static/ge-zi-icon.png" width="24" height="24" style="margin-right: 10px;">
         </mt-cell>

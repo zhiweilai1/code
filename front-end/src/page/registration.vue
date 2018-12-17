@@ -14,24 +14,24 @@
         <div class="login-content">
           <div class="login-yan">
             <div class="login-yan-left">
-              <input type="number" v-model="stutelphone" placeholder="请输入手机号">
+              <input v-model="stutelphone" placeholder="请输入手机号" class="number-input">
             </div>
             <div class="login-yan-right">
               <mt-button size="small" type="primary" :disabled="isPortStu" @click="getPortStu()">{{stuhuoContent}}</mt-button>
             </div>
           </div>
           <div class="login-tel">
-            <input type="number" v-model="stuyanNum" placeholder="请输入验证码">
+            <input v-model="stuyanNum" placeholder="请输入验证码" class="number-input">
           </div>
         </div>
         <div class="login-tel">
-          <input type="text" placeholder="请选择学校" v-model="region" maxlength="80" readonly="readonly" @click="showAddressPicker" />
+          <input class="number-input" type="text" placeholder="请选择学校" v-model="region" maxlength="80" readonly="readonly" @click="showAddressPicker" />
           <mt-popup v-model="regionVisible" position="bottom" class="region-popup">
             <mt-picker :slots="myAddressSlots" valueKey="name" :visibleItemCount="5" @change="addressChange" :itemHeight="40"></mt-picker>
           </mt-popup>
         </div>
         <div class="login-tel">
-          <input type="number" v-model="guantea" placeholder="关联老师手机号（选填）">
+          <input  v-model="guantea" placeholder="关联老师手机号（选填）" class="number-input">
         </div>
       </div>
       <div class="reg-content" v-else>
@@ -39,14 +39,14 @@
         <div class="login-content">
           <div class="login-yan">
             <div class="login-yan-left">
-              <input type="number" v-model="teatelphone" placeholder="请输入手机号">
+              <input  v-model="teatelphone" placeholder="请输入手机号" class="number-input">
             </div>
             <div class="login-yan-right">
               <mt-button size="small" type="primary" :disabled="isPortTea" @click="getPortTea()">{{teahuoContent}}</mt-button>
             </div>
           </div>
           <div class="login-tel">
-            <input type="number" v-model="teayanNum" placeholder="请输入验证码">
+            <input  v-model="teayanNum" placeholder="请输入验证码" class="number-input">
           </div>
         </div>
       </div>
@@ -150,8 +150,8 @@ export default {
         MessageBox('提示', '您还未输入手机号')
         return false
       } else {
-        if(!(/^1[34578]\d{9}$/.test(this.teatelphone))){ 
-          MessageBox('提示', '手机号码有误，请重填') 
+        if(!(/^1[345789]\d{9}$/.test(this.teatelphone))){ 
+          MessageBox('提示', '手机号码格式有误，请重填') 
           return false;
         } else {
           this.isPortTea = true
@@ -216,9 +216,9 @@ export default {
     },
     registration: function() {
       let params = {}
-      if (this.egShen == 0) {
+      if (this.regShen == '0') {
         params = {
-          Identity: 0,
+          isIdentity: 0,
           telPhone: this.stutelphone,
           smsCode: this.stuyanNum,
           userSchool: this.region,
@@ -226,7 +226,7 @@ export default {
         }
       } else {
         params = {
-          Identity: 1,
+          isIdentity: 1,
           telPhone: this.teatelphone,
           smsCode: this.teayanNum
         }
@@ -248,10 +248,10 @@ export default {
             })
           })
         } else {
-          MessageBox('提示', '注册失败，请重试')
+          MessageBox('提示', res.data.msg)
         }
       }).catch((err) => {
-        MessageBox('提示', '注册失败，请重试')
+        MessageBox('提示', res.data.msg)
       })
     }
   }

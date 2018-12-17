@@ -36,13 +36,12 @@ export default {
         console.log(file, fileList);
         this.axios({
           method: 'post',
-          url: '/api/deleteBannerImg',
+          url: '/api/back/delBanner',
           headers: {
             'Content-type': 'application/json;charset=UTF-8'
           },
           data: {
-            img: file.url,
-            url: file.name
+            id: file.id
           }
         }).then((res) => {
           if (res.data.code == 200) {
@@ -75,7 +74,7 @@ export default {
             'Content-type': 'application/json;charset=UTF-8'
           },
           data: {
-            baseString: base,
+            baseString: base.split('base64,')[1],
             fileName: this.fileName
           }
         }).then((res) => {
@@ -120,7 +119,8 @@ export default {
             for (let i = 0; i < res.data.data.length; i++) {
               arr.push({
                 name: res.data.data[i].bannerUrl,
-                url: res.data.data[i].bannerImage
+                url: res.data.data[i].bannerImage,
+                id: res.data.data[i].id
               })
             }
             this.fileList = arr

@@ -10,7 +10,7 @@
             </mt-radio>
             <mt-field label="年龄" placeholder="请输入年龄" type="number" v-model="userAge"></mt-field>
             <mt-field label="手机号" placeholder="请输入手机号" type="tel" v-model="userPhone"></mt-field>
-            <mt-field label="邮箱" placeholder="请输入手机号" type="email" v-model="userEmail"></mt-field>
+            <mt-field label="邮箱" placeholder="请输入邮箱" type="email" v-model="userEmail"></mt-field>
             <mt-radio
                 title="求职状态"
                 v-model="userStatus"
@@ -44,14 +44,12 @@ export default {
         let baseMsg = window.sessionStorage.getItem('modify') && JSON.parse(window.sessionStorage.getItem('modify')) || undefined
         let self = this
         if (baseMsg) {
-          self.userId = baseMsg.userId
           self.userName = baseMsg.userName
           self.userAge = baseMsg.userAge
           self.userSex = baseMsg.userSex
           self.userStatus = baseMsg.userStatus
           self.userPhone = baseMsg.userPhone
           self.userEmail = baseMsg.userEmail
-          window.sessionStorage.removeItem('modify')
         }
     },
     methods: {
@@ -63,7 +61,7 @@ export default {
               'Content-type': 'application/json;charset=UTF-8'
             },
             data: {
-              userId: this.userId,
+              userId: JSON.parse(window.sessionStorage.getItem('userMsg')).id,
               userName: this.userName,
               userAge: this.userAge,
               userSex: this.userSex,

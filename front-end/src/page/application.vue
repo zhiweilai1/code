@@ -21,7 +21,10 @@
                     <div style="margin-bottom: 10px;" @click="jumpToJob(item.officeId)">
                         <mt-badge size="small" type="primary" >职位详情</mt-badge>
                     </div>
-                    <div style="margin-bottom: 10px;" @click="evaluation(item.officeId)">
+                    <div v-if="item.userDes" class="litle-title" style="margin-bottom: 10px; text-align: left; ">
+                      {{item.userDes}}
+                    </div>
+                    <div v-else style="margin-bottom: 10px;" @click="evaluation(item.officeId)">
                         <mt-badge size="small" type="success"  color="#f38031">面试评价</mt-badge>
                     </div>
                 </div>
@@ -44,20 +47,11 @@ export default {
         }
     },
     created() {
-        this.userId = window.sessionStorage.getItem('userMsg') && JSON.parse(window.sessionStorage.getItem('userMsg').id) || ''
+        this.userId = window.sessionStorage.getItem('userMsg') && JSON.parse(window.sessionStorage.getItem('userMsg')).id || ''
         if (this.userId) {
-          this.axios({
-            method: 'post',
-            url: '/api/getApplicationList',
-            headers: {
-              'Content-type': 'application/json;charset=UTF-8'
-            },
-            data: {
-              userId: this.userId,
-            }
-          }).then((res) => {
-            this.dataList = res.data.data
-          })
+          this.getList()
+          
+          
         } else {
           this.$router.push({
             path: '/login'
@@ -70,6 +64,20 @@ export default {
             this.$router.push({
                 path: '/office'
             })
+        },
+        getList: function () {
+          this.axios({
+            method: 'post',
+            url: '/api/getApplicationList',
+            headers: {
+              'Content-type': 'application/json;charset=UTF-8'
+            },
+            data: {
+              userId: this.userId,
+            }
+          }).then((res) => {
+            this.dataList = res.data.data
+          })
         },
         evaluation: function(index) {
             MessageBox.prompt('请输入面试评价').then(({ value, action }) => {
@@ -87,6 +95,7 @@ export default {
                     }
                   }).then((res) => {
                     if (res.data.code == '200' || res.data.code == 200) {
+                      this.getList()
                       MessageBox('提示', '评价成功')
                     } else {
                       MessageBox('提示', '评价成功')
@@ -125,7 +134,8 @@ export default {
 }
 .jot-applicat-card-right {
     float: right;
-    height: 30%;
+    width: 30%;
+    text-align: right;
 }
 .job-title {
     margin-bottom: 10px;

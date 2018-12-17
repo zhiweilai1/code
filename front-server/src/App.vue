@@ -54,7 +54,7 @@ export default {
         this.$router.push({
           path: '/login'
         })
-      } else if (userName.isIdentity == '1') {
+      } else if (userName.userType == 'company') {
           this.layMenu = [{
             name: '信息管理',
             icon: 'el-icon-menu',

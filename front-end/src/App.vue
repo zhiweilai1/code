@@ -37,4 +37,10 @@ body {
   font-size: 14px;
   color: #999;
 }
+
+.number-input {
+  border: none;
+  box-sizing: border-box;
+  -webkit-appearance: none;
+}
 </style>

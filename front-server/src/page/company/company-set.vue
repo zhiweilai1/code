@@ -25,7 +25,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="公司福利">
-          <el-input v-model="form.companyPlace" placeholder="多种福利使用“，”隔开"></el-input>
+          <el-input v-model="form.welfareArr" placeholder="多种福利使用“，”隔开"></el-input>
         </el-form-item>
         <el-form-item label="宣传链接">
           <el-input v-model="form.companyUrl" placeholder="可选填如：http://www.baidu.com"></el-input>
@@ -58,7 +58,8 @@ export default {
         companyPlace: '',
         companyUrl: '',
         companyPlace: '',
-        companyIntru: ''
+        companyIntru: '',
+        welfareArr: ''
       }
     }
   },

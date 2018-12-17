@@ -57,6 +57,8 @@
         <template slot-scope="scope">
           <el-switch
             v-model="scope.row.isHot"
+            :on-value="1"
+            :off-value="0"
             active-color="#13ce66"
             inactive-color="#ff4949"
           >
@@ -71,7 +73,6 @@
         </template>
       </el-table-column>
       <el-table-column
-        prop="isShow"
         label="允许查看联系方式">
         <template slot-scope="scope">
           <el-switch
@@ -359,6 +360,10 @@ export default {
       }).then((res) => {
         this.comLoad = false
         if (res.data.code == 200) {
+          for (let i = 0; i < res.data.data.length; i++) {
+            res.data.data[i].isHot = res.data.data[i].isHot == '1' ? true : false
+            res.data.data[i].isRead = res.data.data[i].isHot == '1' ? true : false
+          }
           this.tableList = res.data.data
         } else {
           this.$message.error('请求失败，请重试')
@@ -377,7 +382,7 @@ export default {
         },
         data: {
           companyId: row.companyId,
-          isHot: row.isHot,
+          isHot: row.isHot ? '1' : '0',
           companyUrl: row.companyUrl
         }
       }).then((res) => {
@@ -447,7 +452,7 @@ export default {
           'Content-type': 'application/json;charset=UTF-8'
         },
         data: {
-          isRead: e,
+          isRead: e ? '1' : '0',
           companyId: row.companyId
         }
       }).then((res) => {

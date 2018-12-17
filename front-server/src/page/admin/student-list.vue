@@ -189,7 +189,7 @@ export default {
             'Content-type': 'application/json;charset=UTF-8'
           },
           data: {
-            userId: row.userId,
+            userId: row.id,
           }
         }).then((res) => {
           this.resumeloading = false

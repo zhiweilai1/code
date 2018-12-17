@@ -43,8 +43,7 @@ export default {
     },
     created() {
 
-      this.userId = window.sessionStorage.getItem('userMsg') && JSON.parse(window.sessionStorage.getItem('userMsg').id) || '3'
-
+      this.userId = window.sessionStorage.getItem('userMsg') && JSON.parse(window.sessionStorage.getItem('userMsg')).id || '3'
       this.axios({
         method: 'post',
         url: '/api/getHistoryList',

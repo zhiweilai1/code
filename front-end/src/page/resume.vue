@@ -175,7 +175,7 @@ export default {
             userId: userMsg.id
           }
         }).then((res) => {
-          if (res.data.code == 200 || res.data.code == '200') {
+          if (res.data.code == 200 && res.data.data.baseMsg) {
             this.data = res.data.data
           } else {
             MessageBox({

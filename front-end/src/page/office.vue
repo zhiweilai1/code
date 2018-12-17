@@ -59,7 +59,7 @@
         </div>
       </div>
     </div>
-    <div class="offic-push" @click="pushOffic()">
+    <div v-if="isStu" class="offic-push" @click="pushOffic()">
       <div class="off-icon off-box">
         <img src="../../static/off-icon.png" alt="">
       </div>
@@ -77,10 +77,15 @@ export default {
   name: 'Office',
   data() {
     return {
-      data: {}
+      data: {},
+      isStu: false
     }
   },
   created() {
+    console.log(JSON.parse(window.sessionStorage.getItem('userMsg')))
+    if (window.sessionStorage.getItem('userMsg') && JSON.parse(window.sessionStorage.getItem('userMsg')).isIdentity == '0') {
+      this.isStu = true
+    }
     // 需要加一个判断来显示立即投递
     let self = this
     let params = {
@@ -95,9 +100,9 @@ export default {
       data: params
     }).then((res) => {
       let data = res.data.data
-      data.company.welfareArr = data.company.welfareArr.split(',')
-      data.officeDeatil.offResponsibilities = data.officeDeatil.offResponsibilities.split(',')
-      data.officeDeatil.offRequirements = data.officeDeatil.offRequirements.split(',')
+      data.company.welfareArr = data.company.welfareArr && data.company.welfareArr.split(',') || []
+      data.officeDeatil.offResponsibilities = data.officeDeatil.offResponsibilities.split(';')
+      data.officeDeatil.offRequirements = data.officeDeatil.offRequirements.split(';')
       self.data = data
     })
     this.postHistory()
@@ -126,56 +131,30 @@ export default {
       })
     },
     pushOffic: function () {
-      if (window.sessionStorage.getItem('userMsg')) {
-        if (JSON.parse(window.sessionStorage.getItem('userMsg')).id == '1' ) {
+
+      this.axios({
+        method: 'post',
+        url: '/api/submit/resume',
+        headers: {
+          'Content-type': 'application/json;charset=UTF-8'
+        },
+        data: {
+          officeId: window.sessionStorage.getItem('office'),
+          userId: JSON.parse(window.sessionStorage.getItem('userMsg')).id
+        }
+      }).then((res) => {
+        if (res.data.code == 200 || res.data.code == '200') {
           MessageBox({
             title: '小提示',
-            message: '抱歉,您是老师，暂不能提交简历',
-          }).then(() => {
-            this.$router.push({
-              path: '/login'
-            })
+            message: '您已投递成功',
           })
         } else {
-          this.axios({
-            method: 'post',
-            url: '/api/getOfficContent',
-            headers: {
-              'Content-type': 'application/json;charset=UTF-8'
-            },
-            data: {
-              officeId: this.dat.officeDeatil.id,
-              userId: window.sessionStorage.getItem('userMsg').id
-            }
-          }).then((res) => {
-            if (res.data.code == 200 || res.data.code == '200') {
-              MessageBox({
-                title: '小提示',
-                message: '您已投递成功',
-              })
-            } else {
-              MessageBox({
-                title: '小提示',
-                message: '您的简历未完善，点击确定去完善简历',
-              }).then(() => {
-                this.$router.push({
-                  path: '/resume'
-                })
-              })
-            }
+          MessageBox({
+            title: '小提示',
+            message: res.data.msg,
           })
         }
-      } else {
-        MessageBox({
-          title: '小提示',
-          message: '抱歉,您还未登陆,点击确定去登陆',
-        }).then(() => {
-          this.$router.push({
-            path: '/login'
-          })
-        });
-      }
-      
+      })
     }
   }
 }

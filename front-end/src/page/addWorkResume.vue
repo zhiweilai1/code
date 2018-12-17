@@ -118,7 +118,7 @@ export default {
               id: this.id,
               userId: this.userId,
               companyName: this.companyName,
-              duties: this.userDuties,
+              userDuties: this.userDuties,
               userPosition: this.userPosition,
               beginTime: this.workBeginTime,
               endTime: this.workEndTime

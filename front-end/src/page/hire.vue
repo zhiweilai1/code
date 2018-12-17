@@ -184,7 +184,6 @@ export default {
   position: relative;
   background-color: #fff;
   margin-bottom: 10px;
-  box-shadow: 5px 5px 10px rgba(215, 215, 215, 1);
 
 }
 .hire-type-content {

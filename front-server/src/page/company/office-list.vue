@@ -22,7 +22,7 @@
         prop="place"
         label="职位类型">
         <template slot-scope="scope">
-          {{scope.row.isshi ? '实习' : '全职'}}
+          {{scope.row.isExer == '0' ? '实习' : '全职'}}
         </template>
       </el-table-column>
       <el-table-column
@@ -61,7 +61,7 @@
           <div class="company-off-card-title-right">{{dialogItem.money}}</div>
         </div>
         <div class="company-off-card-place">
-          {{dialogItem.isshi ? '实习' : '全职'}}&nbsp;|&nbsp;{{dialogItem.place}}&nbsp;|&nbsp;{{dialogItem.experience}}&nbsp;|&nbsp;{{dialogItem.education}}
+          {{dialogItem.isExer == '0' ? '实习' : '全职'}}&nbsp;|&nbsp;{{dialogItem.offPlace}}&nbsp;|&nbsp;{{dialogItem.offExperience}}&nbsp;|&nbsp;{{dialogItem.offEducation}}
         </div>
         <div>
           <div style="display: inline-block; color: #888">职位福利:</div>
@@ -81,7 +81,7 @@
               {{dialogItem.companyName}}
             </div>
             <div class="ellipsis-1 litle-title">
-              {{dialogItem.companydet}}&nbsp;|&nbsp;{{dialogItem.companyType}}&nbsp;|&nbsp;{{dialogItem.companyPer}}
+              {{dialogItem.companyDet}}&nbsp;|&nbsp;{{dialogItem.companyType}}&nbsp;|&nbsp;{{dialogItem.companyPer}}
             </div>
           </div>
           
@@ -153,10 +153,10 @@
             <el-input v-model="addForm.offPlace"></el-input>
           </el-form-item>
           <el-form-item label="岗位职责">
-            <el-input type="textarea" v-model="addForm.offResponsibilities" placeholder="多条内容请以“，”分隔"></el-input>
+            <el-input type="textarea" v-model="addForm.offResponsibilities" placeholder="多条内容请以英文类型的;分隔"></el-input>
           </el-form-item>
           <el-form-item label="任职要求">
-            <el-input type="textarea" v-model="addForm.offRequirements" placeholder="多条内容请以“，”分隔"></el-input>
+            <el-input type="textarea" v-model="addForm.offRequirements" placeholder="多条内容请以英文类型的;分隔"></el-input>
           </el-form-item>
         </el-form>
       </div>

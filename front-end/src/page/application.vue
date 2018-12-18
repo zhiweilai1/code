@@ -47,7 +47,7 @@ export default {
         }
     },
     created() {
-        this.userId = window.sessionStorage.getItem('userMsg') && JSON.parse(window.sessionStorage.getItem('userMsg')).id || ''
+        this.userId = window.localStorage.getItem('userMsg') && JSON.parse(window.localStorage.getItem('userMsg')).id || ''
         if (this.userId) {
           this.getList()
           

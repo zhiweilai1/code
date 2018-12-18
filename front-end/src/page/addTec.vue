@@ -93,7 +93,7 @@ export default {
     },
     created() {
       let tecMsg = window.sessionStorage.getItem('tecIndex') && JSON.parse(window.sessionStorage.getItem('tecIndex')) || undefined
-      this.userId = window.sessionStorage.getItem('userMsg') && JSON.parse(window.sessionStorage.getItem('userMsg')).id || ''
+      this.userId = window.localStorage.getItem('userMsg') && JSON.parse(window.localStorage.getItem('userMsg')).id || ''
       if (tecMsg) {
         this.id = tecMsg.id
         this.userId = tecMsg.userId
@@ -101,7 +101,7 @@ export default {
         this.schoolLevel = tecMsg.schoolLevel
         this.userProfession = tecMsg.userProfession
         this.schoolDes = tecMsg.schoolDes
-        this.schoolTime = tecMsg.beginTime + '-' + tecMsg.endTime
+        this.schoolTime = tecMsg.beginTime + ' -' + tecMsg.endTime
         window.sessionStorage.removeItem('tecIndex')
       }
     },
@@ -124,8 +124,8 @@ export default {
               schoolLevel: this.schoolLevel,
               userProfession: this.userProfession,
               schoolDes: this.schoolDes,
-              beginTime: this.schoolTime.split('-')[0],
-              endTime: this.schoolTime.split('-')[1]
+              beginTime: this.schoolTime.split(' - ')[0],
+              endTime: this.schoolTime.split(' - ')[1]
             }
           }).then((res) => {
             if (res.data.code == '200' || res.data.code == 200) {
@@ -157,7 +157,7 @@ export default {
         },
         timeChange: function(picker, values) {
             if (this.timeInit){
-                this.schoolTime = values[0] + '-' + values[1]
+                this.schoolTime = values[0] + '-6 - ' + values[1] + '-9'
                 picker.setSlotValues(1, this.getCityArr(values[0]));
             }else {
                 this.timeInit = true;
@@ -207,6 +207,9 @@ export default {
 </style>
 
 <style>
+.addTec {
+  padding-top: 20px;
+}
 .region-popup{
     width: 100%;
   }

@@ -67,7 +67,7 @@ export default {
     },
     created() {
       let projectMsg = window.sessionStorage.getItem('projectIndex') && JSON.parse(window.sessionStorage.getItem('projectIndex')) || undefined
-      this.userId = window.sessionStorage.getItem('userMsg') && JSON.parse(window.sessionStorage.getItem('userMsg')).id || ''
+      this.userId = window.localStorage.getItem('userMsg') && JSON.parse(window.localStorage.getItem('userMsg')).id || ''
       if (projectMsg) {
         this.id = projectMsg.id
         this.userId = projectMsg.userId

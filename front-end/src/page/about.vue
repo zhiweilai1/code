@@ -2,10 +2,13 @@
   <div class="about">
     <div v-title>关于我们</div>
     <div class="about-title">
-      <img src="../../static/about-icon.png" alt="">
+      <img src="../../static/logo.jpg" alt="">
+    </div>
+    <div class="gongzhonghao-title">
+      职位来
     </div>
     <div class="about-detail">
-      {{data}}
+      <span class="title-you">"职位来"</span>期望打破招聘与求职的信息壁垒 ,专注于各院校学生,致力于为他们提供多层次的实践、实习和就业机会,目前主要面向各大企业招聘蓝领、白领、互联网、物联网、智能制造、云计算等方向。针对企业,我们将院校合作作为切入口,提供各种灵活服务,快速实现企业需求无缝对接，为各院校学生提供一站式服务。我们用使命来为每个信任我们的学生提供帮助,为每个信赖我们的企业做好服务。
     </div>
   </div>
 </template>
@@ -32,7 +35,15 @@ export default {
 }
 </script>
 <style scoped>
+.about {
+  width: 100vw;
+  height: 100vh;
+  background-image: url('../../static/bei2.jpg');
+  background-repeat: no-repeat;
+  background-size: 100%;
+}
 .about-title {
+  box-sizing: border-box;
   width: 100%;
   text-align: center;
   padding-top: 100px;
@@ -40,13 +51,23 @@ export default {
 }
 .about-title img {
   width: 30%;
+  border-radius: 50%
 }
 
 .about-detail {
-  padding: 10px;
+  padding: 20px;
   text-indent: 2em;
-  line-height: 1.5;
+  line-height: 1.8;
   text-align: justify;
+}
+.gongzhonghao-title {
+  text-align: center;
+  font-size: 2em;
+  color: #409EFF
+}
+.title-you {
+  font-size: 1.2em;
+  color: #409EFF
 }
 </style>
 

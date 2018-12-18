@@ -50,6 +50,9 @@
           <img slot="icon" src="../../static/lian-icon.png" width="24" height="24" style="margin-right: 10px;">
         </mt-cell>
       </div>
+      <div class="login-out">
+        <mt-button type="danger" class="login-out-button" @click="loginOut()">退出</mt-button>
+      </div>
       
     </div>
     <div v-else>
@@ -94,10 +97,10 @@ export default {
   },
   components: {tabbar},
   created() {
-    if (window.sessionStorage.getItem('userMsg')) {
+    if (window.localStorage.getItem('userMsg')) {
       this.isLogin = true
       
-      let userMsg = JSON.parse(window.sessionStorage.getItem('userMsg'))
+      let userMsg = JSON.parse(window.localStorage.getItem('userMsg'))
 
       this.axios({
         method: 'post',
@@ -132,6 +135,12 @@ export default {
           path: '/lian'
         })
       }
+    },
+    loginOut: function () {
+      window.localStorage.removeItem('userMsg')
+      this.$router.push({
+        path: '/login'
+      })
     }
   }
 }
@@ -185,6 +194,18 @@ export default {
 }
 .login-card-right {
   padding-top: 15px;
+}
+.login-out {
+  margin-top: 20px;
+  padding-left: 10px;
+  padding-right: 10px;
+  width: 100%;
+  box-sizing: border-box;
+}
+</style>
+<style>
+.login-out-button {
+  width: 100%;
 }
 </style>
 

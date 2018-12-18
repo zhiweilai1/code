@@ -71,10 +71,10 @@ export default {
     }
   },
   created() {
-      if (window.sessionStorage.getItem('userMsg')) {
+      if (window.localStorage.getItem('userMsg')) {
       this.isLogin = true
       
-      let userMsg = JSON.parse(window.sessionStorage.getItem('userMsg'))
+      let userMsg = JSON.parse(window.localStorage.getItem('userMsg'))
 
       this.axios({
         method: 'post',

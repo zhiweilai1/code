@@ -82,8 +82,7 @@ export default {
     }
   },
   created() {
-    console.log(JSON.parse(window.sessionStorage.getItem('userMsg')))
-    if (window.sessionStorage.getItem('userMsg') && JSON.parse(window.sessionStorage.getItem('userMsg')).isIdentity == '0') {
+    if (window.localStorage.getItem('userMsg') && JSON.parse(window.localStorage.getItem('userMsg')).isIdentity == '0') {
       this.isStu = true
     }
     // 需要加一个判断来显示立即投递
@@ -100,7 +99,7 @@ export default {
       data: params
     }).then((res) => {
       let data = res.data.data
-      data.company.welfareArr = data.company.welfareArr && data.company.welfareArr.split(',') || []
+      data.company.welfareArr = data.company.welfareArr && data.company.welfareArr.split(';') || []
       data.officeDeatil.offResponsibilities = data.officeDeatil.offResponsibilities.split(';')
       data.officeDeatil.offRequirements = data.officeDeatil.offRequirements.split(';')
       self.data = data
@@ -109,7 +108,7 @@ export default {
   },
   methods: {
     postHistory: function() {
-      if (window.sessionStorage.getItem('userMsg')) {
+      if (window.localStorage.getItem('userMsg')) {
         this.axios({
           method: 'post',
           url: '/api/setHistory',
@@ -118,7 +117,7 @@ export default {
           },
           data: {
             officeId: window.sessionStorage.getItem('office'),
-            userId: JSON.parse(window.sessionStorage.getItem('userMsg')).id
+            userId: JSON.parse(window.localStorage.getItem('userMsg')).id
           }
         }).then((res) => {})
       }
@@ -140,7 +139,7 @@ export default {
         },
         data: {
           officeId: window.sessionStorage.getItem('office'),
-          userId: JSON.parse(window.sessionStorage.getItem('userMsg')).id
+          userId: JSON.parse(window.localStorage.getItem('userMsg')).id
         }
       }).then((res) => {
         if (res.data.code == 200 || res.data.code == '200') {

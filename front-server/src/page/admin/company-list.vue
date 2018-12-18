@@ -77,6 +77,8 @@
         <template slot-scope="scope">
           <el-switch
             v-model="scope.row.isRead"
+            :on-value="1"
+            :off-value="0"
             active-color="#13ce66"
             inactive-color="#ff4949"
             @change="isShowEditor($event, scope.row)">
@@ -362,8 +364,9 @@ export default {
         if (res.data.code == 200) {
           for (let i = 0; i < res.data.data.length; i++) {
             res.data.data[i].isHot = res.data.data[i].isHot == '1' ? true : false
-            res.data.data[i].isRead = res.data.data[i].isHot == '1' ? true : false
+            res.data.data[i].isRead = res.data.data[i].isRead == '1' ? true : false
           }
+          console.log(res.data.data)
           this.tableList = res.data.data
         } else {
           this.$message.error('请求失败，请重试')

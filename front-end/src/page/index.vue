@@ -3,7 +3,7 @@
     <div class="index-banner">
       <mt-swipe :auto="4000">
         
-        <mt-swipe-item v-for="item in bannerArr" :key="item">
+        <mt-swipe-item v-for="(item, index) in bannerArr" :key="index">
             <img :src="item.bannerImage" alt="" class="banner-img" @click="jumpToUrl(item.bannerUrl)">          
         </mt-swipe-item>
         
@@ -11,45 +11,33 @@
     </div>
     <div class="hot-company">
       <ul class="hot-company-ul">
-        <li @click="comMsg(comArr[0].companyUrl, comArr[0].companyId)">
+        <li v-for="(item, index) in comArr" :key="index" @click="comMsg(item.companyUrl, item.companyId)">
           <div class="hot-company-img">
-            <img :src="comArr[0].companyImg" alt="">
+            <img :src="item.companyImg" alt="">
           </div>
-          <div>
-            {{comArr[0].companyName}}
+          <div style="font-size: 12px">
+            {{item.companyName}}
           </div>
         </li>
-        <li @click="comMsg(comArr[1].companyUrl, comArr[1].companyId)">
-          <div class="hot-company-img">
-            <img :src="comArr[1].companyImg" alt="">
-          </div>
-          <div>
-            {{comArr[1].companyName}}
-          </div>
-        </li>
-        <li @click="comMsg(comArr[0].companyUrl, comArr[0].companyId)">
-          <div class="hot-company-img">
-            <img :src="comArr[0].companyImg" alt="">
-          </div>
-          <div>
-            {{comArr[0].companyName}}
-          </div>
-        </li>
-        <li @click="comMsg(comArr[0].companyUrl, comArr[0].companyId)">
-          <div class="hot-company-img">
-            <img :src="comArr[0].companyImg" alt="">
-          </div>
-          <div>
-            {{comArr[0].companyName}}
-          </div>
-        </li>
+        
       </ul>
     </div>
     <div class="index-company">
-      <div v-for="item in comArr" :key="item" class="com-card" @click="comMsg(item.companyUrl, item.companyId)">
-        <img :src="item.companyImg" alt="" class="com-card-img">
-        <div class="card-show-msg">
-          点我了解更多》》
+      <div class="hire-detail" v-for="(item, index) in officList" v-if="item.offic.offName" :key="index" @click="jumpToDetail(item.offic.officeId)">
+        <div class="hire-detail-left">
+          <img :src="item.company.companyImg" alt="">
+        </div>
+        <div class="hire-detail-right">
+          <div class="company-off-card-title">
+             <div class="company-off-card-title-left ellipsis-1">{{item.offic.offName}}</div>
+             <div class="company-off-card-title-right">{{item.offic.offMoney}}</div>
+          </div>
+          <div class="litle-title hire-company ellipsis-1">
+            {{item.company.companyName}}
+          </div>
+          <div class="litle-title ellipsis-1">
+            {{ item.offic.pushTime}}&nbsp;{{item.offic.offPlace}}&nbsp;{{item.company.companyType}}
+          </div>
         </div>
       </div>
     </div>
@@ -67,12 +55,14 @@ export default {
       return{
         bannerArr: [],
         comArr: [],
-        iconArr: ['../../static/home-check.png', '../../static/hire-normal.png', '../../static/personal-normal .png']
+        iconArr: ['../../static/home-check.png', '../../static/hire-normal.png', '../../static/personal-normal .png'],
+        officList: []
       }
   },
   components: {tabbar},
   created () {
     let self = this
+    
     service.post('/api/getBanner').then((res) => {
       this.bannerArr = res.data
     }).catch((e) => {
@@ -80,6 +70,7 @@ export default {
     })
     service.post('/api/hotPushCompany').then((res) => {
       this.comArr = res.data
+      this.getOfficList()
     }).catch((e) => {
       this.comArr = e.data //伪代码
     })
@@ -101,6 +92,40 @@ export default {
       if (url) {
         window.location.href = url
       }
+    },
+    getOfficList: function() {
+      for (let i = 0; i <  this.comArr.length; i++) {
+        this.axios({
+          method: 'post',
+          url: '/api/getCompany/detail',
+          headers: {
+            'Content-type': 'application/json;charset=UTF-8'
+          },
+          data: {
+            companyId: this.comArr[i].companyId
+          }
+        }).then((res) => {
+
+          let arr= []
+          if (res.data.data.officeList.length > 0) {
+            for (let j = 0; j < res.data.data.officeList.length; j++) {
+              arr.push({
+                company: res.data.data.company,
+                offic: res.data.data.officeList[i]
+              })
+            }
+            this.officList = arr
+            console.log(this.officList)
+          }
+          
+        })
+      }
+    },
+    jumpToDetail: function (oid) {
+      window.sessionStorage.setItem('office', oid)
+      this.$router.push({
+        path: '/office'
+      })
     }
   }
     
@@ -166,6 +191,55 @@ export default {
   padding-bottom: 10px;
 }
 .hot-company-img img {
-  width: 100%
+  width: 60%;
+  border: 1px solid rgb(0, 0, 255, 0.2);
+  border-radius: 5px;
+}
+.hire-detail {
+  overflow: hidden;
+  width: 100%;
+  padding: 10px;
+  background: #fff;
+  box-sizing: border-box;
+  margin-bottom: 5px;
+}
+.hire-detail-left {
+  float: left;
+  width: 60px;
+  height: 60px;
+  margin-right: 20px;
+}
+.hire-detail-left img {
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  border: 1px solid rgb(197, 196, 196);
+  box-shadow: 5px 5px 10px rgba(215, 215, 215, 1);
+}
+.company-off-card-title {
+  overflow: hidden;
+  padding-bottom: 5px;
+}
+.company-off-card-title-left {
+  float: left;
+  font-size: 16px;
+  max-width: 70%;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-weight: 500;
+}
+.company-off-card-title-right {
+  float: right;
+  max-width: 30%;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-align: right;
+  font-size: 17px;
+  color: #26a2ff
+}
+
+.hire-detail-right {
+  float: left;
+  width: calc(100% - 80px)
 }
 </style>

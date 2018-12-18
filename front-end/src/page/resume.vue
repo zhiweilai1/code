@@ -89,7 +89,7 @@
             <mt-button type="default" class="add-button" @click="jumpToAddWork()">添加工作经历</mt-button>
         </div>
         <!-- 项目经历 -->
-        <div class="resume-tec-msg">
+        <div class="resume-tec-msg" style="display: none">
             <div class="resume-title big-title">
                 项目经历
             </div>
@@ -150,8 +150,8 @@ export default {
     }
   },
   created() {
-    if (window.sessionStorage.getItem('userMsg')) {
-        let userMsg = JSON.parse(window.sessionStorage.getItem('userMsg'))
+    if (window.localStorage.getItem('userMsg')) {
+        let userMsg = JSON.parse(window.localStorage.getItem('userMsg'))
         this.axios({
           method: 'post',
           url: '/api/getUserMsg',

@@ -8,18 +8,18 @@
       
       <div class="login-yan">
         <div class="login-yan-left">
-          <input  v-model="telphone" placeholder="请输入手机号" class="number-input">
+          <input  v-model="telphone" placeholder="请输入手机号" class="number-input" @blur="outPoint()" @focus="focusPoint()">
         </div>
         <div class="login-yan-right">
           <mt-button size="small" type="primary" :disabled="isPort" @click="getPort()">{{huoContent}}</mt-button>
         </div>
       </div>
       <div class="login-tel">
-        <input  v-model="yanNum" placeholder="请输入验证码" class="number-input">
+        <input  v-model="yanNum" placeholder="请输入验证码" class="number-input" @blur="outPoint()" @focus="focusPoint()">
       </div>
     </div>
     <mt-button type="primary" class="login-button" @click="login()">登录</mt-button>
-    <span class="registration" @click="jumpTo()">注册</span>
+    <span class="registration" @click="jumpTo()" :style="{'display': isShow ? 'block':'none'}">注册</span>
   </div>
 </template>
 <script>
@@ -31,10 +31,19 @@ export default {
       isPort: false,
       huoContent: '获取验证码',
       yanNum:'',
-      telphone: ''
+      telphone: '',
+      isShow: true
     }
   },
   methods: {
+    outPoint: function() {
+    
+      this.isShow = true
+    },
+
+    focusPoint: function () {
+      this.isShow = false
+    },
     getPort: function() {
       if (!this.telphone) {
         MessageBox('提示', '您还未输入手机号')
@@ -88,7 +97,7 @@ export default {
           }
         }).then((res) => {
           if (res.data.code == 200 || res.data.code == '200') {
-            window.sessionStorage.setItem('userMsg', JSON.stringify(res.data.data))
+            window.localStorage.setItem('userMsg', JSON.stringify(res.data.data))
             this.$router.push({
               path: '/home'
             })

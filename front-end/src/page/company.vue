@@ -120,7 +120,7 @@ export default {
       self.companyPer = data.company.companyPer
       self.intruduce = data.company.companyIntru
       self.officPlace = data.company.companyPlace
-      self.welfareArr = data.company.welfareArr.split(',')
+      self.welfareArr = data.company.welfareArr.split(';')
       self.officeNum = data.officeList.length
       self.offList = data.officeList
     })
@@ -200,6 +200,8 @@ export default {
   border-top: 1px solid rgb(197, 196, 196);
   padding-top: 10px;
   text-indent: 2em;
+  text-align: justify;
+  line-height: 1.5em;
 }
 
 .company-welfare {

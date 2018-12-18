@@ -61,7 +61,7 @@ export default {
               'Content-type': 'application/json;charset=UTF-8'
             },
             data: {
-              userId: JSON.parse(window.sessionStorage.getItem('userMsg')).id,
+              userId: JSON.parse(window.localStorage.getItem('userMsg')).id,
               userName: this.userName,
               userAge: this.userAge,
               userSex: this.userSex,

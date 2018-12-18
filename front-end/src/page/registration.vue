@@ -116,7 +116,7 @@ export default {
         MessageBox('提示', '您还未输入手机号')
         return false
       } else {
-        if(!(/^1[34578]\d{9}$/.test(this.stutelphone))){ 
+        if(!(/^1[345789]\d{9}$/.test(this.stutelphone))){ 
           MessageBox('提示', '手机号码有误，请重填');  
           return false;
         } else {

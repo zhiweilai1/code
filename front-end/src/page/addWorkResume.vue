@@ -66,7 +66,7 @@ export default {
         }
     },
     created() {
-      this.userId = window.sessionStorage.getItem('userMsg') && JSON.parse(window.sessionStorage.getItem('userMsg')).id || ''
+      this.userId = window.localStorage.getItem('userMsg') && JSON.parse(window.localStorage.getItem('userMsg')).id || ''
       
       let workMsg = window.sessionStorage.getItem('workIndex') && JSON.parse(window.sessionStorage.getItem('workIndex')) || undefined
       
@@ -127,14 +127,14 @@ export default {
             if (res.data.code == '200' || res.data.code == 200) {
               MessageBox({
                 title: '提示',
-                message: '保存成功，是否添加项目经历？',
+                message: '保存成功，是否添加自我评价？',
                 showCancelButton: true
               }).then((action) => {
                 if (action == 'cancel') {
                   this.$router.back(-1)
                 } else {
                   this.$router.push({
-                    path: '/addProjectResume'
+                    path: '/addEvaluationResume'
                   }) 
                 }
               }) 

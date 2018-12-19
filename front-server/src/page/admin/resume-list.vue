@@ -1,5 +1,8 @@
 <template>
   <div class="OfficResume" v-loading="resumeloading">
+    <div>
+      <el-button type="default" size="mini" icon="el-icon-back" @click="() => {this.$router.back(-1)}">返回</el-button>
+    </div>
     <div class="company-form">
       <el-form :inline="true" :model="formInline" class="demo-form-inline">
         <el-form-item label="姓名">

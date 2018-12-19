@@ -37,7 +37,6 @@ export default {
   },
   methods: {
     outPoint: function() {
-    
       this.isShow = true
     },
 
@@ -57,7 +56,7 @@ export default {
           let num = 61
           let daojishi = setInterval(() => {
             num--
-            this.huoContent = num
+            this.huoContent = num + 's后重新获取'
             if (num < 0) {
               clearInterval(daojishi)
               this.isPort = false

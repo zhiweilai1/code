@@ -1,6 +1,9 @@
 <template>
     <div class="addEvaluationResume">
         <div v-title>自我评价</div>
+        <div style="padding: 5px; padding-left: 10px; font-size: 12px; color: #999">
+          添加自我评价给面试官第一印象~
+        </div>
         <mt-field label="自我评价" placeholder="填写自我评价" type="textarea" rows="10" v-model="evaluation"></mt-field>
         <div class="offic-push" @click="pushTecInfo()">
             <div class="off-box off-push">
@@ -41,14 +44,9 @@ export default {
             }
           }).then((res) => {
             if (res.data.code == '200' || res.data.code == 200) {
-              MessageBox({
-                title: '提示',
-                message: '保存成功',
-              }).then((action) => {
-                this.$router.push({
-                  path: '/person'
-                })
-              }) 
+              MessageBox.alert('保存成功').then(action => {
+                this.$router.back(-1)
+              })
             }
           })
         },

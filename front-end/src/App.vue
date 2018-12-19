@@ -43,4 +43,7 @@ body {
   box-sizing: border-box;
   -webkit-appearance: none;
 }
+.mint-msgbox-message {
+  color: #4a4c5b;
+}
 </style>

@@ -1,6 +1,9 @@
 <template>
     <div class="addWorkResume">
         <div v-title>项目经历</div>
+        <div style="padding: 5px; padding-left: 10px; font-size: 12px; color: #999">
+          项目可以是自己做过的任何项目哟~
+        </div>
         <div class="tec-msg-form">
             <mt-field label="项目" placeholder="请输入项目名称" v-model="projectName"></mt-field>
             <mt-field label="职位" placeholder="请输入职位名称" v-model="projectPosition"></mt-field>
@@ -124,19 +127,9 @@ export default {
             }
           }).then((res) => {
             if (res.data.code == '200' || res.data.code == 200) {
-              MessageBox({
-                title: '提示',
-                message: '保存成功，是否添加自我评价？',
-                showCancelButton: true
-              }).then((action) => {
-                if (action == 'cancel') {
-                  this.$router.back(-1)
-                } else {
-                  this.$router.push({
-                    path: '/addWorkResume'
-                  }) 
-                }
-              }) 
+              MessageBox.alert('保存成功').then(action => {
+                this.$router.back(-1)
+              })
             }
           })
         },

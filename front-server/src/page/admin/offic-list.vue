@@ -1,5 +1,8 @@
 <template>
   <div class="AdOfficList" v-loading="offloading">
+    <div>
+      <el-button type="default" size="mini" icon="el-icon-back" @click="() => {this.$router.back(-1)}">返回</el-button>
+    </div>
     <el-table
       :data="officListData"
       :height="height"

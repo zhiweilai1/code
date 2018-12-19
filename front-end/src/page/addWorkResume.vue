@@ -1,6 +1,9 @@
 <template>
     <div class="addWorkResume">
         <div v-title>工作经历</div>
+        <div style="padding: 5px; padding-left: 10px; font-size: 12px; color: #999">
+          完备的工作经历能为简历加分哦~
+        </div>
         <div class="tec-msg-form">
             <mt-field label="公司" placeholder="请输入公司名称" v-model="companyName"></mt-field>
             <mt-field label="职位" placeholder="请输入职位名称" v-model="userPosition"></mt-field>
@@ -125,20 +128,15 @@ export default {
             }
           }).then((res) => {
             if (res.data.code == '200' || res.data.code == 200) {
-              MessageBox({
-                title: '提示',
-                message: '保存成功，是否添加自我评价？',
-                showCancelButton: true
-              }).then((action) => {
-                if (action == 'cancel') {
-                  this.$router.back(-1)
-                } else {
-                  this.$router.push({
-                    path: '/addEvaluationResume'
-                  }) 
-                }
-              }) 
+              MessageBox.alert('保存成功').then(action => {
+                this.$router.back(-1)
+              })
+            } else {
+              MessageBox.alert(res.data.msg)
             }
+          }).catch((e) => {
+            MessageBox.alert(e.data.msg)
+
           })
         },
     }

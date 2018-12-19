@@ -3,7 +3,7 @@
     <div v-title>公司简介</div>
     <div class="banner-img-box">
       <img :src="backImg" alt class="company-back-img">
-      <img :src="imgUrl" alt class="banner-img">
+      <!-- <img :src="imgUrl" alt class="banner-img"> -->
       <div class="company-name">{{companyName}}</div>
     </div>
     <mt-navbar v-model="selected">
@@ -168,9 +168,14 @@ export default {
   position: absolute;
   text-align: center;
   width: 100%;
-  top: 150px;
+  bottom: 0px;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.6);
+  padding: 10px;
+  box-sizing: border-box;
   font-weight: 600;
   font-size: 18px;
+  color: #4a4c5b;
 }
 .company-card {
   background: #fff;

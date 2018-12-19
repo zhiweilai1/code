@@ -137,16 +137,17 @@
               <el-option label="一到三年" value="一到三年"></el-option>
               <el-option label="三到五年" value="三到五年"></el-option>
               <el-option label="五年以上" value="五年以上"></el-option>
+              <el-option label="不限" value="不限"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="学历">
             <el-select v-model="addForm.offEducation" placeholder="请选择学历">
-              <el-option label="初中" value="初中"></el-option>
-              <el-option label="高中" value="高中"></el-option>
-              <el-option label="大专" value="大专"></el-option>
-              <el-option label="本科" value="本科"></el-option>
-              <el-option label="硕士" value="硕士"></el-option>
-              <el-option label="博士" value="博士"></el-option>
+              <el-option label="初中及以上" value="初中及以上"></el-option>
+              <el-option label="高中及以上" value="高中及以上"></el-option>
+              <el-option label="大专及以上" value="大专及以上"></el-option>
+              <el-option label="本科及以上" value="本科及以上"></el-option>
+              <el-option label="硕士及以上" value="硕士及以上"></el-option>
+              <el-option label="博士及以上" value="博士及以上"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="职位地点">

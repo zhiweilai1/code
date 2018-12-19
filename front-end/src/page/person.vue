@@ -16,7 +16,7 @@
           </div>
         </div>
       </div>
-      <div v-if="userMsg.isIdentity == '0'">
+      <div v-if="isIdentity == '0'">
         <mt-cell title="个人资料" is-link :to="{path:'/personal-information'}">
           <img slot="icon" src="../../static/ge-zi-icon.png" width="24" height="24" style="margin-right: 10px;">
         </mt-cell>
@@ -93,6 +93,7 @@ export default {
       iconArr: ['../../static/home-normal.png', '../../static/hire-normal.png', '../../static/personal-check .png'],
       isLogin: false,
       userMsg: {},
+      isIdentity: ''
     }
   },
   components: {tabbar},
@@ -101,7 +102,7 @@ export default {
       this.isLogin = true
       
       let userMsg = JSON.parse(window.localStorage.getItem('userMsg'))
-
+      this.isIdentity = userMsg.isIdentity
       this.axios({
         method: 'post',
         url: '/api/getUserMsg',

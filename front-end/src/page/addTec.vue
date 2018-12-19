@@ -1,6 +1,9 @@
 <template>
     <div class="addTec">
         <div v-title>教育经历</div>
+        <div style="padding: 5px; padding-left: 10px; font-size: 12px; color: #999">
+          详细的教育经历能为简历加分哦~
+        </div>
         <div class="tec-msg-form">
             <mt-field label="学校" placeholder="请输入校名" v-model="userSchool"></mt-field>
             <div @click="showAddressPicker()">
@@ -129,20 +132,14 @@ export default {
             }
           }).then((res) => {
             if (res.data.code == '200' || res.data.code == 200) {
-              MessageBox({
-                title: '提示',
-                message: '保存成功，是否添加工作经历？',
-                showCancelButton: true
-              }).then((action) => {
-                if (action == 'cancel') {
-                  this.$router.back(-1)
-                } else {
-                  this.$router.push({
-                    path: '/addWorkResume'
-                  }) 
-                }
-              }) 
+              MessageBox.alert('保存成功').then(action => {
+                this.$router.back(-1)
+              })
+            } else {
+              MessageBox.alert(res.data.msg)
             }
+          }).catch((res) => {
+            MessageBox.alert(res.data.msg)
           })
         },
         addressChange(picker, values){
@@ -200,9 +197,6 @@ export default {
   position: absolute;
   top: 16px;
   left: calc(50% - 36px);
-}
-.tec-msg-form {
-    margin-bottom: 55px;
 }
 </style>
 

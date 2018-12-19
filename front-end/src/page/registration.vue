@@ -14,24 +14,24 @@
         <div class="login-content">
           <div class="login-yan">
             <div class="login-yan-left">
-              <input v-model="stutelphone" placeholder="请输入手机号" class="number-input">
+              <input v-model="stutelphone" placeholder="请输入手机号" class="number-input" @blur="outPoint()" @focus="focusPoint()">
             </div>
             <div class="login-yan-right">
               <mt-button size="small" type="primary" :disabled="isPortStu" @click="getPortStu()">{{stuhuoContent}}</mt-button>
             </div>
           </div>
           <div class="login-tel">
-            <input v-model="stuyanNum" placeholder="请输入验证码" class="number-input">
+            <input v-model="stuyanNum" placeholder="请输入验证码" class="number-input" @blur="outPoint()" @focus="focusPoint()">
           </div>
         </div>
         <div class="login-tel">
-          <input class="number-input" type="text" placeholder="请选择学校" v-model="region" maxlength="80" readonly="readonly" @click="showAddressPicker" />
+          <input class="number-input" type="text" placeholder="请选择学校" v-model="region" maxlength="80" readonly="readonly" @click="showAddressPicker" @blur="outPoint()" @focus="focusPoint()" />
           <mt-popup v-model="regionVisible" position="bottom" class="region-popup">
             <mt-picker :slots="myAddressSlots" valueKey="name" :visibleItemCount="5" @change="addressChange" :itemHeight="40"></mt-picker>
           </mt-popup>
         </div>
         <div class="login-tel">
-          <input  v-model="guantea" placeholder="关联老师手机号（选填）" class="number-input">
+          <input  v-model="guantea" placeholder="关联老师手机号（选填）" class="number-input" @blur="outPoint()" @focus="focusPoint()">
         </div>
       </div>
       <div class="reg-content" v-else>
@@ -53,6 +53,7 @@
       
     </div>
     <mt-button type="primary" class="registration-button" @click="registration()">注册</mt-button>
+    <span class="logon-jump" @click="jumpTo()" :style="{'display': isShow ? 'block':'none'}">登录</span>
   </div>
 </template>
 <script>
@@ -65,6 +66,7 @@ export default {
   name: 'Registration',
   data() {
     return {
+      isShow: true,
       regShen: 0,
       isPortStu: false,
       isPortTea: false,
@@ -76,7 +78,7 @@ export default {
       stuyanNum: '',
       teayanNum: '',
       popupVisible: '',
-      region: '',
+      region: '北京大学',
       regionVisible: false,
       myAddressSlots: [
           //省
@@ -105,6 +107,18 @@ export default {
     }
   },
   methods: {
+    jumpTo: function() {
+      this.$router.push({
+        path: '/login'
+      })
+    },
+    outPoint: function() {
+      this.isShow = true
+    },
+
+    focusPoint: function () {
+      this.isShow = false
+    },
     changeShen: function(regShen) {
       this.regShen = regShen
     },
@@ -124,7 +138,7 @@ export default {
           let num = 61
           let daojishi = setInterval(() => {
             num--
-            this.stuhuoContent = num
+            this.stuhuoContent = num + 's后重新获取'
             if (num < 0) {
               clearInterval(daojishi)
               this.isPortStu = false
@@ -158,7 +172,7 @@ export default {
           let num = 61
           let daojishi = setInterval(() => {
             num--
-            this.teahuoContent = num
+            this.teahuoContent = num + 's后重新获取'
             if (num < 0) {
               clearInterval(daojishi)
               this.isPortTea = false
@@ -358,7 +372,16 @@ export default {
   margin-left: 10%;
   margin-top: 50px;
 }
-
+.logon-jump {
+  width: 100px;
+  position: fixed;
+  display: inline-block;
+  bottom: 20px;
+  text-decoration: none;
+  color: #26a2ff;
+  text-align: center;
+  left: calc(50% - 50px);
+}
 </style>
 <style>
 .region-popup{

@@ -71,23 +71,13 @@ export default {
             }
           }).then((res) => {
             if (res.data.code == 200 || res.data.code == '200') {
-              MessageBox({
-                title: '提示',
-                message: '保存成功，是否添加教育经历？',
-                showCancelButton: true
-              }).then((action) => {
-                if (action == 'cancel') {
-                  this.$router.back(-1)
-                } else {
-                  this.$router.push({
-                    path: '/AddTec'
-                  }) 
-                }
-              }) 
+              MessageBox.alert('保存成功').then(action => {
+                this.$router.back(-1)
+              })
             } else {
               MessageBox({
                 title: '提示',
-                message: '提交失败',
+                message: res.data.msg,
                 showCancelButton: true
               })
             }

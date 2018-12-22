@@ -248,6 +248,7 @@ export default {
 
       if (!window.cookie || !window.cookie.ZWL_ID) {
         window.location.href = '/wechat/login?next=registration'
+        return
       }
 
       this.axios({

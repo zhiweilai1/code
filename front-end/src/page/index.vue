@@ -20,7 +20,7 @@
             @click="searchRecordShow"
             type="search"
             v-model="currentValue"
-            placeholder="搜索查询内容"
+            placeholder="搜索职位/公司"
             class="mint-searchbar-core">
           </div>
         </div>
@@ -103,7 +103,32 @@
       </mt-tab-container>
     </div>
     <div class="index-search-content" v-else>
-      
+      <div class="hire-detail" v-for="(item, index) in showList" :key="index" @click="jumpToDetail(item.officeId)">
+        <div class="bo-offic-box">
+          <div class="bo-offic-name ellipsis-1">
+            {{item.offName}}
+          </div>
+          <div class="bo-offic-money ellipsis-1">
+            {{item.offMoney}}
+          </div>
+        </div>
+        <div class="bo-offic-msg ellipsis-1">
+          {{item.offPlace}}&#x3000;{{item.offEducation}}&#x3000;{{item.offExperience}}
+        </div>
+        <div class="bo-company-box">
+          <div class="bo-company-img">
+            <img :src="item.company.companyImg" alt="">
+          </div>
+          <div class="bo-company-msg">
+            <div class="bo-company-name ellipsis-1">
+              {{item.company.companyName}}
+            </div>
+            <div class="bo-company-fu ellipsis-1">
+              {{item.company.companyDet}}&#x3000;{{item.company.companyPer}}&#x3000;{{item.company.companyType}}
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     
@@ -229,6 +254,12 @@ export default {
       if (url) {
         window.location.href = url
       }
+    },
+    jumpToDetail: function (oid) {
+      window.sessionStorage.setItem('office', oid)
+      this.$router.push({
+        path: '/office'
+      })
     },
     showHire: function () {
       this.loading = true

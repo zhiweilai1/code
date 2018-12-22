@@ -59,6 +59,8 @@ export default {
                         name: '硕士'
                     },{
                         name: '博士'
+                    },{
+                        name: '博士以上'
                     }],
                     className: 'slot1',
                     textAlign: 'center'

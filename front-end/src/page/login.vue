@@ -188,7 +188,7 @@ export default {
   display: inline-block;
   bottom: 20px;
   text-decoration: none;
-  color: #26a2ff;
+  color: #5dd5ca;
   text-align: center;
   left: calc(50% - 50px);
 }

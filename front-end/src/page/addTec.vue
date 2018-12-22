@@ -185,7 +185,7 @@ export default {
   bottom: 0;
   width: 100%;
   height: 55px;
-  background-color: #26a2ff;
+  background-color: #5dd5ca;
   text-align: center;
 }
 .off-box {

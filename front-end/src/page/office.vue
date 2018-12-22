@@ -189,7 +189,7 @@ export default {
   text-overflow: ellipsis;
   text-align: right;
   font-size: 18px;
-  color: #26a2ff
+  color: #fc6c38
 }
 
 .company-off-card-place {
@@ -212,7 +212,6 @@ export default {
   margin-right: 10px;
 }
 .company-img {
-  border: 1px solid #e7e8ed;
   border-radius: 10px;
 }
 .off-main-company-title {
@@ -244,7 +243,7 @@ export default {
   color: #333;
   font-size: 17px;
   margin-bottom: 5px;
-  border-left: 4px solid #26a2ff;
+  border-left: 4px solid #5dd5ca;
   padding-left: 12px;
   box-sizing: border-box;
 }
@@ -263,7 +262,7 @@ export default {
   bottom: 0;
   width: 100%;
   height: 55px;
-  background-color: #26a2ff;
+  background-color: #5dd5ca;
   text-align: center;
 }
 .off-box {

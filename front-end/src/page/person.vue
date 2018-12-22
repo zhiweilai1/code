@@ -90,7 +90,7 @@ export default {
   name: 'person',
   data () {
     return {
-      iconArr: ['../../static/home-normal.png', '../../static/hire-normal.png', '../../static/personal-check .png'],
+      iconArr: ['../../static/home-normal.png', '../../static/hire-normal.png', '../../static/personal-check.png'],
       isLogin: false,
       userMsg: {},
       isIdentity: ''
@@ -175,7 +175,7 @@ export default {
   box-sizing: border-box;
   width: 100%;
   height: 130px;
-  background-color: #26a2ff;
+  background-color: #5dd5ca;
   padding: 20px;
   overflow: hidden;
   margin-bottom: 50px;

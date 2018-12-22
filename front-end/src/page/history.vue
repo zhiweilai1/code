@@ -137,7 +137,7 @@ export default {
   text-overflow: ellipsis;
   text-align: right;
   font-size: 17px;
-  color: #26a2ff;
+  color: #5dd5ca;
   margin-right: 30px
 }
 

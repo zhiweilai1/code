@@ -26,6 +26,9 @@
         </div>
       </div>
     </div>
+    <div class="map-msg">
+      地址：平顶山市高新区育英路与复兴路交叉处双创孵化中心201室
+    </div>
     <div>
       <img src="../../static/map.jpg" alt="" style="width: 100%; border: 1px solid #999; box-sizing: border-box">
     </div>
@@ -103,6 +106,11 @@ export default {
 .lian-left img {
   width: 15px;
   margin-right: 5px;
+}
+.map-msg {
+  padding: 10px;
+  font-size: 12px;
+  color: #4a4c5b;
 }
 </style>
 

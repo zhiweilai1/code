@@ -54,34 +54,43 @@ export default {
     },
     methods: {
         pushbaseInfo: function() {
-          this.axios({
-            method: 'post',
-            url: '/api/makeUserInfo',
-            headers: {
-              'Content-type': 'application/json;charset=UTF-8'
-            },
-            data: {
-              userId: JSON.parse(window.localStorage.getItem('userMsg')).id,
-              userName: this.userName,
-              userAge: this.userAge,
-              userSex: this.userSex,
-              userStatus: this.userStatus,
-              userPhone: this.userPhone,
-              userEmail: this.userEmail
-            }
-          }).then((res) => {
-            if (res.data.code == 200 || res.data.code == '200') {
-              MessageBox.alert('保存成功').then(action => {
-                this.$router.back(-1)
+          if (this.userName) {
+            if (this.userName.length == 1) {
+              MessageBox.alert('姓名禁止输入一个字')
+            } else { 
+              this.axios({
+                method: 'post',
+                url: '/api/makeUserInfo',
+                headers: {
+                  'Content-type': 'application/json;charset=UTF-8'
+                },
+                data: {
+                  userId: JSON.parse(window.localStorage.getItem('userMsg')).id,
+                  userName: this.userName,
+                  userAge: this.userAge,
+                  userSex: this.userSex,
+                  userStatus: this.userStatus,
+                  userPhone: this.userPhone,
+                  userEmail: this.userEmail
+                }
+              }).then((res) => {
+                if (res.data.code == 200 || res.data.code == '200') {
+                  MessageBox.alert('保存成功').then(action => {
+                    this.$router.back(-1)
+                  })
+                } else {
+                  MessageBox({
+                    title: '提示',
+                    message: res.data.msg,
+                    showCancelButton: true
+                  })
+                }
               })
-            } else {
-              MessageBox({
-                title: '提示',
-                message: res.data.msg,
-                showCancelButton: true
-              })
             }
-          })
+          } else {
+            MessageBox.alert('您还未输入姓名')
+          }
+          
         }
     }
 }
@@ -96,7 +105,7 @@ export default {
   bottom: 0;
   width: 100%;
   height: 55px;
-  background-color: #26a2ff;
+  background-color: #5dd5ca;
   text-align: center;
 }
 .off-box {

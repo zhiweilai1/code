@@ -12,7 +12,7 @@
         @click="searchRecordShow"
         type="search"
         v-model="currentValue"
-        placeholder="搜索职位/公司"
+        placeholder="搜索查询内容"
         class="mint-searchbar-core">
       </div>
     </div>
@@ -34,7 +34,33 @@
     </div>
     <div class="hire-list" v-if="haveOff">
       <div class="hire-detail" v-for="(item, index) in showList" :key="index" @click="jumpToDetail(item.officeId)">
-        <div class="hire-detail-left">
+
+        <div class="bo-offic-box">
+          <div class="bo-offic-name ellipsis-1">
+            {{item.offName}}
+          </div>
+          <div class="bo-offic-money ellipsis-1">
+            {{item.offMoney}}
+          </div>
+        </div>
+        <div class="bo-offic-msg ellipsis-1">
+          {{item.offPlace}}&#x3000;{{item.offEducation}}&#x3000;{{item.offExperience}}
+        </div>
+        <div class="bo-company-box">
+          <div class="bo-company-img">
+            <img :src="item.company.companyImg" alt="">
+          </div>
+          <div class="bo-company-msg">
+            <div class="bo-company-name ellipsis-1">
+              {{item.company.companyName}}
+            </div>
+            <div class="bo-company-fu ellipsis-1">
+              {{item.company.companyDet}}&#x3000;{{item.company.companyPer}}&#x3000;{{item.company.companyType}}
+            </div>
+          </div>
+        </div>
+
+        <!-- <div class="hire-detail-left">
           <img :src="item.companyImg" alt="">
         </div>
         <div class="hire-detail-right">
@@ -48,7 +74,7 @@
           <div class="litle-title ellipsis-1">
             {{ item.pushTime | time}}&nbsp;{{item.offPlace}}&nbsp;{{item.companyType}}
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
     <div v-else class="no-msg">
@@ -191,19 +217,18 @@ export default {
   right: 0;
   padding: 10px;
   font-size: 15px;
-  color: #26a2ff;
+  color: #5dd5ca;
 }
-.hire-list {
+/* .hire-list {
   padding: 0 10px 0 10px;
-  background: #fff;
-}
-.hire-detail {
+} */
+/* .hire-detail {
   overflow: hidden;
   width: 100%;
   padding-bottom: 10px;
   padding-top: 10px;
   border-bottom: 1px solid rgb(197, 196, 196);
-}
+} */
 .hire-detail-left {
   float: left;
   width: 60px;
@@ -236,7 +261,7 @@ export default {
   text-overflow: ellipsis;
   text-align: right;
   font-size: 17px;
-  color: #26a2ff
+  color: #5dd5ca
 }
 
 .hire-detail-right {

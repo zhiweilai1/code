@@ -69,7 +69,7 @@
             </div>
             <div
               class="company-off-card-place"
-            >{{item.offPlace}}&nbsp;|&nbsp;{{item.offExperience}}&nbsp;|&nbsp;{{item.offEducation}}</div>
+            >{{item.offPlace}}&#x3000;{{item.offExperience}}&#x3000;{{item.offEducation}}</div>
             <div class="company-off-card-time">{{item.pushTime}}</div>
           </div>
         </div>
@@ -143,7 +143,7 @@ export default {
   background-size: 100% 100%;
   background-repeat: no-repeat;
   position: relative;
-  background-color: #26a2ff;
+  background-color: #5dd5ca;
   color: #fff;
 }
 .company-back-img {
@@ -251,7 +251,7 @@ export default {
   text-overflow: ellipsis;
   text-align: right;
   font-size: 17px;
-  color: #26a2ff;
+  color: #fc6c38;
 }
 .company-off-card-place {
   font-size: 14px;

@@ -12,7 +12,8 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/api': {
-        target: 'http://39.98.80.9:82', // 你要代理的域名和端口号，要加上http
+        target: 'http://wechat.myzhiweilai.com', // 你要代理的域名和端口号，要加上http
+        // target: 'http://39.98.80.9:82',
         changeOrigin: true,
         pathRewrite: {
           '^/api': '/api'

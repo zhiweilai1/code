@@ -50,5 +50,6 @@ export default {
   background-image: -webkit-gradient(linear, left top, left bottom, from(#d9d9d9), color-stop(50%, #d9d9d9), color-stop(50%, transparent));
   background-size: 100% 1px;
   background-repeat: no-repeat;
+  color: #5dd5ca
 }
 </style>

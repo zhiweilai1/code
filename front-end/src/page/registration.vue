@@ -24,12 +24,12 @@
             <input v-model="stuyanNum" placeholder="请输入验证码" class="number-input" @blur="outPoint()" @focus="focusPoint()">
           </div>
         </div>
-        <div class="login-tel">
+        <!-- <div class="login-tel">
           <input class="number-input" type="text" placeholder="请选择学校" v-model="region" maxlength="80" readonly="readonly" @click="showAddressPicker" @blur="outPoint()" @focus="focusPoint()" />
           <mt-popup v-model="regionVisible" position="bottom" class="region-popup">
             <mt-picker :slots="myAddressSlots" valueKey="name" :visibleItemCount="5" @change="addressChange" :itemHeight="40"></mt-picker>
           </mt-popup>
-        </div>
+        </div> -->
         <div class="login-tel">
           <input  v-model="guantea" placeholder="关联老师手机号（选填）" class="number-input" @blur="outPoint()" @focus="focusPoint()">
         </div>
@@ -246,6 +246,9 @@ export default {
         }
       }
 
+      if (!window.cookie || !window.cookie.ZWL_ID) {
+        window.location.href = '/wechat/login?next=registration'
+      }
 
       this.axios({
         method: 'post',
@@ -319,7 +322,7 @@ export default {
 
 .click-show{
   color: #fff;
-  background: #26a2ff;
+  background: #5dd5ca;
 }
 
 .login-content {
@@ -331,7 +334,7 @@ export default {
 .login-tel {
   height: 50px;
   box-sizing: border-box;
-  margin-bottom: 10px;
+  /* margin-bottom: 10px; */
   padding-top: 10px;
 }
 .login-tel input {
@@ -378,7 +381,7 @@ export default {
   display: inline-block;
   bottom: 20px;
   text-decoration: none;
-  color: #26a2ff;
+  color: #5dd5ca;
   text-align: center;
   left: calc(50% - 50px);
 }

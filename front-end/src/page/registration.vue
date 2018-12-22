@@ -107,7 +107,9 @@ export default {
     }
   },
   created() {
-    if (!window.cookie || window.cookie.indexOf('ZWL_ID') == -1) { 
+    console.log(document.cookie)
+
+    if (!document.cookie || document.cookie.indexOf('ZWL_ID') == -1) { 
       window.location.href = '/wechat/login?next=registration'
       return
     }

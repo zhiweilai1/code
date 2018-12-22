@@ -106,6 +106,12 @@ export default {
       guantea: ''
     }
   },
+  created() {
+    if (!window.cookie || !window.cookie.ZWL_ID) {
+      window.location.href = '/wechat/login?next=registration'
+      return
+    }
+  },
   methods: {
     jumpTo: function() {
       this.$router.push({
@@ -244,11 +250,6 @@ export default {
           telPhone: this.teatelphone,
           smsCode: this.teayanNum
         }
-      }
-
-      if (!window.cookie || !window.cookie.ZWL_ID) {
-        window.location.href = '/wechat/login?next=registration'
-        return
       }
 
       this.axios({

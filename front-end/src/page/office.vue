@@ -5,7 +5,7 @@
       <div class="offic-main-title">
         <!-- 名称及位置 -->
         <div class="company-off-card-title">
-          <div class="company-off-card-title-left">{{data.officeDeatil.offName}}</div>
+          <div class="company-off-card-title-left">{{data.officeDeatil && data.officeDeatil.offName}}</div>
           <div class="company-off-card-title-right">{{data.officeDeatil.offMoney}}</div>
         </div>
         <div class="company-off-card-place">
@@ -48,13 +48,13 @@
         <div class="offic-zhize">
           <div class="litle-title">岗位职责:</div>
           <p class="litle-title zhi-content" v-for="(item, index) in data.officeDeatil.offResponsibilities" :key="index">
-            {{index + 1}}、{{item}}
+            {{item}}
           </p>
         </div>
         <div class="offic-yaoqiu">
           <div class="litle-title">任职要求:</div>
           <p class="litle-title zhi-content" v-for="(item, index) in data.officeDeatil.offRequirements" :key="index">
-            {{index + 1}}、{{item}}
+            {{item}}
           </p>
         </div>
       </div>
@@ -99,6 +99,16 @@ export default {
       data: params
     }).then((res) => {
       let data = res.data.data
+      if (!data.company) {
+        data.company = {
+          companyImg: '../../static/ge-zi-icon.png',
+          companyName: '默认公司',
+          companyDet: '未知',
+          companyPer: '未知',
+          companyType: '未知',
+          welfareArr: ''
+        }
+      }
       data.company.welfareArr = data.company.welfareArr && data.company.welfareArr.split(';') || []
       data.officeDeatil.offResponsibilities = data.officeDeatil.offResponsibilities.split(';')
       data.officeDeatil.offRequirements = data.officeDeatil.offRequirements.split(';')

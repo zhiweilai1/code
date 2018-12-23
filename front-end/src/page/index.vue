@@ -63,7 +63,9 @@
             </div>
           </div>
         </mt-tab-container-item>
-        <mt-tab-container-item id="2">
+        <mt-tab-container-item id="2" v-infinite-scroll="getNewOffic"
+    infinite-scroll-disabled="loading"
+    infinite-scroll-distance="10">
           <div class="hire-detail" v-if="newOffic.length > 0" v-for="(item, index) in newOffic" :key="index" @click="jumpToDetail(item.officeId)">
             <div class="bo-offic-box">
               <div class="bo-offic-name ellipsis-1">

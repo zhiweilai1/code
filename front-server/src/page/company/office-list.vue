@@ -171,7 +171,6 @@
   </div>
 </template>
 <script>
-import service from 'service-api'
 export default {
   name: 'office-list',
   data() {
@@ -222,7 +221,6 @@ export default {
   },
   methods: {
     deleteOffic: function (index, row) {
-      console.log(row)
       this.axios({
         method: 'post',
         url: '/api/back/deleteOfficByCompanyId',

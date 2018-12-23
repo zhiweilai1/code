@@ -32,7 +32,9 @@
       </div>
     </div>
     </div>
-    <div class="hire-list" v-if="haveOff">
+    <div class="hire-list" v-if="haveOff" v-infinite-scroll="showHire"
+    infinite-scroll-disabled="loading"
+    infinite-scroll-distance="10">
       <div class="hire-detail" v-for="(item, index) in showList" :key="index" @click="jumpToDetail(item.officeId)">
 
         <div class="bo-offic-box">
@@ -109,8 +111,9 @@ export default {
         {key: 1, value: "香蕉"}
       ],
       unitName:'全部类型',
-      unitModel: 0
-
+      unitModel: 0,
+      loading: false,
+      hirePage: 0
     }
   },
 
@@ -163,7 +166,7 @@ export default {
       
     },
     showHire: function () {
-
+      this.hirePage++
       this.axios({
         method: 'post',
         url: '/api/getHireOffice',
@@ -172,13 +175,14 @@ export default {
         },
         data: {
           offType: this.hireType,
-          searchContent: this.currentValue
+          searchContent: this.currentValue,
+          page: this.hirePage
         }
       }).then((res) => {
         let data = res.data.data
         if (data.length > 0) {
           this.haveOff = true
-          this.showList = data
+          this.showList = this.showList.concat(data)
         } else {
           this.haveOff = false
         }

@@ -3,6 +3,8 @@
 import Vue from 'vue'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
+import MintUI from 'mint-ui'
+import 'mint-ui/lib/style.css'
 import App from './App'
 import router from './router'
 // import mockdata from './mock'
@@ -12,6 +14,7 @@ Vue.prototype.axios = axios
 
 Vue.config.productionTip = false
 Vue.use(ElementUI)
+Vue.use(MintUI)
 
 /* eslint-disable no-new */
 new Vue({

@@ -96,7 +96,7 @@
       </template>
     </el-table-column>
     <el-table-column
-        prop="userId"
+        prop="id"
         label="ID"
       >
       </el-table-column>
@@ -197,12 +197,17 @@ export default {
             'Content-type': 'application/json;charset=UTF-8'
           },
           data: {
-            userId: row.userId,
+            userId: row.id,
           }
         }).then((res) => {
           this.resumeloading = false
           if (res.data.code == 200) {
-            this.rowChildren = res.data.data
+            if (res.data.data.baseMsg) {
+              this.rowChildren = res.data.data
+            } else {
+              this.$message('该用户暂无简历')
+            }
+            
           } else {
             this.$message.error('请求失败，请重试')
           }

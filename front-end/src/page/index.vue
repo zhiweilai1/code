@@ -64,7 +64,7 @@
           </div>
         </mt-tab-container-item>
         <mt-tab-container-item id="2">
-          <div class="hire-detail" v-for="(item, index) in newOffic" :key="index" @click="jumpToDetail(item.officeId)">
+          <div class="hire-detail" v-if="newOffic.length > 0" v-for="(item, index) in newOffic" :key="index" @click="jumpToDetail(item.officeId)">
             <div class="bo-offic-box">
               <div class="bo-offic-name ellipsis-1">
                 {{item.offName}}
@@ -196,6 +196,17 @@ export default {
         let data = res.data.data
         if (data.length > 0) {
           this.haveOff = true
+          for (let i = 0; i < data.length; i++) {
+            if (!data[i].company) {
+              data[i].company = {
+                companyImg: '../../static/ge-zi-icon.png',
+                companyName: '默认公司',
+                companyDet: '未知',
+                companyPer: '未知',
+                companyType: '未知'
+              }
+            }
+          }
           this.newOffic = this.newOffic.concat(data)
         } else {
           this.haveOff = false
@@ -217,6 +228,17 @@ export default {
         let data = res.data.data
         if (data.length > 0) {
           this.haveOff = true
+          for (let i = 0; i < data.length; i++) {
+            if (!data[i].company) {
+              data[i].company = {
+                companyImg: '../../static/ge-zi-icon.png',
+                companyName: '默认公司',
+                companyDet: '未知',
+                companyPer: '未知',
+                companyType: '未知'
+              }
+            }
+          }
           this.hotOffic = this.hotOffic.concat(data)
         } else {
           this.haveOff = false

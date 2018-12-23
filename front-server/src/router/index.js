@@ -12,6 +12,8 @@ import AdContact from '@/page/admin/contact-type'
 import CoOfficList from '@/page/company/office-list'
 import CoSet from '@/page/company/company-set'
 import Forget from '@/page/Forget'
+import AdcompanySet from '@/page/admin/AdcompanySet'
+import AdofficSet from '@/page/admin/AdofficSet'
 
 Vue.use(Router)
 
@@ -76,6 +78,16 @@ export default new Router({
       path: '/Forget',
       name: 'Forget',
       component: Forget
+    },
+    {
+      path: '/AdcompanySet',
+      name: 'AdcompanySet',
+      component: AdcompanySet
+    },
+    {
+      path: '/AdofficSet',
+      name: 'AdofficSet',
+      component: AdofficSet
     }
   ]
 })

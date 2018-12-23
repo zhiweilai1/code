@@ -96,6 +96,12 @@
             @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
           <el-button
             size="mini"
+            @click="handleCompanySet(scope.$index, scope.row)">添加公司配置</el-button>
+          <el-button
+            size="mini"
+            @click="handleOfficSet(scope.$index, scope.row)">添加职位</el-button>
+          <el-button
+            size="mini"
             type="danger"
             @click="handleDelete(scope.$index, scope.row)">删除</el-button>
         </template>
@@ -366,7 +372,6 @@ export default {
             res.data.data[i].isHot = res.data.data[i].isHot == '1' ? true : false
             res.data.data[i].isRead = res.data.data[i].isRead == '1' ? true : false
           }
-          console.log(res.data.data)
           this.tableList = res.data.data
         } else {
           this.$message.error('请求失败，请重试')
@@ -375,6 +380,18 @@ export default {
         this.$message.error('请求失败，请重试')
       })
 
+    },
+    handleCompanySet: function(index, row) {
+      window.sessionStorage.setItem('adSetCompany', row.companyId)
+      this.$router.push({
+        path: '/AdcompanySet'
+      })
+    },
+    handleOfficSet: function(index, row) {
+      window.sessionStorage.setItem('adSetOffic', row.companyId)
+      this.$router.push({
+        path: '/AdofficSet'
+      })
     },
     handleHotOffic: function(index, row) {
       this.axios({

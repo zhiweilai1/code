@@ -4,7 +4,7 @@
         <div v-if="dataList.length > 0">
             <div class="hire-detail" v-for="(item, index) in dataList" :key="index" @click="jumpToDetail(item.officeId)">
                 <div class="hire-detail-left">
-                <img :src="item.companyImg" alt="">
+                <img :src="item.company.companyImg" alt="">
                 </div>
                 <div class="hire-detail-right">
                 <div class="company-off-card-title">
@@ -43,29 +43,35 @@ export default {
     },
     created() {
 
-      this.userId = window.localStorage.getItem('userMsg') && JSON.parse(window.localStorage.getItem('userMsg')).id || '3'
-      this.axios({
-        method: 'post',
-        url: '/api/getHistoryList',
-        headers: {
-          'Content-type': 'application/json;charset=UTF-8'
-        },
-        data: {
-          userId: this.userId
-        }
-      }).then((res) => {
-        if (res.data.code == '200' || res.data.code == 200) {
-          this.dataList = res.data.data
-        }
-      })
+      this.userId = window.localStorage.getItem('userMsg') && JSON.parse(window.localStorage.getItem('userMsg')).id
+      if (!this.userId) {
+        this.$router.back(-1)
+      }
+      this.getHireOffic()
     },
     methods: {
-        jumpToDetail: function (oid) {
-            window.sessionStorage.setItem('office', oid)
-            this.$router.push({
-                path: '/office'
-            })
-        }
+      getHireOffic: function () {
+        this.axios({
+          method: 'post',
+          url: '/api/getHistoryList',
+          headers: {
+            'Content-type': 'application/json;charset=UTF-8'
+          },
+          data: {
+            userId: this.userId
+          }
+        }).then((res) => {
+          if (res.data.code == '200' || res.data.code == 200) {
+            this.dataList = res.data.data
+          }
+        })
+      },
+      jumpToDetail: function (oid) {
+        window.sessionStorage.setItem('office', oid)
+        this.$router.push({
+          path: '/office'
+        })
+      }
     }
 }
 </script>

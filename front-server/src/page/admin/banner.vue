@@ -8,7 +8,7 @@
     </el-input>
     <el-upload
       class="upload-demo"
-      action="https://jsonplacesfaholder.typicode.com/postssfa/"
+      action=""
       :before-upload="handleFile"
       :on-preview="handlePreview"
       :on-remove="handleRemove"
@@ -60,7 +60,7 @@ export default {
         this.fileName = file.name
         let reader = new FileReader()
         reader.onload = () => {
-          let _base64 = reader.result        
+          let _base64 = reader.result
           this.updateImg(_base64)
         }
 
@@ -98,7 +98,7 @@ export default {
             }).catch(() => {
               this.$message.error('上传失败，请重试')
             })
-            
+
           } else {
             this.$message.error('上传失败，请重试')
           }

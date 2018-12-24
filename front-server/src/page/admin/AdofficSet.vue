@@ -73,7 +73,7 @@
             <el-button type="danger" size="mini" @click="deleteOffic(scope.$index, scope.row)">删除</el-button>
           </template>
         </el-table-column>
-        
+
       </el-table>
 
       <el-dialog
@@ -95,7 +95,7 @@
           <div>
             <div style="display: inline-block; color: #888">职位福利:</div>
             <div style="display: inline-block">
-              <span class="company-welfare" v-for="item in dialogItem.welfareArr" :key="item">
+              <span class="company-welfare" v-for="item in dialogItem.company.welfareArr.split(';')" :key="item">
                 <mt-badge size="normal">{{item}}</mt-badge>
               </span>
             </div>
@@ -104,19 +104,19 @@
         <div class="offic-main-title">
           <!-- 公司信息 -->
           <div class="offic-main-company">
-            
+
             <div class="off-main-company-title">
               <div class="ellipsis-1 normal-title">
-                {{dialogItem.companyName}}
-              </div>
+                {{dialogItem.company.companyName}}
+             </div>
               <div class="ellipsis-1 litle-title">
-                {{dialogItem.companyDet}}&nbsp;|&nbsp;{{dialogItem.companyType}}&nbsp;|&nbsp;{{dialogItem.companyPer}}
+                {{dialogItem.company.companyDet}}&nbsp;|&nbsp;{{dialogItem.company.companyType}}&nbsp;|&nbsp;{{dialogItem.company.companyPer}}
               </div>
             </div>
-            
+
           </div>
           <div class="offic-main-company-place litle-title">
-            {{dialogItem.companyPlace}}
+            {{dialogItem.company.companyPlace}}
           </div>
         </div>
         <div class="offic-main-title">
@@ -126,13 +126,13 @@
           </div>
           <div class="offic-zhize">
             <div class="litle-title">岗位职责:</div>
-            <p class="litle-title zhi-content" v-for="(item, index) in dialogItem.Responsibilities" :key="index">
+            <p class="litle-title zhi-content" v-for="(item, index) in dialogItem.offResponsibilities.split(';')" :key="index">
               {{index + 1}}、{{item}}
             </p>
           </div>
           <div class="offic-yaoqiu">
             <div class="litle-title">任职要求:</div>
-            <p class="litle-title zhi-content" v-for="(item, index) in dialogItem.requirements" :key="index">
+            <p class="litle-title zhi-content" v-for="(item, index) in dialogItem.offRequirements.split(';')" :key="index">
               {{index + 1}}、{{item}}
             </p>
           </div>
@@ -210,7 +210,13 @@ export default {
       offloading: false,
       officListData: [],
       dialogVisible: false,
-      dialogItem: {},
+      dialogItem: {
+        company:{
+          companyName:"",
+        },
+        offResponsibilities:"",
+        offRequirements:"",
+      },
       addOfficVisible: false,
       offType: [],
 
@@ -431,7 +437,7 @@ export default {
           this.$message.error('请求失败，请重试')
         })
       }
-      
+
 
       this.addOfficVisible = false
     },

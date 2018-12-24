@@ -42,7 +42,7 @@
               <span>{{ rowChildren.baseMsg.userStatus }}</span>
             </el-form-item>
           </div>
-          
+
           <div v-if="rowChildren.tecMsg.length > 0" v-for="(item, index) in rowChildren.tecMsg" :key="index">
             <el-form-item  label="学校">
               <span>{{ item.school }}</span>
@@ -88,8 +88,8 @@
               <span>{{ item.projectDesc }}</span>
             </el-form-item>
           </div>
-          
-          
+
+
         </el-form>
       </template>
     </el-table-column>

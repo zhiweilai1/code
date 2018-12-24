@@ -53,45 +53,62 @@ export default {
         }
     },
     methods: {
-        pushbaseInfo: function() {
-          if (this.userName) {
-            if (this.userName.length == 1) {
-              MessageBox.alert('姓名禁止输入一个字')
-            } else { 
-              this.axios({
-                method: 'post',
-                url: '/api/makeUserInfo',
-                headers: {
-                  'Content-type': 'application/json;charset=UTF-8'
-                },
-                data: {
-                  userId: JSON.parse(window.localStorage.getItem('userMsg')).id,
-                  userName: this.userName,
-                  userAge: this.userAge,
-                  userSex: this.userSex,
-                  userStatus: this.userStatus,
-                  userPhone: this.userPhone,
-                  userEmail: this.userEmail
-                }
-              }).then((res) => {
-                if (res.data.code == 200 || res.data.code == '200') {
-                  MessageBox.alert('保存成功').then(action => {
-                    this.$router.back(-1)
-                  })
-                } else {
-                  MessageBox({
-                    title: '提示',
-                    message: res.data.msg,
-                    showCancelButton: true
-                  })
-                }
-              })
-            }
-          } else {
-            MessageBox.alert('您还未输入姓名')
+      validateEmail: function (email) { 
+            //验证邮箱正则
+        var re = /^(([^()[\]\\.,;:\s@\"]+(\.[^()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+        return re.test(email);
+      },
+      pushbaseInfo: function() {
+        if (this.userName) {
+          if (this.userName.length == 1) {
+            MessageBox.alert('姓名禁止输入一个字')
+          } else { 
+            if (this.validateEmail(this.userEmail)) {
+              if (!(/^1[345789]\d{9}$/.test(this.userPhone))) {
+                MessageBox('提示', '手机号码格式有误，请重填') 
+              } else {
+                this.submit()
+              }
+            } else {
+              MessageBox.alert('您未填写邮箱，或填写邮箱格式有误')
+            } 
           }
-          
+        } else {
+          MessageBox.alert('您还未输入姓名')
         }
+        
+      },
+      submit: function () {
+        this.axios({
+          method: 'post',
+          url: '/api/makeUserInfo',
+          headers: {
+            'Content-type': 'application/json;charset=UTF-8'
+          },
+          data: {
+            userId: JSON.parse(window.localStorage.getItem('userMsg')).id,
+            userName: this.userName,
+            userAge: this.userAge,
+            userSex: this.userSex,
+            userStatus: this.userStatus,
+            userPhone: this.userPhone,
+            userEmail: this.userEmail
+          }
+        }).then((res) => {
+          if (res.data.code == 200 || res.data.code == '200') {
+            MessageBox.alert('保存成功').then(action => {
+              this.$router.back(-1)
+            })
+          } else {
+            MessageBox({
+              title: '提示',
+              message: res.data.msg,
+              showCancelButton: true
+            })
+          }
+        })
+      }
     }
 }
 </script>

@@ -62,7 +62,19 @@ export default {
           }
         }).then((res) => {
           if (res.data.code == '200' || res.data.code == 200) {
-            this.dataList = res.data.data
+            let data = res.data.data
+            for (let i = 0; i < data.length; i++) {
+              if (!data[i].company) {
+                data[i].company = {
+                  companyImg: '../../static/ge-zi-icon.png',
+                  companyName: '默认公司',
+                  companyDet: '未知',
+                  companyPer: '未知',
+                  companyType: '未知'
+                }
+              }
+            }
+            this.dataList = data
           }
         })
       },

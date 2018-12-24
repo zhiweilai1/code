@@ -1,28 +1,33 @@
 <template>
   <div id="app">
-  <el-container style="height: 500px; border: 1px solid #eee">
-    <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
-      <el-menu router :default-active="this.$router.path" background-color="#545c64"
-      text-color="#fff">
+    <el-container>
+      <!-- <el-header>Header</el-header> -->
+      <el-container style="height: 500px; border: 1px solid #eee">
+        <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
+          <el-menu router :default-active="this.$router.path" background-color="#545c64"
+          text-color="#fff">
 
-      <el-submenu v-for="(item, index) in layMenu" :key="index" :index="index + ''">
-        <template slot="title">
-          <i :class="item.icon"></i>{{item.name}}
-        </template>
-        <el-menu-item-group>
-          <el-menu-item v-for="(childKey, chiKey) in item.child" :key="chiKey" :index="childKey.path">{{childKey.name}}</el-menu-item>
-        </el-menu-item-group>
-      </el-submenu>
-    </el-menu>
-  </el-aside>
-  
-  <el-container>
+          <el-submenu v-for="(item, index) in layMenu" :key="index" :index="index + ''">
+            <template slot="title">
+              <i :class="item.icon"></i>{{item.name}}
+            </template>
+            <el-menu-item-group>
+              <el-menu-item v-for="(childKey, chiKey) in item.child" :key="chiKey" :index="childKey.path">{{childKey.name}}</el-menu-item>
+            </el-menu-item-group>
+          </el-submenu>
+        </el-menu>
+      </el-aside>
+      
+      <el-container>
+        
+        <el-main>
+          <router-view />
+        </el-main>
+      </el-container>
+    </el-container>
+    </el-container>
     
-    <el-main>
-      <router-view />
-    </el-main>
-  </el-container>
-</el-container>
+  
   </div>
 </template>
 
@@ -109,6 +114,9 @@ body {
 }
 * {
   box-sizing: border-box;
+}
+.el-header {
+  background: #409EFF;
 }
 .title {
   font-size: 16px;

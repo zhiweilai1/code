@@ -33,14 +33,14 @@
                 {{userMsg.telPhone}}
             </div>
         </div>
-        <div class="personal-box" style="border-bottom: 1px solid rgba(215, 215, 215, 1);">
+        <!-- <div class="personal-box" style="border-bottom: 1px solid rgba(215, 215, 215, 1);">
             <div class="personal-box-left">
                 学校
             </div>
             <div class="personal-box-right">
                 {{userMsg.userSchool}}
             </div>
-        </div>
+        </div> -->
         <div class="personal-box" style="border-bottom: 1px solid rgba(215, 215, 215, 1);">
             <div class="personal-box-left">
                 老师

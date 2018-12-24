@@ -22,10 +22,11 @@
                         <mt-badge size="small" type="primary" >职位详情</mt-badge>
                     </div>
                     <div v-if="item.userDes" class="litle-title" style="margin-bottom: 10px; text-align: left; ">
-                      {{item.userDes}}
+                      <star :outIndex="Number(item.userDes)"></star>
                     </div>
-                    <div v-else style="margin-bottom: 10px;" @click="evaluation(item.officeId)">
-                        <mt-badge size="small" type="success"  color="#f38031">面试评价</mt-badge>
+                    <div v-else style="margin-bottom: 10px;">
+                        <!-- <mt-badge size="small" type="success"  color="#f38031">面试评价</mt-badge> -->
+                      <star v-on:starMarkChange="starMarkChange" :outIndex="Number(item.officeId)" :defaultRating="item.userDes ? Number(item.userDes) : 5"></star>
                     </div>
                 </div>
             </div>
@@ -38,6 +39,7 @@
 <script>
 import service from 'service-api'
 import { MessageBox } from 'mint-ui'
+import star from '../components/star'
 export default {
     name: 'Application',
     data() {
@@ -46,6 +48,7 @@ export default {
             userId: ''
         }
     },
+    components: {star},
     created() {
         this.userId = window.localStorage.getItem('userMsg') && JSON.parse(window.localStorage.getItem('userMsg')).id || ''
         if (this.userId) {
@@ -59,6 +62,23 @@ export default {
         }
     },
     methods: {
+        starMarkChange: function(e, index) {
+            console.log(e)
+            this.axios({
+                method: 'post',
+                url: '/api/postEvaluation',
+                headers: {
+                    'Content-type': 'application/json;charset=UTF-8'
+                },
+                data: {
+                    userId: this.userId,
+                    officeId: index.toString(),
+                    userDes: e
+                }
+            }).then((res) => {
+                this.getList()
+            })
+        },
         jumpToJob: function(index) {
             window.sessionStorage.setItem('office', index)
             this.$router.push({
@@ -127,14 +147,15 @@ export default {
     padding: 10px;
     margin-bottom: 10px;
     overflow: hidden;
+    box-sizing: border-box;
 }
 .jot-applicat-card-left {
     float: left;
-    width: 70%；
+    width: calc(100% - 150px)
 }
 .jot-applicat-card-right {
     float: right;
-    width: 30%;
+    width: 150px;
     text-align: right;
 }
 .job-title {

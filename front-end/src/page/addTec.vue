@@ -106,7 +106,7 @@ export default {
         this.schoolLevel = tecMsg.schoolLevel
         this.userProfession = tecMsg.userProfession
         this.schoolDes = tecMsg.schoolDes
-        this.schoolTime = tecMsg.beginTime + ' -' + tecMsg.endTime
+        this.schoolTime = tecMsg.beginTime + ' - ' + tecMsg.endTime
         window.sessionStorage.removeItem('tecIndex')
       }
     },
@@ -156,7 +156,7 @@ export default {
         },
         timeChange: function(picker, values) {
             if (this.timeInit){
-                this.schoolTime = values[0] + '-6 - ' + values[1] + '-9'
+                this.schoolTime = values[0] + '-9 - ' + values[1] + '-6'
                 picker.setSlotValues(1, this.getCityArr(values[0]));
             }else {
                 this.timeInit = true;

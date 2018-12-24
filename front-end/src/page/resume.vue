@@ -260,7 +260,8 @@ export default {
     padding-bottom: 20px;
     margin-bottom: 10px;
     overflow: hidden;
-    width: 100%
+    width: 100%;
+    box-sizing: border-box;
 }
 .resume-base-msg-left {
     width: 70px;

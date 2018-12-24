@@ -108,7 +108,7 @@
       </el-table-column>
     </el-table>
 
-    <el-dialog title="添加公司" :visible.sync="isAddCompany">
+    <el-dialog title="添加公司" :visible.sync="isAddCompany" :close-on-click-modal="false">
       <el-form :model="ruleForm" :rules="rules" ref="ruleForm">
         <el-form-item label="公司名称" prop="companyName">
           <el-input v-model="ruleForm.companyName" size="small"></el-input>
@@ -127,7 +127,7 @@
       </el-form>
     </el-dialog>
 
-    <el-dialog title="公司详情" :visible.sync="detailVisible">
+    <el-dialog title="公司详情" :visible.sync="detailVisible" :close-on-click-modal="false">
       <el-row>
         <el-col :span="4">
           ID
@@ -210,7 +210,7 @@
       </el-row>
     </el-dialog>
 
-    <el-dialog title="修改信息" :visible.sync="editorVisible">
+    <el-dialog title="修改信息" :visible.sync="editorVisible" :close-on-click-modal="false">
       <el-form :model="editorFrom" :rules="rules" ref="editorFrom">
         <el-form-item label="公司名称" prop="name">
           <el-input v-model="editorFrom.name" size="small"></el-input>

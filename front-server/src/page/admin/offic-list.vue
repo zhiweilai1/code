@@ -46,6 +46,7 @@
       :visible.sync="dialogVisible"
       width="60%"
       top="3vh"
+      :close-on-click-modal="false"
       :before-close="handleClose">
       <div class="offic-main">
       <div class="offic-main-title">

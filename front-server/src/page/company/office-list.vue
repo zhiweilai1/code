@@ -52,6 +52,7 @@
       :visible.sync="dialogVisible"
       width="60%"
       top="3vh"
+      :close-on-click-modal="false"
     >
       <div class="offic-main">
       <div class="offic-main-title">
@@ -115,6 +116,7 @@
       title="职位详情"
       :visible.sync="addOfficVisible"
       width="40%"
+      :close-on-click-modal="false"
       >
       <div>
         <el-form ref="form" :model="addForm" label-width="80px">

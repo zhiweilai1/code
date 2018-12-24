@@ -179,7 +179,13 @@ export default {
       offloading: false,
       officListData: [],
       dialogVisible: false,
-      dialogItem: {},
+      dialogItem: {
+        company:{
+          companyName:"",
+        },
+        offResponsibilities:"",
+        offRequirements:"",
+      },
       addOfficVisible: false,
       offType: [],
 
@@ -292,7 +298,6 @@ export default {
         this.offloading = false
         if (res.data.code == 200) {
           this.officListData = res.data.data
-          this.dialogItem = this.officListData[0]
         } else {
           this.$message.error('请求失败，请重试')
         }

@@ -408,7 +408,8 @@ export default {
             offType: this.addForm.offType,
             offRequirements: this.addForm.offRequirements,
             companyId: this.companyId,
-            isHot: ''
+            isHot: '0',
+            isExer: this.addForm.isExer
           }
         }).then((res) => {
           if (res.data.code == 200) {
@@ -435,7 +436,8 @@ export default {
             offResponsibilities: this.addForm.offResponsibilities,
             offType: this.addForm.offType,
             offRequirements: this.addForm.offRequirements,
-            officeId: this.addForm.officeId
+            officeId: this.addForm.officeId,
+            isExer: this.addForm.isExer
           }
         }).then((res) => {
           if (res.data.code == 200) {

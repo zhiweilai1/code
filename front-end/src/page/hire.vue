@@ -116,7 +116,20 @@ export default {
       hirePage: 0
     }
   },
-
+  watch: {
+    currentValue: {
+      handler(newContext) {
+        if (!newContext) {
+          this.hasContext = true
+        } else {
+          this.hasContext = false
+          this.showList = []
+          this.hirePage = 0
+          this.showHire()
+        }
+      }
+    }
+  },
   created() {
     this.showHire()
     this.offTypeList()

@@ -1,13 +1,13 @@
 <template>
   <div id="app">
     <el-container>
-      <el-header v-if="this.useMsg">
+      <el-header v-if="useMsg">
         <div class="company-zhi">
           职位来
         </div>
         <div class="company-zhi-name">
           <span>
-            {{this.useMsg.company}}({{this.useMsg.userName}})
+            {{useMsg.company.companyName}}({{useMsg.userName}})
           </span>
           &nbsp;&nbsp;&nbsp;
           <span style="color: #fc6c38; cursor: pointer" @click="logout()">
@@ -16,7 +16,7 @@
         </div>
       </el-header>
       <el-container style="height: 500px; border: 1px solid #eee" >
-        <el-aside width="200px" style="background-color: rgb(238, 241, 246)"  v-if="this.useMsg">
+        <el-aside width="200px" style="background-color: rgb(238, 241, 246)"  v-if="useMsg">
           <el-menu router :default-active="this.$router.path" background-color="#545c64"
           text-color="#fff">
 

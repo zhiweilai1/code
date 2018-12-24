@@ -9,7 +9,7 @@
                 :options="['男', '女']">
             </mt-radio>
             <mt-field label="年龄" placeholder="请输入年龄" type="number" v-model="userAge"></mt-field>
-            <mt-field label="手机号" placeholder="请输入手机号" type="tel" v-model="userPhone"></mt-field>
+            
             <mt-field label="邮箱" placeholder="请输入邮箱" type="email" v-model="userEmail"></mt-field>
             <mt-radio
                 title="求职状态"
@@ -37,10 +37,13 @@ export default {
             userStatus: '未实习-随时到岗',
             userPhone: '',
             userEmail: '',
-            userId: ''
+            userId: '',
         }
     },
     created() {
+      let userMsg = JSON.parse(window.localStorage.getItem('userMsg'))
+      this.userPhone = userMsg.telPhone
+      
         let baseMsg = window.sessionStorage.getItem('modify') && JSON.parse(window.sessionStorage.getItem('modify')) || undefined
         let self = this
         if (baseMsg) {

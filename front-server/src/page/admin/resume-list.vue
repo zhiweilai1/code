@@ -5,17 +5,52 @@
     </div>
     <div class="company-form">
       <el-form :inline="true" :model="formInline" class="demo-form-inline">
-        <el-form-item label="姓名">
-          <el-input v-model="formInline.userName" placeholder="姓名" size="small"></el-input>
+        <el-form-item label="关键词">
+          <el-input v-model="formInline.keyword" placeholder="关键词" size="small" @keyup.enter.native="resumeList()"></el-input>
         </el-form-item>
-        
         <el-form-item label="年龄">
-          <el-input v-model="formInline.userAge" placeholder="年龄" size="small"></el-input>
+          <el-input v-model="formInline.userAge" placeholder="年龄" size="small" @keyup.enter.native="resumeList()"></el-input>
         </el-form-item>
         <el-form-item label="性别">
-          <el-input v-model="formInline.userSex" placeholder="男或女" size="small"></el-input>
+          <el-select v-model="formInline.userSex" placeholder="请选择" @change="resumeList()">
+            <el-option
+              label="全部"
+              value="">
+            </el-option>
+            <el-option
+              label="男"
+              value="男">
+            </el-option>
+            <el-option
+              label="女"
+              value="女">
+            </el-option>
+          </el-select>
         </el-form-item>
-       
+        <el-form-item label="状态">
+          <el-select v-model="formInline.user_status" placeholder="请选择" @change="resumeList()">
+            <el-option
+              label="全部状态"
+              value="">
+            </el-option>
+            <el-option
+              label="未实习-随时到岗"
+              value="未实习-随时到岗">
+            </el-option>
+            <el-option
+              label="实习中-考虑机会"
+              value="实习中-考虑机会">
+            </el-option>
+            <el-option
+              label="正式工作-考虑机会"
+              value="正式工作-考虑机会">
+            </el-option>
+            <el-option
+              label="已离职-随时到岗"
+              value="已离职-随时到岗">
+            </el-option>
+          </el-select>
+        </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="resumeList()" size="small">查询</el-button>
         </el-form-item>
@@ -137,9 +172,10 @@ export default {
       height: 300,
       resumeloading: false,
       formInline: {
-        userName: '',
+        keyword: '',
         userAge: '',
         userSex: '',
+        user_status: ''
       },
       resumeListData: [],
       adResumeId: '',

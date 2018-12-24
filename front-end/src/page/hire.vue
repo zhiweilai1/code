@@ -196,10 +196,10 @@ export default {
         if (data.length > 0) {
           this.haveOff = true
           this.showList = this.showList.concat(data)
-        } else {
+        }
+        if (this.page == 0 && data.length == 0) {
           this.haveOff = false
         }
-        
       })
       
       

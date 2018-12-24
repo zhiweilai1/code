@@ -215,6 +215,7 @@ export default {
       dialogItem: {
         company:{
           companyName:"",
+          welfareArr: "",
         },
         offResponsibilities:"",
         offRequirements:"",

@@ -9,10 +9,10 @@
     <div class="company-form">
       <el-form :inline="true" :model="formInline" class="demo-form-inline">
         <el-form-item label="公司名称">
-          <el-input v-model="formInline.companyName" placeholder="公司名称" size="small"></el-input>
+          <el-input v-model="formInline.companyName" placeholder="公司名称" size="small" @keyup.enter.native="companyList()"></el-input>
         </el-form-item>
         <el-form-item label="公司账户">
-          <el-input v-model="formInline.accountNumber" placeholder="公司账户" size="small"></el-input>
+          <el-input v-model="formInline.accountNumber" placeholder="公司账户" size="small" @keyup.enter.native="companyList()"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="companyList()" size="small">查询</el-button>

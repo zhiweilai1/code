@@ -48,9 +48,7 @@ export default {
           });
           window.sessionStorage.setItem('userMsg', JSON.stringify(res.data.data))
           setTimeout(() => {
-            this.$router.push({
-              path: '/'
-            })
+            window.location.href = window.location.protocol+"//"+window.location.host
           }, 1000)
           
         } else {

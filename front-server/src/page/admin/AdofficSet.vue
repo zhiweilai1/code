@@ -161,6 +161,12 @@
 
               </el-select>
             </el-form-item>
+            <el-form-item label="职位性质">
+            <el-select v-model="addForm.isExer" placeholder="职位类型">
+                <el-option label="实习" value="0"></el-option>
+                <el-option label="全职" value="1"></el-option>
+              </el-select>
+            </el-form-item>
             <el-form-item label="工作经验">
               <el-select v-model="addForm.offExperience" placeholder="请选择工作经验">
                 <el-option label="半年内" value="半年内"></el-option>
@@ -240,7 +246,8 @@ export default {
         offPlace: '',
         offResponsibilities: '',
         offRequirements: '',
-        add: true
+        add: true,
+        isExer: ''
       }
     }
   },

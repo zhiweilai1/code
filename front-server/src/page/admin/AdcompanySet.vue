@@ -164,7 +164,6 @@ export default {
         companyIntru: '',
         welfareArr: ''
       },
-      active: 0,
       backImg: '',
       companyImg: '',
       selected: '1',
@@ -180,18 +179,6 @@ export default {
     }
   },
   methods: {
-    next() {
-      this.active++
-      if (this.active > 2) {
-        this.active = 2
-      }
-    },
-    back() {
-      this.active--
-      if (this.active < 0) {
-        this.active = 0
-      }
-    },
     beforeAvatarUpload(file) {
       const isLt2M = file.size / 1024 / 1024 < 2;
       if (!isLt2M) {
@@ -202,7 +189,7 @@ export default {
       let reader = new FileReader()
       reader.onload = () => {
         let _base64 = reader.result       
-        this.updateImg(_base64, 0, 1) 
+        this.updateImg(_base64, 0) 
       }
 
       reader.readAsDataURL(file)
@@ -217,12 +204,12 @@ export default {
       let reader = new FileReader()
       reader.onload = () => {
         let _base64 = reader.result  
-        this.updateImg(_base64, 1, 2)      
+        this.updateImg(_base64, 1)      
       }
 
       reader.readAsDataURL(file)
     },
-    updateImg: function(base, data, active) {
+    updateImg: function(base, data) {
       let self = this
       this.axios({
         method: 'post',
@@ -241,7 +228,6 @@ export default {
           } else {
             self.companyImg = res.data.data
           }
-          this.active = active
 
         } else {
           this.$message.error(res.data.msg)
@@ -284,7 +270,6 @@ export default {
           companyImg: this.companyImg})
       }).then((res) => {
         if (res.data.code == 200) {
-          this.active = 2
           this.$message.success('更改成功')
         } else {
           this.$message.error('请求失败，请重试')

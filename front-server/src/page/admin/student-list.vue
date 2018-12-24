@@ -45,33 +45,33 @@
 
           <div v-if="rowChildren.tecMsg.length > 0" v-for="(item, index) in rowChildren.tecMsg" :key="index">
             <el-form-item  label="学校">
-              <span>{{ item.school }}</span>
+              <span>{{ item.userSchool }}</span>
             </el-form-item>
             <el-form-item  label="学历">
-              <span>{{ item.level }}</span>
+              <span>{{ item.schoolLevel }}</span>
             </el-form-item>
             <el-form-item  label="专业">
-              <span>{{ item.profession }}</span>
+              <span>{{ item.userProfession }}</span>
             </el-form-item>
             <el-form-item  label="在校时间">
-              <span>{{ item.begin }} - {{ item.end }}</span>
+              <span>{{ item.beginTime }} - {{ item.endTime }}</span>
             </el-form-item>
             <el-form-item  label="在校表现">
-              <span>{{ item.dec }}</span>
+              <span>{{ item.schoolDes }}</span>
             </el-form-item>
           </div>
           <div v-if="rowChildren.workMsg.length > 0" v-for="(item, index) in rowChildren.workMsg" :key="index">
             <el-form-item  label="公司名称">
-              <span>{{ item.company }}</span>
+              <span>{{ item.companyName }}</span>
             </el-form-item>
             <el-form-item  label="职位">
-              <span>{{ item.position }}</span>
+              <span>{{ item.userPosition }}</span>
             </el-form-item>
             <el-form-item  label="工作时间">
-              <span>{{ item.begin }} - {{ item.end }}</span>
+              <span>{{ item.beginTime }} - {{ item.endTime }}</span>
             </el-form-item>
             <el-form-item  label="工作职责">
-              <span>{{ item.duties }}</span>
+              <span>{{ item.userDuties }}</span>
             </el-form-item>
           </div>
           <div v-if="rowChildren.projectMsg.length > 0" v-for="(item, index) in rowChildren.projectMsg" :key="index">
@@ -94,7 +94,7 @@
       </template>
     </el-table-column>
     <el-table-column
-        prop="user_id"
+        prop="id"
         label="ID"
       >
       </el-table-column>

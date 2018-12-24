@@ -11,6 +11,10 @@
         <el-form-item label="性别">
           <el-select v-model="formInline.userSex" placeholder="请选择" @change="resumeList()">
             <el-option
+              label="全部"
+              value="">
+            </el-option>
+            <el-option
               label="男"
               value="男">
             </el-option>
@@ -22,6 +26,10 @@
         </el-form-item>
         <el-form-item label="状态">
           <el-select v-model="formInline.user_status" placeholder="请选择" @change="resumeList()">
+            <el-option
+              label="全部状态"
+              value="全部状态">
+            </el-option>
             <el-option
               label="未实习-随时到岗"
               value="未实习-随时到岗">
@@ -117,6 +125,11 @@
               <span>{{ item.projectDesc }}</span>
             </el-form-item>
           </div>
+          <div v-if="rowChildren.myDes.myDes">
+            <el-form-item  label="自我评价">
+              <span>{{ rowChildren.myDes.myDes }}</span>
+            </el-form-item>
+          </div>
 
 
         </el-form>
@@ -151,6 +164,10 @@
       <el-table-column
         prop="user_status"
         label="状态">
+      </el-table-column>
+      <el-table-column
+        prop="teacher"
+        label="关联老师">
       </el-table-column>
   </el-table>
   </div>
@@ -212,6 +229,9 @@ export default {
     },
     resumeChild: function (row, expandedRows) {
       if (expandedRows.length > 0) {
+        if (expandedRows.length > 1) {
+          expandedRows.shift()
+        }
         this.axios({
           method: 'post',
           url: '/api/getMyResume',

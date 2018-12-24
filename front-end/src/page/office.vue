@@ -109,7 +109,7 @@ export default {
           welfareArr: ''
         }
       }
-      data.company.welfareArr = data.company.welfareArr && data.company.welfareArr.split(';') || []
+      data.company.welfareArr = data.company.welfareArr && data.company.welfareArr.split('；') || []
       data.officeDeatil.offResponsibilities = data.officeDeatil.offResponsibilities.split(';')
       data.officeDeatil.offRequirements = data.officeDeatil.offRequirements.split(';')
       self.data = data

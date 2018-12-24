@@ -121,6 +121,9 @@ export default {
     },
     resumeChild: function (row, expandedRows) {
       if (expandedRows.length > 0) {
+        if (expandedRows.length > 1) {
+          expandedRows.shift()
+        }
         this.axios({
           method: 'post',
           url: '/api/back/getTecContactStu',

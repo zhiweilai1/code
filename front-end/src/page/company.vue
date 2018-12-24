@@ -120,7 +120,7 @@ export default {
       self.companyPer = data.company.companyPer
       self.intruduce = data.company.companyIntru
       self.officPlace = data.company.companyPlace
-      self.welfareArr = data.company.welfareArr.split(';')
+      self.welfareArr = data.company.welfareArr.split('；')
       self.officeNum = data.officeList.length
       self.offList = data.officeList
     })

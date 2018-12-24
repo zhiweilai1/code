@@ -292,6 +292,7 @@ export default {
         this.offloading = false
         if (res.data.code == 200) {
           this.officListData = res.data.data
+          this.dialogItem = this.officListData[0]
         } else {
           this.$message.error('请求失败，请重试')
         }

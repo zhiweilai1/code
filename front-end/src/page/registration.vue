@@ -103,7 +103,8 @@ export default {
         }
       ],
       regionInit:false,
-      guantea: ''
+      guantea: '',
+      timeout: ''
     }
   },
   created() {
@@ -120,11 +121,14 @@ export default {
     },
     outPoint: function() {
       this.isShow = true
-      document.body.scrollTop = 0
+      this.timeout = setTimeout(() => {
+        document.body.scrollTop = 0
+      }, 500)
     },
 
     focusPoint: function () {
       this.isShow = false
+      clearTimeout(this.timeout)
     },
     changeShen: function(regShen) {
       this.regShen = regShen

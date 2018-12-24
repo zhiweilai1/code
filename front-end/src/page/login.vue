@@ -32,17 +32,21 @@ export default {
       huoContent: '获取验证码',
       yanNum:'',
       telphone: '',
-      isShow: true
+      isShow: true,
+      timeout: ''
     }
   },
   methods: {
     outPoint: function() {
       this.isShow = true
-      document.body.scrollTop = 0
+      this.timeout = setTimeout(() => {
+        document.body.scrollTop = 0
+      }, 500)
     },
 
     focusPoint: function () {
       this.isShow = false
+      clearTimeout(this.timeout)
     },
     getPort: function() {
       if (!this.telphone) {

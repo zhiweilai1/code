@@ -143,6 +143,7 @@ export default {
             if (res.data.data.length > 0) {
               this.rowChildren = res.data.data
             } else {
+              this.rowChildren = []
               this.$message('该老师未有学生关联')
             }
             

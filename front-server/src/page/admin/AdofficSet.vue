@@ -96,7 +96,7 @@
           <div>
             <div style="display: inline-block; color: #888">职位福利:</div>
             <div style="display: inline-block">
-              <span class="company-welfare" v-for="item in dialogItem.company.welfareArr.split(';')" :key="item">
+              <span class="company-welfare" v-if="dialogItem.company.welfareArr" v-for="item in dialogItem.company.welfareArr.split('；')" :key="item">
                 <mt-badge size="normal">{{item}}</mt-badge>
               </span>
             </div>

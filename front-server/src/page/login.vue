@@ -40,7 +40,6 @@ export default {
           userPassword: this.form.password
         }
       }).then((res) => {
-        console.log(res)
         if (res.data.code == 200) {
           this.$message({
             message: '恭喜你，登录成功',

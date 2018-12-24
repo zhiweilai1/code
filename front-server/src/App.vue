@@ -7,7 +7,7 @@
         </div>
         <div class="company-zhi-name">
           <span>
-            {{this.useMsg.userName}}
+            {{this.useMsg.company}}({{this.useMsg.userName}})
           </span>
           &nbsp;&nbsp;&nbsp;
           <span style="color: #fc6c38; cursor: pointer" @click="logout()">

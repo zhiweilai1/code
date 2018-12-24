@@ -261,8 +261,6 @@ export default {
           this.resumeloading = false
           this.$message.error('请求失败，请重试')
         })
-      } else {
-        this.$message('该老师未被学生关联')
       }
     }
   }

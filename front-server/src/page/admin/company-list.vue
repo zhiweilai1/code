@@ -128,86 +128,45 @@
     </el-dialog>
 
     <el-dialog title="公司详情" :visible.sync="detailVisible" :close-on-click-modal="false">
-      <el-row>
-        <el-col :span="4">
-          ID
-        </el-col>
-        <el-col :span="20">
-          {{companyDetail.companyId}}
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="4">
-          公司名称
-        </el-col>
-        <el-col :span="20">
-          {{companyDetail.companyName}}
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="4">
-          公司账户
-        </el-col>
-        <el-col :span="20">
-          {{companyDetail.userName}}
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="4">
-          账户密码
-        </el-col>
-        <el-col :span="20">
-          {{companyDetail.userPassword}}
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="4">
-          公司类型
-        </el-col>
-        <el-col :span="20">
-          {{companyDetail.companyType}}
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="4">
-          公司方向
-        </el-col>
-        <el-col :span="20">
-          {{companyDetail.companyDet}}
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="4">
-          公司规模
-        </el-col>
-        <el-col :span="20">
-          {{companyDetail.companyPer}}
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="4">
-          公司福利
-        </el-col>
-        <el-col :span="20">
-          {{companyDetail.welfareArr}}
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="4">
-          公司地址
-        </el-col>
-        <el-col :span="20">
-          {{companyDetail.companyPlace}}
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="4">
-          公司介绍
-        </el-col>
-        <el-col :span="20">
-          {{companyDetail.companyIntru}}
-        </el-col>
-      </el-row>
+      <el-form ref="form" :model="form" label-width="80px">
+        <el-form-item label="ID">
+          <el-input v-model="companyDetail.id" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="公司名称">
+          <el-input v-model="companyDetail.companyName" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="公司方向">
+          <el-input v-model="companyDetail.companyDet" disabled placeholder="例如：电子商务，B2C"></el-input>
+        </el-form-item>
+        <el-form-item label="公司类型">
+          <el-input v-model="companyDetail.companyType" disabled placeholder="例如：私营"></el-input>
+        </el-form-item>
+        <el-form-item label="公司规模">
+          <el-select v-model="companyDetail.companyPer" disabled placeholder="请选择活动区域">
+            <el-option label="20人以下" value="20人以下"></el-option>
+            <el-option label="20-50人" value="20-50人"></el-option>
+            <el-option label="50-100人" value="50-100人"></el-option>
+            <el-option label="100-500人" value="100-500人"></el-option>
+            <el-option label="500-1000人" value="500-1000人"></el-option>
+            <el-option label="1000-5000人" value="1000-5000人"></el-option>
+            <el-option label="5000-10000人" value="5000-10000人"></el-option>
+            <el-option label="10000人以上" value="10000人以上"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="公司福利">
+          <el-input v-model="companyDetail.welfareArr" disabled placeholder="多种福利使用中文格式；隔开"></el-input>
+        </el-form-item>
+        <el-form-item label="宣传链接">
+          <el-input v-model="companyDetail.companyUrl" disabled placeholder="可选填如：http://www.baidu.com"></el-input>
+        </el-form-item>
+        <el-form-item label="公司地点">
+          <el-input v-model="companyDetail.companyPlace" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="公司描述">
+          <el-input type="textarea" v-model="companyDetail.companyIntru" disabled></el-input>
+        </el-form-item>
+      </el-form>
+
     </el-dialog>
 
     <el-dialog title="修改信息" :visible.sync="editorVisible" :close-on-click-modal="false">

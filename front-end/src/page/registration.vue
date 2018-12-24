@@ -120,6 +120,7 @@ export default {
     },
     outPoint: function() {
       this.isShow = true
+      document.body.scrollTop = 0
     },
 
     focusPoint: function () {

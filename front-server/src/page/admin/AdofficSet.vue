@@ -128,13 +128,13 @@
           <div class="offic-zhize">
             <div class="litle-title">岗位职责:</div>
             <p class="litle-title zhi-content" v-for="(item, index) in dialogItem.offResponsibilities.split(';')" :key="index">
-              {{index + 1}}、{{item}}
+              {{item}}
             </p>
           </div>
           <div class="offic-yaoqiu">
             <div class="litle-title">任职要求:</div>
             <p class="litle-title zhi-content" v-for="(item, index) in dialogItem.offRequirements.split(';')" :key="index">
-              {{index + 1}}、{{item}}
+              {{item}}
             </p>
           </div>
         </div>

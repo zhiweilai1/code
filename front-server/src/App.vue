@@ -33,7 +33,7 @@
       
       <el-container>
         
-        <el-main>
+        <el-main :style="{'height': useMsg ? 'calc(100vh - 62px)': '100vh'}">
           <router-view />
         </el-main>
       </el-container>

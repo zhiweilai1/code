@@ -39,14 +39,14 @@
         <div class="login-content">
           <div class="login-yan">
             <div class="login-yan-left">
-              <input  v-model="teatelphone" placeholder="请输入手机号" class="number-input">
+              <input  v-model="teatelphone" placeholder="请输入手机号" class="number-input" @blur="outPoint()" @focus="focusPoint()">
             </div>
             <div class="login-yan-right">
               <mt-button size="small" type="primary" :disabled="isPortTea" @click="getPortTea()">{{teahuoContent}}</mt-button>
             </div>
           </div>
           <div class="login-tel">
-            <input  v-model="teayanNum" placeholder="请输入验证码" class="number-input">
+            <input  v-model="teayanNum" placeholder="请输入验证码" class="number-input" @blur="outPoint()" @focus="focusPoint()">
           </div>
         </div>
       </div>

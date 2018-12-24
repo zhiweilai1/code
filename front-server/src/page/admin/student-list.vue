@@ -28,7 +28,7 @@
           <el-select v-model="formInline.user_status" placeholder="请选择" @change="resumeList()">
             <el-option
               label="全部状态"
-              value="全部状态">
+              value="">
             </el-option>
             <el-option
               label="未实习-随时到岗"
@@ -166,8 +166,14 @@
         label="状态">
       </el-table-column>
       <el-table-column
-        prop="teacher"
         label="关联老师">
+         <template slot-scope="scope">
+           {{scope.row.teacher && scope.row.teacher.nickName}} {{ scope.row.teacher && scope.row.teacher.telPhone ? '(' + scope.row.teacher.telPhone + ')' : ''}}
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="create_time"
+        label="创建时间">
       </el-table-column>
   </el-table>
   </div>
@@ -218,6 +224,9 @@ export default {
       }).then((res) => {
         this.resumeloading = false
         if (res.data.code == 200) {
+          for (let i = 0; i < res.data.data.length; i++) {
+            res.data.data[i].create_time = res.data.data[i].create_time.replace('T', ' ').replace('Z', '')
+          }
           this.resumeListData = res.data.data
         } else {
           this.$message.error('请求失败，请重试')
@@ -252,6 +261,8 @@ export default {
           this.resumeloading = false
           this.$message.error('请求失败，请重试')
         })
+      } else {
+        this.$message('该老师未被学生关联')
       }
     }
   }

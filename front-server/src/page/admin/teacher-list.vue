@@ -32,7 +32,7 @@
                 <span>{{ item.user_sex }}</span>
               </el-form-item>
               <el-form-item label="电话">
-                <span>{{ item.user_phone }}</span>
+                <span>{{ item.tel_phone }}</span>
               </el-form-item>
               <el-form-item label="状态">
                 <span>{{ item.user_status }}</span>
@@ -53,16 +53,16 @@
       >
       </el-table-column>
       <el-table-column
-        prop="user_age"
-        label="年龄">
-      </el-table-column>
-      <el-table-column
         prop="user_sex"
         label="性别">
       </el-table-column>
       <el-table-column
         prop="tel_phone"
         label="电话">
+      </el-table-column>
+      <el-table-column
+        prop="create_time"
+        label="创建时间">
       </el-table-column>
   </el-table>
   </div>
@@ -110,7 +110,11 @@ export default {
       }).then((res) => {
         this.resumeloading = false
         if (res.data.code == 200) {
+          for (let i = 0; i < res.data.data.length; i++) {
+            res.data.data[i].create_time = res.data.data[i].create_time.replace('T', ' ').replace('Z', '')
+          }
           this.resumeListData = res.data.data
+          
         } else {
           this.$message.error('请求失败，请重试')
         }
@@ -136,7 +140,12 @@ export default {
         }).then((res) => {
           this.resumeloading = false
           if (res.data.code == 200) {
-            this.rowChildren = res.data.data
+            if (res.data.data.length > 0) {
+              this.rowChildren = res.data.data
+            } else {
+              this.$message('该老师未有学生关联')
+            }
+            
           } else {
             this.$message.error('请求失败，请重试')
           }

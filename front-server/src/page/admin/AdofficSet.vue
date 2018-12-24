@@ -252,6 +252,7 @@ export default {
     }
   },
   created() {
+    this.height = window.innerHeight - 100
     if (window.sessionStorage.getItem('adSetOffic')) {
       this.companyId = window.sessionStorage.getItem('adSetOffic')
       this.officList()

@@ -50,7 +50,7 @@
           </div>
         </div>
       </div>
-      
+
     </div>
     <mt-button type="primary" class="registration-button" @click="registration()">注册</mt-button>
     <span class="logon-jump" @click="jumpTo()" :style="{'display': isShow ? 'block':'none'}">登录</span>
@@ -78,7 +78,7 @@ export default {
       stuyanNum: '',
       teayanNum: '',
       popupVisible: '',
-      region: '北京大学',
+      region: '',
       regionVisible: false,
       myAddressSlots: [
           //省
@@ -107,7 +107,7 @@ export default {
     }
   },
   created() {
-    if (!document.cookie || document.cookie.indexOf('ZWL_ID') == -1) { 
+    if (!document.cookie || document.cookie.indexOf('ZWL_ID') == -1) {
       window.location.href = '/wechat/login?next=registration'
       return
     }
@@ -136,8 +136,8 @@ export default {
         MessageBox('提示', '您还未输入手机号')
         return false
       } else {
-        if(!(/^1[345789]\d{9}$/.test(this.stutelphone))){ 
-          MessageBox('提示', '手机号码有误，请重填');  
+        if(!(/^1[345789]\d{9}$/.test(this.stutelphone))){
+          MessageBox('提示', '手机号码有误，请重填');
           return false;
         } else {
           this.isPortStu = true
@@ -170,8 +170,8 @@ export default {
         MessageBox('提示', '您还未输入手机号')
         return false
       } else {
-        if(!(/^1[345789]\d{9}$/.test(this.teatelphone))){ 
-          MessageBox('提示', '手机号码格式有误，请重填') 
+        if(!(/^1[345789]\d{9}$/.test(this.teatelphone))){
+          MessageBox('提示', '手机号码格式有误，请重填')
           return false;
         } else {
           this.isPortTea = true
@@ -229,7 +229,7 @@ export default {
               })
             }
           }
-          
+
         }
       }
       return cityArr;

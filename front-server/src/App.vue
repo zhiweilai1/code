@@ -3,7 +3,7 @@
     <el-container>
       <el-header v-if="useMsg">
         <div class="company-zhi">
-          职位来
+          职位来后台管理
         </div>
         <div class="company-zhi-name">
           <span>
@@ -15,7 +15,7 @@
           </span>
         </div>
       </el-header>
-      <el-container style="height: 500px; border: 1px solid #eee" >
+      <el-container style="height: 500px;" >
         <el-aside width="200px" style="background-color: rgb(238, 241, 246)"  v-if="useMsg">
           <el-menu router :default-active="this.$router.path" background-color="#545c64"
           text-color="#fff">
@@ -55,12 +55,7 @@ export default {
   },
   created() {
     this.getMenuList()
-    let menuList = setInterval(() => {
-      this.getMenuList()
-      if (window.sessionStorage.getItem('userMsg')) {
-        clearInterval(menuList)
-      }
-    }, 1000)
+    this.getMenuList()
   },
   methods: {
     logout: function () {
@@ -72,16 +67,22 @@ export default {
     },
     getMenuList: function() {
       let userName = window.sessionStorage.getItem('userMsg') && JSON.parse(window.sessionStorage.getItem('userMsg')) || undefined
-      console.log(userName)
       this.useMsg = userName
       if (!userName) {
         this.layMenu = [{
           name: '登录',
           icon: 'el-icon-menu',
         }]
-        this.$router.push({
-          path: '/login'
-        })
+        if (window.location.href.indexOf('Forget') > -1) {
+          this.$router.push({
+            path: '/Forget'
+          })
+        } else {
+          this.$router.push({
+            path: '/login'
+          })
+        }
+        
       } else if (userName.userType == 'company') {
           this.layMenu = [{
             name: '信息管理',
@@ -96,6 +97,9 @@ export default {
             child: [{
               path: '/CoSet',
               name: '公司设置'
+            }, {
+              path: '/Forget',
+              name: '密码设置'
             }]
           }]
       } else {
@@ -143,6 +147,8 @@ body {
   line-height: 60px;
   color: #fff;
   font-size: 20px;
+  width: 200px;
+  padding-left: 20px;
 }
 .company-zhi-name {
   float: right;
@@ -150,8 +156,9 @@ body {
   color: #fff;
 }
 .el-header {
-  background: rgb(12, 75, 138);
+  background: #5dd5ca;
   overflow: hidden;
+  padding-left: 0px;
 }
 .title {
   font-size: 16px;

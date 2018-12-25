@@ -50,7 +50,7 @@
               </el-select>
             </el-form-item>
             <el-form-item label="公司福利">
-              <el-input v-model="form.welfareArr" placeholder="多种福利使用中文格式；隔开"></el-input>
+              <el-input v-model="form.welfareArr" placeholder="多种福利使用空格隔开"></el-input>
             </el-form-item>
             <el-form-item label="宣传链接">
               <el-input v-model="form.companyUrl" placeholder="可选填如：http://www.baidu.com"></el-input>
@@ -63,7 +63,7 @@
             </el-form-item>
 
             <el-form-item>
-              <el-button type="primary" @click="onSubmit">立即创建</el-button>
+              <el-button type="primary" @click="onSubmit">保存</el-button>
             </el-form-item>
           </el-form>
         </div>   
@@ -138,7 +138,7 @@ export default {
     form: {
       handler(newContext) {
         if (newContext.welfareArr) {
-          this.showwel = newContext.welfareArr.split('；')
+          this.showwel = newContext.welfareArr.split(' ')
         }
       }
     }
@@ -268,7 +268,7 @@ export default {
           this.backImg = res.data.data.company.backImg
           this.companyImg = res.data.data.company.companyImg
           this.form = res.data.data.company
-          this.showwel = this.form.welfareArr &&this.form.welfareArr.split('；')
+          this.showwel = this.form.welfareArr &&this.form.welfareArr.split(' ')
         } else {
           this.$message.error('请求失败，请重试')
         }

@@ -81,7 +81,7 @@ export default {
         this.userDuties = workMsg.userDuties
         this.workBeginTime = workMsg.beginTime
         this.workEndTime = workMsg.endTime
-        window.sessionStorage.removeItem('workMsg')
+        window.sessionStorage.removeItem('workIndex')
       }
     },
     methods: {

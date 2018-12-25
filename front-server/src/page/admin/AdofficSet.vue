@@ -96,7 +96,7 @@
           <div>
             <div style="display: inline-block; color: #888">职位福利:</div>
             <div style="display: inline-block">
-              <span class="company-welfare" v-if="dialogItem.company.welfareArr" v-for="item in dialogItem.company.welfareArr.split('；')" :key="item">
+              <span class="company-welfare" v-if="dialogItem.company.welfareArr" v-for="item in dialogItem.company.welfareArr.split(' ')" :key="item">
                 <mt-badge size="normal">{{item}}</mt-badge>
               </span>
             </div>
@@ -127,13 +127,13 @@
           </div>
           <div class="offic-zhize">
             <div class="litle-title">岗位职责:</div>
-            <p class="litle-title zhi-content" v-for="(item, index) in dialogItem.offResponsibilities.split(';')" :key="index">
+            <p class="litle-title zhi-content" v-for="(item, index) in dialogItem.offResponsibilities.split(' ')" :key="index">
               {{item}}
             </p>
           </div>
           <div class="offic-yaoqiu">
             <div class="litle-title">任职要求:</div>
-            <p class="litle-title zhi-content" v-for="(item, index) in dialogItem.offRequirements.split(';')" :key="index">
+            <p class="litle-title zhi-content" v-for="(item, index) in dialogItem.offRequirements.split(' ')" :key="index">
               {{item}}
             </p>
           </div>
@@ -191,10 +191,10 @@
               <el-input v-model="addForm.offPlace"></el-input>
             </el-form-item>
             <el-form-item label="岗位职责">
-              <el-input type="textarea" v-model="addForm.offResponsibilities" placeholder="多条内容请以英文类型的;分隔"></el-input>
+              <el-input type="textarea" v-model="addForm.offResponsibilities" placeholder="多条内容请以空格分隔"></el-input>
             </el-form-item>
             <el-form-item label="任职要求">
-              <el-input type="textarea" v-model="addForm.offRequirements" placeholder="多条内容请以英文类型的;分隔"></el-input>
+              <el-input type="textarea" v-model="addForm.offRequirements" placeholder="多条内容请以空格分隔"></el-input>
             </el-form-item>
           </el-form>
         </div>

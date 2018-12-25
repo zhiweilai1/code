@@ -2,23 +2,33 @@
     <div class="application">
         <div v-title>历史记录</div>
         <div v-if="dataList.length > 0">
-            <div class="hire-detail" v-for="(item, index) in dataList" :key="index" @click="jumpToDetail(item.officeId)">
-                <div class="hire-detail-left">
-                <img :src="item.company.companyImg" alt="">
-                </div>
-                <div class="hire-detail-right">
-                <div class="company-off-card-title">
-                    <div class="company-off-card-title-left ellipsis-1">{{item.offName}}</div>
-                    <div class="company-off-card-title-right">{{item.offMoney}}</div>
-                </div>
-                <div class="litle-title hire-company ellipsis-1">
-                    {{item.companyName}}
-                </div>
-                <div class="litle-title ellipsis-1">
-                    {{item.pushTime | time}}&nbsp;{{item.offPlace}}&nbsp;{{item.offType}}
-                </div>
-                </div>
+          <div class="hire-detail" v-for="(item, index) in dataList" :key="index" @click="jumpToDetail(item.officeId)">
+
+            <div class="bo-offic-box">
+              <div class="bo-offic-name ellipsis-1">
+                {{item.offName}}
+              </div>
+              <div class="bo-offic-money ellipsis-1">
+                {{item.offMoney}}
+              </div>
             </div>
+            <div class="bo-offic-msg ellipsis-1">
+              {{item.offPlace}}&#x3000;{{item.offEducation}}&#x3000;{{item.offExperience}}
+            </div>
+            <div class="bo-company-box">
+              <div class="bo-company-img">
+                <img :src="item.company.companyImg" alt="">
+              </div>
+              <div class="bo-company-msg">
+                <div class="bo-company-name ellipsis-1">
+                  {{item.company.companyName}}
+                </div>
+                <div class="bo-company-fu ellipsis-1">
+                  {{item.company.companyDet}}&#x3000;{{item.company.companyPer}}&#x3000;{{item.company.companyType}}
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         <div v-else class="no-msg">
             <img src="../../static/no-msg.png" alt="">
@@ -117,6 +127,7 @@ export default {
 }
 .hire-detail {
   overflow: hidden;
+  box-sizing: border-box;
   width: 100%;
   padding: 10px;
   background-color: #fff;
@@ -134,7 +145,6 @@ export default {
   height: 100%;
   border-radius: 10px;
   border: 1px solid rgb(197, 196, 196);
-  box-shadow: 5px 5px 10px rgba(215, 215, 215, 1);
 }
 .company-off-card-title {
   overflow: hidden;

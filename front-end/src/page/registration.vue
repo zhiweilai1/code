@@ -112,6 +112,11 @@ export default {
       window.location.href = '/wechat/login?next=registration'
       return
     }
+    if (window.localStorage.getItem('userMsg')) {
+      this.$router.push({
+        path: '/person'
+      })
+    }
   },
   methods: {
     jumpTo: function() {

@@ -69,7 +69,7 @@
               </el-form-item>
 
               <el-form-item>
-                <el-button type="primary" @click="onSubmit">立即创建</el-button>
+                <el-button type="primary" @click="onSubmit">保存</el-button>
               </el-form-item>
             </el-form>
           </div>
@@ -145,7 +145,7 @@ export default {
     form: {
       handler(newContext) {
         if (newContext.welfareArr) {
-          this.showwel = newContext.welfareArr.split('；')
+          this.showwel = newContext.welfareArr.split(' ')
         }
       }
     }
@@ -251,7 +251,7 @@ export default {
           this.backImg = res.data.data.company.backImg
           this.companyImg = res.data.data.company.companyImg
           this.form = res.data.data.company
-          this.showwel = this.form.welfareArr &&this.form.welfareArr.split('；')
+          this.showwel = this.form.welfareArr &&this.form.welfareArr.split(' ')
         } else {
           this.$message.error(res.data.msg)
         }

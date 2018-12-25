@@ -48,8 +48,7 @@
           <el-button
             size="mini"
             type="primary"
-            @click="handleOffic(scope.$index, scope.row)">点击查看
-          </el-button>
+            @click="handleOfficSet(scope.$index, scope.row)">职位详情</el-button>
         </template>
       </el-table-column>
       <el-table-column
@@ -88,6 +87,7 @@
       <el-table-column label="操作">
         <template slot-scope="scope">
           <el-button
+            style="margin-bottom: 5px;"
             size="mini"
             type="primary"
             @click="handleDetail(scope.$index, scope.row)">详情</el-button>
@@ -97,9 +97,7 @@
           <el-button
             size="mini"
             @click="handleCompanySet(scope.$index, scope.row)">添加公司配置</el-button>
-          <el-button
-            size="mini"
-            @click="handleOfficSet(scope.$index, scope.row)">添加职位</el-button>
+          
           <el-button
             size="mini"
             type="danger"

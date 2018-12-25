@@ -1,16 +1,22 @@
 <template>
   <div class="Login">
-    <div class="login-content">
+    <div class="login-content" style="padding-right: 45px;">
       <el-form ref="form" :model="form" label-width="80px">
         <el-form-item label="账号">
           <el-input v-model="form.userName" size="small"></el-input>
         </el-form-item>
-        <el-form-item label="密码">
+        <el-form-item label="密码" style="margin-bottom: 3px;">
           <el-input v-model="form.password" size="small" type="password"></el-input>
         </el-form-item>
+        <span @click="forgetPassword()" style="display: block;
+    text-align: right;
+    font-size: 14px;
+    cursor: pointer;
+    color: #666;">
+            忘记密码
+          </span>
         <el-form-item>
-          <el-button type="primary" @click="onSubmit">登录</el-button>
-          <el-button @click="forgetPassword()">忘记密码</el-button>
+          <el-button type="primary" @click="onSubmit" style="width: 100%; margin-top: 10px;">登录</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -44,7 +50,7 @@ export default {
           this.$message({
             message: '恭喜你，登录成功',
             type: 'success'
-          });
+          })
           window.sessionStorage.setItem('userMsg', JSON.stringify(res.data.data))
           setTimeout(() => {
             window.location.href = window.location.protocol+"//"+window.location.host
@@ -78,7 +84,7 @@ export default {
 }
 .login-content {
   width: 400px;
-  height: 200px;
+  height: 230px;
   position: absolute;
   left: calc(50% - 200px);
   top: calc(50% - 100px);

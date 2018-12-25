@@ -51,6 +51,9 @@
         <el-form-item>
           <el-button type="primary" @click="resumeList()" size="small">查询</el-button>
         </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="download()" size="small">导出</el-button>
+        </el-form-item>
       </el-form>
     </div>
 
@@ -212,6 +215,19 @@ export default {
     }
   },
   methods: {
+    download: function () {
+      window.open('http://admin.myzhiweilai.com/api/back/student/excel?keyword=' + this.formInline.keyword + '&userAge=' + this.formInline.userAge + '&userSex=' + this.formInline.userSex + '&user_status=' + this.formInline.user_status)
+      // this.axios({
+      //   method: 'post',
+      //   url: '/api/back/student/excel',
+      //   headers: {
+      //     'Content-type': 'application/json;charset=UTF-8'
+      //   },
+      //   data: this.formInline
+      // }).then((res) => {
+      //  console.log(res)
+      // })
+    },
     resumeList: function() {
       this.resumeloading = true
       this.axios({

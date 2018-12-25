@@ -203,9 +203,7 @@ export default {
 </style>
 
 <style>
-.addTec {
-  padding-top: 20px;
-}
+
 .region-popup{
     width: 100%;
   }

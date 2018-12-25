@@ -1,19 +1,19 @@
 <template>
   <div class="Forget">
-    <div class="login-content login-content">
+    <div class=" login-contents">
       <div class="login-yan">
         <div class="login-yan-left">
-          <input type="number" v-model="telphone" placeholder="请输入手机号">
+          <input v-model="telphone" placeholder="请输入手机号">
         </div>
         <div class="login-yan-right">
           <el-button size="small" type="primary" :disabled="isPort" @click="getPort()">{{huoContent}}</el-button>
         </div>
       </div>
       <div class="login-tel">
-        <input type="number" v-model="yanNum" placeholder="请输入验证码" style="width: 100%">
+        <input v-model="yanNum" placeholder="请输入验证码" style="width: 100%">
       </div>
       <div class="login-tel">
-        <input type="number" v-model="userPassword" placeholder="请输入新密码" style="width: 100%">
+        <input v-model="userPassword" placeholder="请输入新密码" style="width: 100%">
       </div>
       <el-button type="primary" class="login-button" @click="login()">提交</el-button>
     </div>
@@ -81,11 +81,18 @@ export default {
           }
         }).then((res) => {
           if (res.data.code == 200 || res.data.code == '200') {
-            this.$router.push({
-              path: '/login'
-            })
+            this.$message({
+              message: '恭喜你，修改成功',
+              type: 'success'
+            });
+            setTimeout(() => {
+              this.$router.push({
+                path: '/login'
+              })
+            }, 1000);
+            
           } else {
-            this.$message.error('修改失败，请重试')
+            this.$message.error(res.data.msg)
           }
         })
       }
@@ -103,7 +110,7 @@ export default {
   background-size: 100% 100%;
   position: relative;
 }
-.login-content {
+.login-contents {
   width: 400px;
   height: 260px;
   position: absolute;
@@ -113,6 +120,9 @@ export default {
   padding: 20px;
   border-radius: 10px;
   box-shadow: 10px 10px 20px #666;
+
+  box-sizing: border-box;
+  margin: auto;
 }
 .login-tou {
   padding-top: 40px;
@@ -123,14 +133,6 @@ export default {
 .login-tou img {
   width: 100px;
   height: 100px;
-  border-radius: 10px;
-  box-shadow: 0 0 20px rgba(215, 215, 215, 1);
-}
-
-.login-content {
-  box-sizing: border-box;
-  padding: 10px;
-  margin: auto;
   border-radius: 10px;
   box-shadow: 0 0 20px rgba(215, 215, 215, 1);
 }

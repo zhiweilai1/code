@@ -68,11 +68,7 @@ export default {
             MessageBox.alert('姓名禁止输入一个字')
           } else { 
             if (this.validateEmail(this.userEmail)) {
-              if (!(/^1[345789]\d{9}$/.test(this.userPhone))) {
-                MessageBox('提示', '手机号码格式有误，请重填') 
-              } else {
-                this.submit()
-              }
+              this.submit()
             } else {
               MessageBox.alert('您未填写邮箱，或填写邮箱格式有误')
             } 

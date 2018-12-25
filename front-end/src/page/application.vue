@@ -8,10 +8,10 @@
                         {{item.offName}}
                     </div>
                     <div class="ellipsis-1 litle-title">
-                        {{item.offMoney}}&nbsp;|&nbsp;{{item.companyPlace}}
+                        {{item.offMoney}}&nbsp;|&nbsp;{{item.company.companyPlace}}
                     </div>
                     <div class="ellipsis-1 litle-title">
-                        {{item.companyName}}
+                        {{item.company.companyName}}
                     </div>
                 </div>
                 <div class="jot-applicat-card-right">
@@ -26,7 +26,7 @@
                     </div>
                     <div v-else style="margin-bottom: 10px;">
                         <!-- <mt-badge size="small" type="success"  color="#f38031">面试评价</mt-badge> -->
-                      <star v-on:starMarkChange="starMarkChange" :outIndex="Number(item.officeId)" :defaultRating="item.userDes ? Number(item.userDes) : 5"></star>
+                      <!-- <star v-on:starMarkChange="starMarkChange" :outIndex="Number(item.officeId)" :defaultRating="item.userDes ? Number(item.userDes) : 5"></star> -->
                     </div>
                 </div>
             </div>
@@ -151,11 +151,11 @@ export default {
 }
 .jot-applicat-card-left {
     float: left;
-    width: calc(100% - 150px)
+    width: calc(100% - 60px)
 }
 .jot-applicat-card-right {
     float: right;
-    width: 150px;
+    width: 60px;
     text-align: right;
 }
 .job-title {

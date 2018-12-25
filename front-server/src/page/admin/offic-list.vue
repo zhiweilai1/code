@@ -133,10 +133,6 @@ export default {
       this.$router.push({
         path: '/login'
       })
-    } else if (userName.isIdentity == '1') {
-      this.$router.push({
-        path: '/'
-      })
     } else {
       this.officList()
     }

@@ -75,7 +75,7 @@
             <span>{{ rowChildren.baseMsg.userSex }}</span>
           </el-form-item>
           <el-form-item label="电话">
-            <span>{{ rowChildren.baseMsg.userPhone }}</span>
+            <span>{{  rowChildren.baseMsg.userPhone}}</span>
           </el-form-item>
           <el-form-item label="状态">
             <span>{{ rowChildren.baseMsg.userStatus }}</span>
@@ -149,8 +149,10 @@
         label="性别">
       </el-table-column>
       <el-table-column
-        prop="userPhone"
         label="电话">
+        <template slot-scope="scope">
+          <!-- {{this.userName.userType == 'company' && this.userName.isRead == '0' ? '***' : ''}} -->
+        </template>
       </el-table-column>
       <el-table-column
         prop="userEmail"
@@ -179,7 +181,11 @@ export default {
       },
       resumeListData: [],
       adResumeId: '',
-      rowChildren: {}
+      rowChildren: {},
+      userName: {
+        userType: '',
+        isRead: ''
+      }
     }
   },
   created() {
@@ -187,13 +193,11 @@ export default {
     let adResumeId = window.sessionStorage.getItem('adOffic')
     this.adResumeId = adResumeId
     let userName = window.sessionStorage.getItem('userMsg') && JSON.parse(window.sessionStorage.getItem('userMsg')) || undefined
+    this.userName = userName
+    console.log(this.userName)
     if (!userName) {
       this.$router.push({
         path: '/login'
-      })
-    } else if (userName.isIdentity == '1') {
-      this.$router.push({
-        path: '/'
       })
     } else {
       this.resumeList()
@@ -214,6 +218,12 @@ export default {
       }).then((res) => {
         this.resumeloading = false
         if (res.data.code == 200) {
+          if (this.userName.userType == 'company' && this.userName.isRead == '0') {
+            for (let i = 0; i < res.data.data.length; i++) {
+              res.data.data[i].telPhone = '***'
+              res.data.data[i].userEmail = '***'
+            }
+          }
           this.resumeListData = res.data.data
         } else {
           this.$message.error('请求失败，请重试')
@@ -241,6 +251,10 @@ export default {
           this.resumeloading = false
           if (res.data.code == 200) {
             if (res.data.data.baseMsg) {
+              if (this.userName.userType == 'company' && this.userName.isRead == '0') {
+                res.data.data.baseMsg.userPhone = '***'
+                res.data.data.baseMsg.userEmail = '***'
+              }
               this.rowChildren = res.data.data
             } else {
               this.$message('该用户暂无简历')

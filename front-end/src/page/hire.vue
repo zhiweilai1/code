@@ -18,7 +18,7 @@
     </div>
     </div>
     <div class="hire-type">
-      <div class="selectBox" style="width: 400px; line-height: 40px; padding-left: 10px;">
+      <div class="selectBox" style="width: 100%; box-sizing: border-box; line-height: 40px; padding-left: 10px;">
       <div class="selectBox_show" v-on:click.stop="arrowDown">
         <i class="icon icon_arrowDown"></i>
         <p title="全部类型">{{unitName}}</p>
@@ -235,6 +235,7 @@ export default {
   padding: 10px;
   font-size: 15px;
   color: #5dd5ca;
+  box-sizing: border-box;
 }
 /* .hire-list {
   padding: 0 10px 0 10px;

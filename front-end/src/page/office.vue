@@ -6,15 +6,15 @@
         <!-- 名称及位置 -->
         <div class="company-off-card-title">
           <div class="company-off-card-title-left">{{data.officeDeatil && data.officeDeatil.offName}}</div>
-          <div class="company-off-card-title-right">{{data.officeDeatil.offMoney}}</div>
+          <div class="company-off-card-title-right">{{data.officeDeatil && data.officeDeatil.offMoney}}</div>
         </div>
         <div class="company-off-card-place">
-          {{data.officeDeatil.isExer ? '实习' : '全职'}}&nbsp;|&nbsp;{{data.officeDeatil.offPlace}}&nbsp;|&nbsp;{{data.officeDeatil.offExperience}}&nbsp;|&nbsp;{{data.officeDeatil.offEducation}}
+          {{data.officeDeatil && data.officeDeatil.isExer ? '实习' : '全职'}}&nbsp;|&nbsp;{{data.officeDeatil && data.officeDeatil.offPlace}}&nbsp;|&nbsp;{{data.officeDeatil && data.officeDeatil.offExperience}}&nbsp;|&nbsp;{{data.officeDeatil && data.officeDeatil.offEducation}}
         </div>
         <div>
           <div style="display: inline-block; color: #888">职位福利:</div>
           <div style="display: inline-block">
-            <span class="company-welfare" v-for="item in data.company.welfareArr" :key="item">
+            <span class="company-welfare" v-if="data.company && data.company.welfareArr" v-for="item in data.company.welfareArr" :key="item">
               <mt-badge size="normal">{{item}}</mt-badge>
             </span>
           </div>
@@ -109,9 +109,9 @@ export default {
           welfareArr: ''
         }
       }
-      data.company.welfareArr = data.company.welfareArr && data.company.welfareArr.split('；') || []
-      data.officeDeatil.offResponsibilities = data.officeDeatil.offResponsibilities.split(';')
-      data.officeDeatil.offRequirements = data.officeDeatil.offRequirements.split(';')
+      data.company.welfareArr = data.company.welfareArr && data.company.welfareArr.split(' ') || []
+      data.officeDeatil.offResponsibilities = data.officeDeatil.offResponsibilities.split(' ')
+      data.officeDeatil.offRequirements = data.officeDeatil.offRequirements.split(' ')
       self.data = data
     })
     this.postHistory()
@@ -188,13 +188,13 @@ export default {
 .company-off-card-title-left {
   float: left;
   font-size: 18px;
-  max-width: 70%;
+  max-width: calc(100% - 140px);
   line-height: 1.4;
   font-weight: 500;
 }
 .company-off-card-title-right {
   float: right;
-  max-width: 30%;
+  max-width: 140px;
   white-space: nowrap;
   text-overflow: ellipsis;
   text-align: right;

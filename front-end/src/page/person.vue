@@ -207,6 +207,7 @@ export default {
 <style>
 .login-out-button {
   width: 100%;
+  margin-bottom: 55px;
 }
 </style>
 

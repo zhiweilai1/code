@@ -257,7 +257,7 @@ export default {
     addOfficButton: function () {
        this.addOfficVisible = true
        this.addForm = {
-        companyId: this.userName.userId,
+        companyId: this.userName.company.companyId,
         offName: '',
         offMoney: '',
         offExperience: '',
@@ -300,7 +300,7 @@ export default {
           'Content-type': 'application/json;charset=UTF-8'
         },
         data:{
-          companyId: this.userName.userId
+          companyId: this.userName.company.companyId
         }
       }).then((res) => {
         this.offloading = false
@@ -341,7 +341,7 @@ export default {
             offResponsibilities: this.addForm.offResponsibilities,
             offType: this.addForm.offType,
             offRequirements: this.addForm.offRequirements,
-            companyId: this.userName.userId,
+            companyId: this.userName.company.companyId,
             isHot: '0',
             isExer: this.addForm.isExer
           }

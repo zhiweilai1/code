@@ -23,16 +23,16 @@
       :data="tableList"
       :height="height"
       border
-      style="width: 100%">
+      style="width: calc(100% - 20px); margin-left: 10px;margin-right: 10px">
       <el-table-column
-        prop="companyId"
-        label="ID"
+        prop="index"
+        label="序号"
         width="50">
       </el-table-column>
       <el-table-column
         prop="companyName"
         label="公司名称"
-        width="250">
+        >
       </el-table-column>
       <el-table-column
         prop="userName"
@@ -43,13 +43,8 @@
         label="账户密码">
       </el-table-column>
       <el-table-column
-        label="职位情况">
-        <template slot-scope="scope">
-          <el-button
-            size="mini"
-            type="primary"
-            @click="handleOfficSet(scope.$index, scope.row)">职位详情</el-button>
-        </template>
+        prop="create_time"
+        label="创建时间">
       </el-table-column>
       <el-table-column
         label="设置首页热门公司">
@@ -84,20 +79,23 @@
           </el-switch>
         </template>
       </el-table-column>
-      <el-table-column label="操作">
+      <el-table-column label="操作" width="150">
         <template slot-scope="scope">
           <el-button
             style="margin-bottom: 5px;"
             size="mini"
             type="primary"
-            @click="handleDetail(scope.$index, scope.row)">详情</el-button>
+            @click="handleDetail(scope.$index, scope.row)">公司详情</el-button>
           <el-button
             size="mini"
             @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
           <el-button
             size="mini"
             @click="handleCompanySet(scope.$index, scope.row)">添加公司配置</el-button>
-          
+          <el-button
+            size="mini"
+            type="primary"
+            @click="handleOfficSet(scope.$index, scope.row)">职位详情</el-button>
           <el-button
             size="mini"
             type="danger"
@@ -185,6 +183,24 @@
         </el-form-item>
       </el-form>
     </el-dialog>
+    <el-dialog
+  title="提示"
+  :visible.sync="dialogVisible"
+  width="30%"
+  :before-close="handleClose">
+  <span>确定删除？</span>
+  <span slot="footer" class="dialog-footer">
+    <el-button @click="dialogVisible = false">取 消</el-button>
+    <el-button type="primary" @click="deleteCompany()">确 定</el-button>
+  </span>
+</el-dialog>
+    <div class="block">
+    <el-pagination
+    @current-change="changePage"
+      layout="prev, pager, next"
+      :total="total">
+    </el-pagination>
+  </div>
   </div>
 </template>
 <script>
@@ -192,6 +208,10 @@ export default {
   name: 'CompanyList',
   data() {
     return {
+      dialogVisible: false,
+      deletObj: {},
+      total: 200,
+      page: 1,
       comLoad: false,
       height: 300,
       isAddCompany: false,
@@ -224,7 +244,7 @@ export default {
     }
   },
   created() {
-    this.height = window.innerHeight - 120
+    this.height = window.innerHeight - 230
     let userName = window.sessionStorage.getItem('userMsg') && JSON.parse(window.sessionStorage.getItem('userMsg')) || undefined
     if (!userName) {
       this.$router.push({
@@ -239,12 +259,22 @@ export default {
     }
   },
   methods: {
+    changePage: function(currentPage) {
+      this.page = currentPage
+      this.companyList()
+    },
     addCompany: function() {
       this.isAddCompany = true
     },
     submitAddCompanyForm: function(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
+          if (!(/^1[345789]\d{9}$/.test(this.ruleForm.userName))) {
+            this.$message({
+              message: '公司账号必须是手机号哟'
+            })
+            return
+          }
           this.axios({
             method: 'post',
             url: '/api/back/addCompany',
@@ -258,13 +288,12 @@ export default {
                 message: '恭喜您，添加成功',
                 type: 'success'
               })
+              this.page = 1
               this.companyList()
               this.isAddCompany = false
             } else {
-              this.$message.error('请求失败，请重试')
+              this.$message.error(res.data.msg)
             }
-          }).catch(() => {
-            this.$message.error('请求失败，请重试')
           })
         } else {
           return false
@@ -297,10 +326,8 @@ export default {
               this.companyList()
               this.editorVisible = false
             } else {
-              this.$message.error('请求失败，请重试')
+              this.$message.error(res.data.msg)
             }
-          }).catch(() => {
-            this.$message.error('请求失败，请重试')
           })
         } else {
           return false
@@ -320,21 +347,25 @@ export default {
         },
         data: {
           companyName: this.formInline.companyName,
-          userName: this.formInline.accountNumber
+          userName: this.formInline.accountNumber,
+          page: this.page
         }
       }).then((res) => {
         this.comLoad = false
         if (res.data.code == 200) {
-          for (let i = 0; i < res.data.data.length; i++) {
-            res.data.data[i].isHot = res.data.data[i].isHot == '1' ? true : false
-            res.data.data[i].isRead = res.data.data[i].isRead == '1' ? true : false
+          this.total = res.data.data.total
+          for (let i = 0; i < res.data.data.res.length; i++) {
+            res.data.data.res[i].isHot = res.data.data.res[i].isHot == '1' ? true : false
+            res.data.data.res[i].isRead = res.data.data.res[i].isRead == '1' ? true : false
+            res.data.data.res[i].index = i + 1 + (this.page - 1) * 10
+            if (res.data.data.res[i].create_time) {
+              res.data.data.res[i].create_time = res.data.data.res[i].create_time.replace('T', ' ').replace('Z', '')
+            }
           }
-          this.tableList = res.data.data
+          this.tableList = res.data.data.res
         } else {
-          this.$message.error('请求失败，请重试')
+          this.$message.error(res.data.msg)
         }
-      }).catch(() => {
-        this.$message.error('请求失败，请重试')
       })
 
     },
@@ -370,10 +401,8 @@ export default {
           })
           this.companyList()
         } else {
-          this.$message.error('提交失败，请重试')
+          this.$message.error(res.data.msg)
         }
-      }).catch(() => {
-        this.$message.error('提交失败，请重试')
       })
     },
     handleEdit: function(index, row) {
@@ -385,7 +414,7 @@ export default {
       }
       this.editorVisible = true
     },
-    handleDelete: function(index, row) {
+    deleteCompany: function () {
       this.axios({
         method: 'post',
         url: '/api/back/deleteCompany',
@@ -393,7 +422,7 @@ export default {
           'Content-type': 'application/json;charset=UTF-8'
         },
         data: {
-          companyId: row.companyId
+          companyId: this.deletObj.companyId
         }
       }).then((res) => {
         if (res.data.code == 200) {
@@ -402,13 +431,16 @@ export default {
             type: 'success'
           })
           this.companyList()
+          this.dialogVisible = false
         } else {
-          this.$message.error('提交失败，请重试')
+          this.$message.error(res.data.msg)
         }
-      }).catch(() => {
-        this.$message.error('提交失败，请重试')
       })
-      
+    },
+    handleDelete: function(index, row) {
+      this.deletObj = row
+      this.dialogVisible = true
+
     },
     handleDetail: function(index, row) {
       this.companyDetail = row
@@ -440,10 +472,8 @@ export default {
           })
           this.companyList()
         } else {
-          this.$message.error('提交失败，请重试')
+          this.$message.error(res.data.msg)
         }
-      }).catch(() => {
-        this.$message.error('提交失败，请重试')
       })
     }
   }

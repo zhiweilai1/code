@@ -3,21 +3,20 @@
     <div class="company-form">
       <el-form :inline="true" :model="formInline" class="demo-form-inline">
         <el-form-item label="电话">
-          <el-input v-model="formInline.userPhone" placeholder="电话" size="small"></el-input>
+          <el-input v-model="formInline.userPhone" placeholder="电话" size="small" @keyup.enter.native="resumeList(1)"></el-input>
         </el-form-item>
         
         <el-form-item>
-          <el-button type="primary" @click="resumeList()" size="small">查询</el-button>
+          <el-button type="primary" @click="resumeList(1)" size="small">查询</el-button>
         </el-form-item>
       </el-form>
     </div>
 
     <el-table
     :data="resumeListData"
-    @expand-change="resumeChild"
-    :height="height"
+    border
     style="width: 100%">
-    <el-table-column type="expand">
+    <!-- <el-table-column type="expand">
       <template slot-scope="props">
         <el-form label-position="left" inline class="demo-table-expand">
           <div v-if="rowChildren.length > 0" v-for="(item, index) in rowChildren" :key="index">
@@ -41,10 +40,10 @@
           </div>
         </el-form>
       </template>
-    </el-table-column>
+    </el-table-column> -->
     <el-table-column
-        prop="id"
-        label="ID"
+    prop="index"
+        label="序号"
       >
       </el-table-column>
       <el-table-column
@@ -64,7 +63,36 @@
         prop="create_time"
         label="创建时间">
       </el-table-column>
+      <el-table-column
+      width="210"
+        label="操作">
+        <template slot-scope="scope">
+          <el-button size="mini" @click="handleTeachStu(scope.$index, scope.row)">查看关联学生</el-button>
+          <el-button
+            size="mini"
+            type="danger"
+            @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+        </template>
+      </el-table-column>
   </el-table>
+  <div class="block">
+    <el-pagination
+    @current-change="changePage"
+      layout="prev, pager, next"
+      :total="total">
+    </el-pagination>
+  </div>
+  <el-dialog
+  title="提示"
+  :visible.sync="dialogVisible"
+  width="30%"
+  :before-close="handleClose">
+  <span>确定删除？</span>
+  <span slot="footer" class="dialog-footer">
+    <el-button @click="dialogVisible = false">取 消</el-button>
+    <el-button type="primary" @click="deleteCompany()">确 定</el-button>
+  </span>
+</el-dialog>
   </div>
 </template>
 <script>
@@ -73,13 +101,16 @@ export default {
   name: 'AdTeacher',
   data() {
     return {
+      dialogVisible: false,
+      total: 100,
       height: 300,
       resumeloading: false,
       formInline: {
         userPhone: ''
       },
       resumeListData: [],
-      rowChildren: []
+      rowChildren: [],
+      deletObj: {}
     }
   },
   created() {
@@ -94,11 +125,41 @@ export default {
         path: '/'
       })
     } else {
-      this.resumeList()
+      this.resumeList(1)
     }
   },
   methods: {
-    resumeList: function() {
+     handleDelete: function(index, row) {
+      this.deletObj = row
+      this.dialogVisible = true
+    },
+    deleteCompany: function () {
+      this.axios({
+        method: 'post',
+        url: '/api/back/user/delete',
+        headers: {
+          'Content-type': 'application/json;charset=UTF-8'
+        },
+        data: {
+           user_id: this.deletObj.id
+        }
+      }).then((res) => {
+        if (res.data.code == 200) {
+          this.$message({
+            message: '恭喜您，修改成功',
+            type: 'success'
+          })
+          this.resumeList(1)
+          this.dialogVisible = false
+        } else {
+          this.$message.error(res.data.msg)
+        }
+      })
+    },
+    changePage: function(currentPage) {
+      this.resumeList(currentPage)
+    },
+    resumeList: function(page) {
       this.resumeloading = true
       this.axios({
         method: 'post',
@@ -106,14 +167,16 @@ export default {
         headers: {
           'Content-type': 'application/json;charset=UTF-8'
         },
-        data: this.formInline
+        data: Object.assign({page: page}, this.formInline) 
       }).then((res) => {
         this.resumeloading = false
         if (res.data.code == 200) {
-          for (let i = 0; i < res.data.data.length; i++) {
-            res.data.data[i].create_time = res.data.data[i].create_time.replace('T', ' ').replace('Z', '')
+          this.total = res.data.data.total
+          for (let i = 0; i < res.data.data.res.length; i++) {
+            res.data.data.res[i].create_time = res.data.data.res[i].create_time.replace('T', ' ').replace('Z', '')
+            res.data.data.res[i].index = i + 1 + (page - 1) * 10
           }
-          this.resumeListData = res.data.data
+          this.resumeListData = res.data.data.res
           
         } else {
           this.$message.error('请求失败，请重试')
@@ -121,6 +184,12 @@ export default {
       }).catch(() => {
         this.resumeloading = false
         this.$message.error('请求失败，请重试')
+      })
+    },
+    handleTeachStu: function (index, row) {
+      window.sessionStorage.setItem('t2s', JSON.stringify(row))
+      this.$router.push({
+        path: '/T2st'
       })
     },
     resumeChild: function (row, expandedRows) {
@@ -183,4 +252,8 @@ export default {
     margin-bottom: 0;
     width: 50%;
   }
+.offic-person {
+  cursor: pointer;
+  color: #409EFF;
+}
 </style>

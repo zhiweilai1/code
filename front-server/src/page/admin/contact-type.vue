@@ -46,6 +46,16 @@
       
 
     </div>
+    <div class="contact-box">
+      <h3>配置关于我们</h3>
+      <el-input
+  type="textarea"
+  :rows="2"
+  placeholder="例<p>普通文字<span>要显著的文字</span></p>"
+  v-model="textarea">
+</el-input>
+<el-button type="primary" @click="submitAboutUs(officItem)" style="margin-top: 10px;">提交</el-button>
+    </div>
     
 
   </div>
@@ -55,6 +65,7 @@ export default {
   name: 'AdContact',
   data() {
     return {
+      textarea: '',
       domains: [{
         contractPerson: '',
         contractPhone: '',
@@ -73,6 +84,39 @@ export default {
     this.getOfficType()
   },
   methods: {
+    submitAboutUs: function() {
+      this.axios({
+        method: 'post',
+        url: '/api/back/about/update',
+        headers: {
+          'Content-type': 'application/json;charset=UTF-8'
+        },
+        data: {
+          des: this.textarea
+        }
+      }).then((res) => {
+        if (res.data.code == 200) {
+          this.getAboutUs()
+        } else {
+          this.$message.error(res.data.msg)
+        }
+      })
+    },
+    getAboutUs: function () {
+      this.axios({
+        method: 'post',
+        url: '/api/about',
+        headers: {
+          'Content-type': 'application/json;charset=UTF-8'
+        }
+      }).then((res) => {
+        if (res.data.code == 200) {
+          this.textarea = res.data.data.aboutDes
+        } else {
+          this.$message.error(res.data.msg)
+        }
+      })
+    },
     getContact: function () {
       this.axios({
         method: 'post',
@@ -89,7 +133,6 @@ export default {
         }
       }).catch(() => {
         this.offloading = false
-        this.$message.error('请求失败，请重试')
       })
     },
     getOfficType: function () {
@@ -112,7 +155,8 @@ export default {
       })
     },
     submitForm(domain) {
-      this.axios({
+      if (domain.contractEmail && domain.contractPerson && domain.contractPhone) {
+        this.axios({
         method: 'post',
         url: '/api/back/postContact',
         headers: {
@@ -128,8 +172,11 @@ export default {
         }
       }).catch(() => {
         this.offloading = false
-        this.$message.error('请求失败，请重试')
       })
+      } else {
+        this.$message.error('您的信息填写不完整')
+      }
+      
     },
 
     removeDomain(item) {

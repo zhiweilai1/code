@@ -2,6 +2,9 @@
   <div class="AdcompanySet">
     <div style="margin-bottom: 10px">
       <el-button type="default" size="mini" icon="el-icon-back" @click="() => {this.$router.back(-1)}">返回</el-button>
+      <span style="display: inline-block; margin-left: 10px;">
+        公司配置
+      </span>
     </div>
     <div>
       

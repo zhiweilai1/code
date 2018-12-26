@@ -14,6 +14,7 @@ import CoSet from '@/page/company/company-set'
 import Forget from '@/page/Forget'
 import AdcompanySet from '@/page/admin/AdcompanySet'
 import AdofficSet from '@/page/admin/AdofficSet'
+import T2st from '@/page/admin/t2st'
 
 Vue.use(Router)
 
@@ -88,6 +89,10 @@ export default new Router({
       path: '/AdofficSet',
       name: 'AdofficSet',
       component: AdofficSet
+    },{
+      path: '/T2st',
+      name: 'T2st',
+      component: T2st
     }
   ]
 })

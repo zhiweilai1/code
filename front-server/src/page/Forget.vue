@@ -103,7 +103,7 @@ export default {
 <style>
 .Forget {
   width: 100%;
-  height: 100vh;
+  height: calc(100vh - 60px);
   background-color: rebeccapurple;
   background-image: url("../../static/login.jpg");
   background-repeat: no-repeat;
@@ -115,7 +115,7 @@ export default {
   height: 260px;
   position: absolute;
   left: calc(50% - 200px);
-  top: calc(50% - 100px);
+  top: calc(50% - 150px);
   background-color: #fff;
   padding: 20px;
   border-radius: 10px;
@@ -137,24 +137,25 @@ export default {
   box-shadow: 0 0 20px rgba(215, 215, 215, 1);
 }
 .login-tel {
-  height: 50px;
   box-sizing: border-box;
-  margin-bottom: 10px;
   padding-top: 10px;
 }
 .login-tel input {
-  height: 100%;
-  border: 1px solid #fff;
-  border-bottom: 1px solid #e7e8ed;
+  border: 1px solid #e7e8ed;
+  border-radius: 10px;
+  padding: 10px;
+  padding-top: 15px;
+  padding-bottom: 15px;
   font-size: 16px;
   outline:none;
 }
 .login-yan {
   height: 50px;
   box-sizing: border-box;
-  border-bottom: 1px solid #e7e8ed;
+  border: 1px solid #e7e8ed;
+  border-radius: 10px;
+  padding-left: 10px;
   overflow: hidden;
-  padding-top: 10px;
 }
 .login-yan-left {
   float: left;
@@ -173,10 +174,10 @@ export default {
   padding-right: 5px;
   width: 110px;
   text-align: right;
+  margin-top: 10px;
 }
 .login-button {
-  width: 80%;
-  margin-left: 10%;
+  width: 100%;
   margin-top: 10px;
 }
 .registration {

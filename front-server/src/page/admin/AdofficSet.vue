@@ -2,6 +2,9 @@
   <div class="AdofficSet">
     <div style="margin-bottom: 10px">
       <el-button type="default" size="mini" icon="el-icon-back" @click="() => {this.$router.back(-1)}">返回</el-button>
+      <span style="display: inline-block; margin-left: 10px;">
+        公司职位列表
+      </span>
     </div>
     <div class="AdOfficList" v-loading="offloading">
       <div style="margin-bottom: 20px;">
@@ -13,8 +16,8 @@
         border
         style="width: 100%">
         <el-table-column
-          prop="officeId"
-          label="ID"
+          prop="index"
+          label="序号"
           width="50">
         </el-table-column>
         <el-table-column
@@ -206,6 +209,13 @@
 
 
     </div>
+    <div class="block">
+    <el-pagination
+    @current-change="changePage"
+      layout="prev, pager, next"
+      :total="total">
+    </el-pagination>
+  </div>
   </div>
 </template>
 <script>
@@ -213,6 +223,8 @@ export default {
   name: 'AdofficSet',
   data() {
     return {
+      total: 400,
+      page: 1,
       companyId: '',
       height: 300,
       offloading: false,
@@ -252,7 +264,7 @@ export default {
     }
   },
   created() {
-    this.height = window.innerHeight - 180
+    this.height = window.innerHeight - 230
     if (window.sessionStorage.getItem('adSetOffic')) {
       this.companyId = window.sessionStorage.getItem('adSetOffic')
       this.officList()
@@ -262,6 +274,10 @@ export default {
     }
   },
   methods: {
+    changePage: function(currentPage) {
+      this.page = currentPage
+      this.officList()
+    },
     isTopOffic: function(index, row) {
       this.axios({
         method: 'post',
@@ -313,15 +329,18 @@ export default {
           'Content-type': 'application/json;charset=UTF-8'
         },
         data:{
+          page: this.page,
           companyId: this.companyId
         }
       }).then((res) => {
         this.offloading = false
         if (res.data.code == 200) {
-          for (let i = 0; i < res.data.data.length; i++) {
-            res.data.data[i].isHot = res.data.data[i].isHot == '1' ? true : false
+          this.total = res.data.data.total
+          for (let i = 0; i < res.data.data.res.length; i++) {
+            res.data.data.res[i].isHot = res.data.data.res[i].isHot == '1' ? true : false
+            res.data.data.res[i].index = i + 1 + (this.page - 1) * 10
           }
-          this.officListData = res.data.data
+          this.officListData = res.data.data.res
         } else {
           this.$message.error('请求失败，请重试')
         }
@@ -395,6 +414,17 @@ export default {
       if (this.addForm.add) {
         this.axios({
           method: 'post',
+          url: '/api/getCompany/detail',
+          headers: {
+            'Content-type': 'application/json;charset=UTF-8'
+          },
+          data: {
+            companyId:this.companyId
+          }
+        }).then((res) => {
+          if (res.data.data.company.backImg && res.data.data.company.companyImg) {
+            this.axios({
+          method: 'post',
           url: '/api/back/addCompanyOffic',
           headers: {
             'Content-type': 'application/json;charset=UTF-8'
@@ -416,11 +446,15 @@ export default {
           if (res.data.code == 200) {
             this.officList()
           } else {
-            this.$message.error('请求失败，请重试')
+            this.$message.error(res.data.msg)
           }
-        }).catch(() => {
-          this.$message.error('请求失败，请重试')
         })
+          } else {
+            this.$message.error('您还未配置公司信息，禁止添加职位')
+          }
+        })
+
+        
       } else {
         this.axios({
           method: 'post',

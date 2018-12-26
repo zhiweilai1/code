@@ -1,16 +1,19 @@
 <template>
   <div class="AdOfficList" v-loading="offloading">
-    <div style="margin-bottom: 20px;">
+    <el-breadcrumb separator="/">
+      <el-breadcrumb-item :to="{ path: '/CoOfficList' }">职位管理</el-breadcrumb-item>
+    </el-breadcrumb>
+    <div style="margin-bottom: 20px; position: absolute; top: 70px;right: 10px;">
       <el-button type="primary" @click="addOfficButton()">添加职位</el-button>
     </div>
     <el-table
       :data="officListData"
       :height="height"
       border
-      style="width: 100%">
+      style="width: 100%; margin-top: 40px;">
       <el-table-column
-        prop="officeId"
-        label="ID"
+        prop="index"
+        label="序号"
         width="50">
       </el-table-column>
       <el-table-column
@@ -26,10 +29,8 @@
         </template>
       </el-table-column>
       <el-table-column
-        label="职位详情">
-        <template slot-scope="scope">
-          <span class="offic-person" @click="handleOffic(scope.$index, scope.row)">详情</span>
-        </template>
+        prop="pushTime"
+        label="创建时间">
       </el-table-column>
       <el-table-column
         label="投递人数">
@@ -38,8 +39,10 @@
         </template>
       </el-table-column>
       <el-table-column
+        width="250"
         label="操作">
         <template slot-scope="scope">
+          <el-button type="primary" size="mini" @click="handleOffic(scope.$index, scope.row)">详情</el-button>
           <el-button type="primary" size="mini" @click="editorOffic(scope.$index, scope.row)">编辑</el-button>
           <el-button type="danger" size="mini" @click="deleteOffic(scope.$index, scope.row)">删除</el-button>
         </template>
@@ -174,7 +177,13 @@
       </span>
     </el-dialog>
 
-
+<div class="block">
+    <el-pagination
+    @current-change="changePage"
+      layout="prev, pager, next"
+      :total="total">
+    </el-pagination>
+  </div>
   </div>
 </template>
 <script>
@@ -182,6 +191,8 @@ export default {
   name: 'office-list',
   data() {
     return {
+      total: 200,
+      page: 1,
       height: 300,
       offloading: false,
       officListData: [],
@@ -221,7 +232,7 @@ export default {
   created() {
 
 
-    this.height = window.innerHeight - 30
+    this.height = window.innerHeight - 200
     let userName = window.sessionStorage.getItem('userMsg') && JSON.parse(window.sessionStorage.getItem('userMsg')) || undefined
     this.userName = userName
     if (!userName) {
@@ -234,6 +245,10 @@ export default {
     this.getOffType()
   },
   methods: {
+    changePage: function(currentPage) {
+      this.page = currentPage
+      this.officList()
+    },
     deleteOffic: function (index, row) {
       this.axios({
         method: 'post',
@@ -281,8 +296,6 @@ export default {
         } else {
           this.$message.error('请求失败，请重试')
         }
-      }).catch(() => {
-        this.$message.error('请求失败，请重试')
       })
     },
     editorOffic: function (index, row) {
@@ -300,18 +313,25 @@ export default {
           'Content-type': 'application/json;charset=UTF-8'
         },
         data:{
+          page: this.page,
           companyId: this.userName.company.companyId
         }
       }).then((res) => {
         this.offloading = false
         if (res.data.code == 200) {
-          this.officListData = res.data.data
+          this.total = res.data.data.total
+          for (let i = 0; i < res.data.data.res.length; i++) {
+            res.data.data.res[i].index = i + 1 + (page - 1) * 10
+            if (res.data.data.res[i].pushTime) {
+              res.data.data.res[i].pushTime = res.data.data.res[i].pushTime.replace('T', ' ').replace('Z', '')
+            }
+          }
+          this.officListData = res.data.data.res
         } else {
           this.$message.error('请求失败，请重试')
         }
       }).catch(() => {
         this.offloading = false
-        this.$message.error('请求失败，请重试')
       })
     },
     handleOffic: function(index, row) {

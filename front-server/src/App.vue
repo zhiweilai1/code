@@ -3,6 +3,7 @@
     <el-container>
       <el-header v-if="useMsg">
         <div class="company-zhi">
+          <img src="../static/logo.jpg" alt="" style="display: inline;width: 40px; height: 40px; border-radius: 50%;margin-top: 10px;float: left; margin-right: 10px;">
           职位来后台管理
         </div>
         <div class="company-zhi-name">
@@ -125,6 +126,9 @@ export default {
           }, {
             path: '/AdContact',
             name: '联系方式及类型'
+          }, {
+            path: '/Forget',
+            name: '密码设置'
           }]
         }]
       }

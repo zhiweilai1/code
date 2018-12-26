@@ -25,7 +25,7 @@
         <input type="hidden" name="unit" v-model="unitModel">
       </div>
       <div class="selectBox_list" v-show="isShowSelect"
-           style="max-height: 240px; width: 398px; display: block; background: #fff">
+           style="max-height: 240px; width: 100%; box-sizing: border-box; display: block; background: #fff">
         <div class="selectBox_listLi" v-for="(item, index) in dataList" :key="index"
              @click.stop="select(item, index)">{{item.value}}
         </div>
@@ -119,14 +119,9 @@ export default {
   watch: {
     currentValue: {
       handler(newContext) {
-        if (!newContext) {
-          this.hasContext = true
-        } else {
-          this.hasContext = false
-          this.showList = []
+        this.showList = []
           this.hirePage = 0
           this.showHire()
-        }
       }
     }
   },

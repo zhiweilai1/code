@@ -3,13 +3,13 @@
     <div class="company-form">
       <el-form :inline="true" :model="formInline" class="demo-form-inline">
         <el-form-item label="关键词">
-          <el-input v-model="formInline.keyword" placeholder="关键词" size="small" @keyup.enter.native="resumeList()"></el-input>
+          <el-input v-model="formInline.keyword" placeholder="关键词" size="small" @keyup.enter.native="resumeList(1)"></el-input>
         </el-form-item>
         <el-form-item label="年龄">
-          <el-input v-model="formInline.userAge" placeholder="年龄" size="small" @keyup.enter.native="resumeList()"></el-input>
+          <el-input v-model="formInline.userAge" placeholder="年龄" size="small" @keyup.enter.native="resumeList(1)"></el-input>
         </el-form-item>
         <el-form-item label="性别">
-          <el-select v-model="formInline.userSex" placeholder="请选择" @change="resumeList()">
+          <el-select v-model="formInline.userSex" placeholder="请选择" @change="resumeList(1)">
             <el-option
               label="全部"
               value="">
@@ -25,7 +25,8 @@
           </el-select>
         </el-form-item>
         <el-form-item label="状态">
-          <el-select v-model="formInline.user_status" placeholder="请选择" @change="resumeList()">
+          <el-select
+          v-model="formInline.user_status" placeholder="请选择" @change="resumeList(1)">
             <el-option
               label="全部状态"
               value="">
@@ -49,7 +50,7 @@
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="resumeList()" size="small">查询</el-button>
+          <el-button type="primary" @click="resumeList(1)" size="small">查询</el-button>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="download()" size="small">导出</el-button>
@@ -59,6 +60,7 @@
 
     <el-table
     :data="resumeListData"
+              border 
     :height="height"
     @expand-change="resumeChild"
     style="width: 100%">
@@ -139,8 +141,8 @@
       </template>
     </el-table-column>
     <el-table-column
-        prop="id"
-        label="ID"
+        prop="index"
+        label="序号"
       >
       </el-table-column>
       <el-table-column
@@ -178,7 +180,34 @@
         prop="create_time"
         label="创建时间">
       </el-table-column>
+      <el-table-column
+        label="操作">
+         <template slot-scope="scope">
+           <el-button
+            size="mini"
+            type="danger"
+            @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+        </template>
+      </el-table-column>
   </el-table>
+  <div class="block">
+    <el-pagination
+    @current-change="changePage"
+      layout="prev, pager, next"
+      :total="total">
+    </el-pagination>
+  </div>
+  <el-dialog
+  title="提示"
+  :visible.sync="dialogVisible"
+  width="30%"
+  :before-close="handleClose">
+  <span>确定删除？</span>
+  <span slot="footer" class="dialog-footer">
+    <el-button @click="dialogVisible = false">取 消</el-button>
+    <el-button type="primary" @click="deleteCompany()">确 定</el-button>
+  </span>
+</el-dialog>
   </div>
 </template>
 <script>
@@ -187,7 +216,9 @@ export default {
   name: 'AdStudent',
   data() {
     return {
+      dialogVisible: false,
       height: 300,
+      total: 100,
       resumeloading: false,
       formInline: {
         keyword: '',
@@ -196,11 +227,12 @@ export default {
         user_status: ''
       },
       resumeListData: [],
-      rowChildren: {}
+      rowChildren: {},
+      deletObj: {}
     }
   },
   created() {
-    this.height = window.innerHeight - 150
+    this.height = window.innerHeight - 250
     let userName = window.sessionStorage.getItem('userMsg') && JSON.parse(window.sessionStorage.getItem('userMsg')) || undefined
     if (!userName) {
       this.$router.push({
@@ -211,10 +243,40 @@ export default {
         path: '/'
       })
     } else {
-      this.resumeList()
+      this.resumeList(1)
     }
   },
   methods: {
+    handleDelete: function(index, row) {
+      this.deletObj = row
+      this.dialogVisible = true
+    },
+    deleteCompany: function () {
+      this.axios({
+        method: 'post',
+        url: '/api/back/user/delete',
+        headers: {
+          'Content-type': 'application/json;charset=UTF-8'
+        },
+        data: {
+           user_id: this.deletObj.id
+        }
+      }).then((res) => {
+        if (res.data.code == 200) {
+          this.$message({
+            message: '恭喜您，修改成功',
+            type: 'success'
+          })
+          this.resumeList(1)
+          this.dialogVisible = false
+        } else {
+          this.$message.error(res.data.msg)
+        }
+      })
+    },
+    changePage: function(currentPage) {
+      this.resumeList(currentPage)
+    },
     download: function () {
       window.open('http://admin.myzhiweilai.com/api/back/student/excel?keyword=' + this.formInline.keyword + '&userAge=' + this.formInline.userAge + '&userSex=' + this.formInline.userSex + '&user_status=' + this.formInline.user_status)
       // this.axios({
@@ -228,7 +290,7 @@ export default {
       //  console.log(res)
       // })
     },
-    resumeList: function() {
+    resumeList: function(page) {
       this.resumeloading = true
       this.axios({
         method: 'post',
@@ -236,14 +298,18 @@ export default {
         headers: {
           'Content-type': 'application/json;charset=UTF-8'
         },
-        data: this.formInline
+        data: Object.assign({page: page}, this.formInline) 
       }).then((res) => {
         this.resumeloading = false
         if (res.data.code == 200) {
-          for (let i = 0; i < res.data.data.length; i++) {
-            res.data.data[i].create_time = res.data.data[i].create_time.replace('T', ' ').replace('Z', '')
+          this.total = res.data.data.total
+          for (let i = 0; i < res.data.data.res.length; i++) {
+            if (res.data.data.res[i].create_time) {
+              res.data.data.res[i].create_time = res.data.data.res[i].create_time.replace('T', ' ').replace('Z', '')
+            }
+            res.data.data.res[i].index = i + 1 + (page - 1) * 10
           }
-          this.resumeListData = res.data.data
+          this.resumeListData = res.data.data.res
         } else {
           this.$message.error('请求失败，请重试')
         }

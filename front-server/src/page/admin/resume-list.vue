@@ -2,17 +2,20 @@
   <div class="OfficResume" v-loading="resumeloading">
     <div>
       <el-button type="default" size="mini" icon="el-icon-back" @click="() => {this.$router.back(-1)}">返回</el-button>
+      <span style="display: inline-block; margin-left: 10px;">
+        简历管理
+      </span>
     </div>
     <div class="company-form">
       <el-form :inline="true" :model="formInline" class="demo-form-inline">
         <el-form-item label="关键词">
-          <el-input v-model="formInline.keyword" placeholder="关键词" size="small" @keyup.enter.native="resumeList()"></el-input>
+          <el-input v-model="formInline.keyword" placeholder="关键词" size="small" @keyup.enter.native="resumeList(1)"></el-input>
         </el-form-item>
         <el-form-item label="年龄">
-          <el-input v-model="formInline.userAge" placeholder="年龄" size="small" @keyup.enter.native="resumeList()"></el-input>
+          <el-input v-model="formInline.userAge" placeholder="年龄" size="small" @keyup.enter.native="resumeList(1)"></el-input>
         </el-form-item>
         <el-form-item label="性别">
-          <el-select v-model="formInline.userSex" placeholder="请选择" @change="resumeList()">
+          <el-select v-model="formInline.userSex" placeholder="请选择" @change="resumeList(1)">
             <el-option
               label="全部"
               value="">
@@ -28,7 +31,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="状态">
-          <el-select v-model="formInline.user_status" placeholder="请选择" @change="resumeList()">
+          <el-select v-model="formInline.user_status" placeholder="请选择" @change="resumeList(1)">
             <el-option
               label="全部状态"
               value="">
@@ -52,13 +55,14 @@
           </el-select>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="resumeList()" size="small">查询</el-button>
+          <el-button type="primary" @click="resumeList(1)" size="small">查询</el-button>
         </el-form-item>
       </el-form>
     </div>
 
     <el-table
     :data="resumeListData"
+    border
     :height="height"
     @expand-change="resumeChild"
     style="width: 100%">
@@ -131,8 +135,8 @@
       </template>
     </el-table-column>
     <el-table-column
-        prop="id"
-        label="ID"
+        prop="index"
+        label="序号"
       >
       </el-table-column>
       <el-table-column
@@ -163,6 +167,13 @@
         label="状态">
       </el-table-column>
   </el-table>
+  <div class="block">
+    <el-pagination
+    @current-change="changePage"
+      layout="prev, pager, next"
+      :total="total">
+    </el-pagination>
+  </div>
   </div>
 </template>
 <script>
@@ -171,6 +182,7 @@ export default {
   name: 'OfficResume',
   data() {
     return {
+      total: 300,
       height: 300,
       resumeloading: false,
       formInline: {
@@ -189,22 +201,24 @@ export default {
     }
   },
   created() {
-    this.height = window.innerHeight - 150
+    this.height = window.innerHeight - 200
     let adResumeId = window.sessionStorage.getItem('adOffic')
     this.adResumeId = adResumeId
     let userName = window.sessionStorage.getItem('userMsg') && JSON.parse(window.sessionStorage.getItem('userMsg')) || undefined
     this.userName = userName
-    console.log(this.userName)
     if (!userName) {
       this.$router.push({
         path: '/login'
       })
     } else {
-      this.resumeList()
+      this.resumeList(1)
     }
   },
   methods: {
-    resumeList: function() {
+    changePage: function(currentPage) {
+      this.resumeList(currentPage)
+    },
+    resumeList: function(page) {
       this.resumeloading = true
       this.axios({
         method: 'post',
@@ -213,18 +227,23 @@ export default {
           'Content-type': 'application/json;charset=UTF-8'
         },
         data: Object.assign({
+          page: page,
           officeId: this.adResumeId
         }, this.formInline)
       }).then((res) => {
         this.resumeloading = false
         if (res.data.code == 200) {
+          this.total = res.data.data.total
           if (this.userName.userType == 'company' && this.userName.isRead == '0') {
-            for (let i = 0; i < res.data.data.length; i++) {
-              res.data.data[i].telPhone = '***'
-              res.data.data[i].userEmail = '***'
+            for (let i = 0; i < res.data.data.res.length; i++) {
+              res.data.data.res[i].telPhone = '***'
+              res.data.data.res[i].userEmail = '***'
             }
           }
-          this.resumeListData = res.data.data
+          for (let i = 0; i < res.data.data.res.length; i++) {
+            res.data.data.res[i].index = i + 1 + (page - 1) * 10
+          }
+          this.resumeListData = res.data.data.res
         } else {
           this.$message.error('请求失败，请重试')
         }

@@ -1,6 +1,8 @@
 <template>
   <div class="company-set">
-    <h3>公司信息配置</h3>
+    <span style="display: inline-block; margin-left: 10px;">
+        公司信息配置
+      </span>
     <div>
       <div  class="set-company">
         <div class="com-update">

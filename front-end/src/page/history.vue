@@ -1,7 +1,8 @@
 <template>
     <div class="application">
         <div v-title>历史记录</div>
-        <div v-if="dataList.length > 0">
+        <div v-if="dataList.length > 0" v-infinite-scroll="getHireOffic" infinite-scroll-disabled="loading"
+      infinite-scroll-distance="10">
           <div class="hire-detail" v-for="(item, index) in dataList" :key="index" @click="jumpToDetail(item.officeId)">
 
             <div class="bo-offic-box">
@@ -43,7 +44,8 @@ export default {
     data() {
       return {
         dataList: [],
-        userId: ''
+        userId: '',
+        hirePage: 0
       }
     },
     filters: {
@@ -61,6 +63,7 @@ export default {
     },
     methods: {
       getHireOffic: function () {
+        this.hirePage++
         this.axios({
           method: 'post',
           url: '/api/getHistoryList',
@@ -68,6 +71,7 @@ export default {
             'Content-type': 'application/json;charset=UTF-8'
           },
           data: {
+            page: this.hirePage,
             userId: this.userId
           }
         }).then((res) => {
@@ -84,7 +88,7 @@ export default {
                 }
               }
             }
-            this.dataList = data
+            this.dataList = this.dataList.concat(data)
           }
         })
       },

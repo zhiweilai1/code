@@ -2,6 +2,9 @@
   <div class="Tost">
     <div>
       <el-button type="default" style="margin-bottom: 10px;" size="mini" icon="el-icon-back" @click="() => {this.$router.back(-1)}">返回</el-button>
+      <span style="display: inline-block; margin-left: 10px;">
+        关联学生列表
+      </span>
     </div>
     <el-table
     :data="rowChildren"

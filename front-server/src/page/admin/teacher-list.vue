@@ -189,7 +189,7 @@ export default {
     handleTeachStu: function (index, row) {
       window.sessionStorage.setItem('t2s', JSON.stringify(row))
       this.$router.push({
-        path: '/T2st'
+        path: '/Tost'
       })
     },
     resumeChild: function (row, expandedRows) {

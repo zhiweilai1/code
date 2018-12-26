@@ -1,5 +1,5 @@
 <template>
-  <div class="T2st">
+  <div class="Tost">
     <div>
       <el-button type="default" style="margin-bottom: 10px;" size="mini" icon="el-icon-back" @click="() => {this.$router.back(-1)}">返回</el-button>
     </div>
@@ -46,7 +46,7 @@
 </template>
 <script>
 export default {
-  name: 'T2st',
+  name: 'Tost',
   data() {
     return {
       user: {},
@@ -104,7 +104,7 @@ export default {
 }
 </script>
 <style>
-.T2st {
+.Tost {
   padding: 10px;
 }
 </style>

@@ -1,5 +1,6 @@
 <template>
   <div class="index">
+    <div v-title>职位来</div>
     <div class="index-banner">
       <mt-swipe :auto="4000">
         

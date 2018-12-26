@@ -114,7 +114,7 @@ export default {
     }
     if (window.localStorage.getItem('userMsg')) {
       this.$router.push({
-        path: '/person'
+        path: '/'
       })
     }
   },

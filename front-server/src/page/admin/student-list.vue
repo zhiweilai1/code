@@ -130,7 +130,7 @@
               <span>{{ item.projectDesc }}</span>
             </el-form-item>
           </div>
-          <div v-if="rowChildren.myDes.myDes">
+          <div v-if="rowChildren.myDes && rowChildren.myDes.myDes">
             <el-form-item  label="自我评价">
               <span>{{ rowChildren.myDes.myDes }}</span>
             </el-form-item>
@@ -201,7 +201,7 @@
   title="提示"
   :visible.sync="dialogVisible"
   width="30%"
-  :before-close="handleClose">
+ >
   <span>确定删除？</span>
   <span slot="footer" class="dialog-footer">
     <el-button @click="dialogVisible = false">取 消</el-button>

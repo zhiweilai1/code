@@ -82,6 +82,7 @@ export default {
   created() {
     this.getContact()
     this.getOfficType()
+    this.getAboutUs()
   },
   methods: {
     submitAboutUs: function() {

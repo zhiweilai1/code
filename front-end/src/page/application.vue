@@ -1,7 +1,9 @@
 <template>
     <div class="application">
         <div v-title>我的申请</div>
-        <div v-if="dataList.length > 0">
+        <div v-if="dataList.length > 0" v-infinite-scroll="showHire"
+    infinite-scroll-disabled="loading"
+    infinite-scroll-distance="10">
             <div v-for="(item, index) in dataList" :key="index" class="jot-applicat-card">
                 <div class="jot-applicat-card-left">
                     <div class="ellipsis-1 job-title big-title">
@@ -45,7 +47,8 @@ export default {
     data() {
         return {
             dataList: [],
-            userId: ''
+            userId: '',
+            hirePage: 0
         }
     },
     components: {star},
@@ -62,6 +65,7 @@ export default {
         }
     },
     methods: {
+
         starMarkChange: function(e, index) {
             console.log(e)
             this.axios({
@@ -86,6 +90,7 @@ export default {
             })
         },
         getList: function () {
+          this.hirePage++
           this.axios({
             method: 'post',
             url: '/api/getApplicationList',
@@ -93,10 +98,11 @@ export default {
               'Content-type': 'application/json;charset=UTF-8'
             },
             data: {
+              page: this.hirePage,
               userId: this.userId,
             }
           }).then((res) => {
-            this.dataList = res.data.data
+            this.dataList = this.dataList.concat(res.data.data)
           })
         },
         evaluation: function(index) {

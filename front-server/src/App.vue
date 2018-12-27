@@ -103,6 +103,37 @@ export default {
               name: '密码设置'
             }]
           }]
+      } else if (userName.userType == 'admin') {
+        this.layMenu = [{
+          name: '信息管理',
+          icon: 'el-icon-menu',
+          child: [{
+            path: '/AdCompanyList',
+            name: '公司信息'
+          }, {
+            path: '/AdStudent',
+            name: '学生信息'
+          }, {
+            path: '/AdTeacher',
+            name: '教师信息'
+          }, {
+            path: '/Staff',
+            name: '员工信息'
+          }]
+        }, {
+          name: '平台配置',
+          icon: 'el-icon-setting',
+          child: [{
+            path: '/Banner',
+            name: '首页轮播'
+          }, {
+            path: '/AdContact',
+            name: '联系方式及类型'
+          }, {
+            path: '/Forget',
+            name: '密码设置'
+          }]
+        }]
       } else {
         this.layMenu = [{
           name: '信息管理',
@@ -116,6 +147,9 @@ export default {
           }, {
             path: '/AdTeacher',
             name: '教师信息'
+          }, {
+            path: '/Staff',
+            name: '员工信息'
           }]
         }, {
           name: '平台配置',

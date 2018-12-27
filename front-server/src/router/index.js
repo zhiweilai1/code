@@ -15,6 +15,7 @@ import Forget from '@/page/Forget'
 import AdcompanySet from '@/page/admin/AdcompanySet'
 import AdofficSet from '@/page/admin/AdofficSet'
 import Tost from '@/page/admin/Tost'
+import Staff from '@/page/admin/Staff'
 
 Vue.use(Router)
 
@@ -93,6 +94,10 @@ export default new Router({
       path: '/Tost',
       name: 'Tost',
       component: Tost
+    },{
+      path: '/Staff',
+      name: 'Staff',
+      component: Staff
     }
   ]
 })

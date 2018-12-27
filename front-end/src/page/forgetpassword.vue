@@ -84,7 +84,7 @@ export default {
         } else {
           this.axios({
             method: 'post',
-            url: '/api/back/changePassword',
+            url: '/api/change_password',
             headers: {
               'Content-type': 'application/json;charset=UTF-8'
             },

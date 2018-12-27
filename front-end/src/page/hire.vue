@@ -140,7 +140,8 @@ export default {
       this.unitModel = index;
       this.unitName = item.value;
       this.hireType = item.key
-      this.showHire()
+      this.hirePage = 0
+       this.showHire()
     },
 
     offTypeList: function() {
@@ -170,6 +171,7 @@ export default {
     },
 
     searchHire: function () {
+      this.hirePag = 0
       this.showHire()
       
     },

@@ -236,7 +236,6 @@ export default {
         }
       }).catch(() => {
         this.offloading = false
-        this.$message.error('请求失败，请重试')
       })
     },
 

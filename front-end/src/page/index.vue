@@ -97,7 +97,7 @@
         <mt-tab-container-item id="3">
           <div class="hot-company" v-for="(item, index) in comArr" :key="index" @click="comMsg(item.companyUrl, item.companyId)">
             <img :src="item.backImg" alt="" class="hot-img">
-            <div class="hot-company-title">
+            <div class="hot-company-title" style="display:none">
               {{item.companyName}}
               <div class="more">更多&gt;</div>
             </div>

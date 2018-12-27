@@ -4,7 +4,7 @@
     <div class="banner-img-box">
       <img :src="backImg" alt class="company-back-img">
       <!-- <img :src="imgUrl" alt class="banner-img"> -->
-      <div class="company-name">{{companyName}}</div>
+      <div style="display: none" class="company-name">{{companyName}}</div>
     </div>
     <mt-navbar v-model="selected">
       <mt-tab-item id="1">公司概况</mt-tab-item>

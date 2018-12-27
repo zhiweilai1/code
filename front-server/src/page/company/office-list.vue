@@ -321,7 +321,7 @@ export default {
         if (res.data.code == 200) {
           this.total = res.data.data.total
           for (let i = 0; i < res.data.data.res.length; i++) {
-            res.data.data.res[i].index = i + 1 + (page - 1) * 10
+            res.data.data.res[i].index = i + 1 + (this.page - 1) * 10
             if (res.data.data.res[i].pushTime) {
               res.data.data.res[i].pushTime = res.data.data.res[i].pushTime.replace('T', ' ').replace('Z', '')
             }

@@ -19,7 +19,7 @@
                         <img src="../../static/phone-icon.png" alt="" class="resume-icon">
                     </div>
                     <div style="float: left;">
-                        &nbsp;{{data.baseMsg.userPhone}}
+                        &nbsp;{{msg.telPhone}}
                     </div>
                     
                 </div>
@@ -146,12 +146,15 @@ export default {
   data() {
     return {
         data: {},
-        userMsg: {}
+        userMsg: {},
+        msg: {}
     }
   },
   created() {
     if (window.localStorage.getItem('userMsg')) {
         let userMsg = JSON.parse(window.localStorage.getItem('userMsg'))
+        console.log(userMsg)
+        this.msg = userMsg
         this.axios({
           method: 'post',
           url: '/api/getUserMsg',

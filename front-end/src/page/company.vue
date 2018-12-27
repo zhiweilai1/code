@@ -18,23 +18,23 @@
           <!-- 公司简介 -->
           <div class="company-card-title">公司简介</div>
           <div class="company-part-box">
-            <div class="company-part">
+            <div class="company-part ellipsis-1">
               <div class="company-part-child" style="margin-right: 5px;">
                 <img src="../../static/qiu-icon.png" alt class="company-part-icon">
               </div>
-              <div class="company-part-child">{{companydet}}</div>
+              <div class="company-part-child ellipsis-1"  style="width:calc(100% - 30px)">{{companydet}}</div>
             </div>
-            <div class="company-part">
+            <div class="company-part ellipsis-1">
               <div class="company-part-child" style="margin-right: 5px;">
                 <img src="../../static/lou-icon.png" alt class="company-part-icon">
               </div>
-              <div class="company-part-child">{{companyType}}</div>
+              <div class="company-part-child ellipsis-1" style="width:calc(100% - 30px)">{{companyType}}</div>
             </div>
-            <div class="company-part">
+            <div class="company-part ellipsis-1">
               <div class="company-part-child" style="margin-right: 5px;">
                 <img src="../../static/per-icon.png" alt class="company-part-icon">
               </div>
-              <div class="company-part-child">{{companyPer}}</div>
+              <div class="company-part-child  ellipsis-1">{{companyPer}}</div>
             </div>
           </div>
           <div class="company-intra">{{intruduce}}</div>

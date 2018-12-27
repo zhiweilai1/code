@@ -64,6 +64,7 @@ export default {
   line-height: 1.8;
   text-align: justify;
   margin: 0;
+  font-size: 1.1em;
 }
 
 .gongzhonghao-title {
@@ -72,7 +73,7 @@ export default {
   color: #409EFF
 }
 .about-detail>>>span {
-  font-size: 1.2em;
+  font-size: 1.3em;
   color: #409EFF
 }
 </style>

@@ -10,13 +10,14 @@
         <div class="login-yan-left">
           <input  v-model="telphone" placeholder="请输入手机号" class="number-input" @blur="outPoint()" @focus="focusPoint()">
         </div>
-        <div class="login-yan-right">
+        <!-- <div class="login-yan-right">
           <mt-button size="small" type="primary" :disabled="isPort" @click="getPort()">{{huoContent}}</mt-button>
-        </div>
+        </div> -->
       </div>
-      <div class="login-tel">
-        <input  v-model="yanNum" placeholder="请输入验证码" class="number-input" @blur="outPoint()" @focus="focusPoint()">
+      <div class="login-tel" >
+        <input  v-model="yanNum" placeholder="请输入密码" class="number-input" @blur="outPoint()" @focus="focusPoint()">
       </div>
+      <div style="font-size: 12px;display: inline-block; width: 100%;text-align: right" ><span @click="jumpToforget()">忘记密码</span> </div>
     </div>
     <mt-button type="primary" class="login-button" @click="login()">登录</mt-button>
     <span class="registration" @click="jumpTo()" :style="{'display': isShow ? 'block':'none'}">注册</span>
@@ -37,6 +38,11 @@ export default {
     }
   },
   methods: {
+    jumpToforget: function () {
+      this.$router.push({
+        path: '/Forget'
+      })
+    },
     outPoint: function() {
       this.isShow = true
       this.timeout = setTimeout(() => {
@@ -48,40 +54,40 @@ export default {
       this.isShow = false
       clearTimeout(this.timeout)
     },
-    getPort: function() {
-      if (!this.telphone) {
-        MessageBox('提示', '您还未输入手机号')
-        return false
-      } else {
-        if(!(/^1[345789]\d{9}$/.test(this.telphone))){ 
-          MessageBox('提示', '手机号码有误，请重填');  
-          return false;
-        } else {
-          this.isPort = true
-          let num = 61
-          let daojishi = setInterval(() => {
-            num--
-            this.huoContent = num + 's后重新获取'
-            if (num < 0) {
-              clearInterval(daojishi)
-              this.isPort = false
-              this.huoContent = '获取验证码'
-            }
-          }, 1000)
-          this.axios({
-            method: 'post',
-            url: '/api/getVerificationCode',
-            headers: {
-              'Content-type': 'application/json;charset=UTF-8'
-            },
-            data: {
-              userPhone: this.telphone
-            }
-          }).then((res) => {
-          })
-        }
-      }
-    },
+    // getPort: function() {
+    //   if (!this.telphone) {
+    //     MessageBox('提示', '您还未输入手机号')
+    //     return false
+    //   } else {
+    //     if(!(/^1[345789]\d{9}$/.test(this.telphone))){ 
+    //       MessageBox('提示', '手机号码有误，请重填');  
+    //       return false;
+    //     } else {
+    //       this.isPort = true
+    //       let num = 61
+    //       let daojishi = setInterval(() => {
+    //         num--
+    //         this.huoContent = num + 's后重新获取'
+    //         if (num < 0) {
+    //           clearInterval(daojishi)
+    //           this.isPort = false
+    //           this.huoContent = '获取验证码'
+    //         }
+    //       }, 1000)
+    //       this.axios({
+    //         method: 'post',
+    //         url: '/api/getVerificationCode',
+    //         headers: {
+    //           'Content-type': 'application/json;charset=UTF-8'
+    //         },
+    //         data: {
+    //           userPhone: this.telphone
+    //         }
+    //       }).then((res) => {
+    //       })
+    //     }
+    //   }
+    // },
     jumpTo: function() {
       this.$router.push({
         path: '/registration'
@@ -97,7 +103,7 @@ export default {
           },
           data: {
             telPhone: this.telphone,
-            smsCode: this.yanNum
+            password: this.yanNum
           }
         }).then((res) => {
           if (res.data.code == 200 || res.data.code == '200') {
@@ -108,7 +114,7 @@ export default {
           } else {
             MessageBox({
               title: '小提示',
-              message: '登录失败，请重试',
+              message: res.data.msg,
             })
           }
         })

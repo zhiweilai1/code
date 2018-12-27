@@ -151,7 +151,7 @@ body {
   line-height: 60px;
   color: #fff;
   font-size: 20px;
-  width: 200px;
+  width: 300px;
   padding-left: 20px;
 }
 .company-zhi-name {

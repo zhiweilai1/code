@@ -18,6 +18,7 @@ import AddTec from '@/page/addTec'
 import AddWorkResume from '@/page/addWorkResume'
 import AddProjectResume from '@/page/addProjectResume'
 import AddEvaluationResume from '@/page/addEvaluationResume'
+import Forget from '@/page/forgetpassword'
 
 Vue.use(Router)
 
@@ -117,6 +118,11 @@ export default new Router({
       path: '/addEvaluationResume',
       name: 'AddEvaluationResume',
       component: AddEvaluationResume
+    },
+    {
+      path: '/Forget',
+      name: 'Forget',
+      component: Forget
     }
   ]
 })

@@ -263,7 +263,7 @@ export default {
           'Content-type': 'application/json;charset=UTF-8'
         },
         data:{
-          companyId: window.sessionStorage.getItem('userMsg') && JSON.parse(window.sessionStorage.getItem('userMsg')).userId
+          companyId: window.sessionStorage.getItem('userMsg') && JSON.parse(window.sessionStorage.getItem('userMsg')).company.companyId
         }
       }).then((res) => {
         if (res.data.code == 200) {

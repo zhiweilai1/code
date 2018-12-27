@@ -23,6 +23,9 @@
           <div class="login-tel">
             <input v-model="stuyanNum" placeholder="请输入验证码" class="number-input" @blur="outPoint()" @focus="focusPoint()">
           </div>
+          <div class="login-tel">
+            <input v-model="spassword" placeholder="请设置密码" class="number-input" @blur="outPoint()" @focus="focusPoint()">
+          </div>
         </div>
         <!-- <div class="login-tel">
           <input class="number-input" type="text" placeholder="请选择学校" v-model="region" maxlength="80" readonly="readonly" @click="showAddressPicker" @blur="outPoint()" @focus="focusPoint()" />
@@ -48,6 +51,9 @@
           <div class="login-tel">
             <input  v-model="teayanNum" placeholder="请输入验证码" class="number-input" @blur="outPoint()" @focus="focusPoint()">
           </div>
+          <div class="login-tel">
+            <input v-model="tpassword" placeholder="请设置密码" class="number-input" @blur="outPoint()" @focus="focusPoint()">
+          </div>
         </div>
       </div>
 
@@ -66,6 +72,8 @@ export default {
   name: 'Registration',
   data() {
     return {
+      spassword: '',
+      tpassword: '',
       isShow: true,
       regShen: 0,
       isPortStu: false,
@@ -252,13 +260,15 @@ export default {
           telPhone: this.stutelphone,
           smsCode: this.stuyanNum,
           userSchool: this.region,
-          userTeacher: this.guantea
+          userTeacher: this.guantea,
+          password: this.spassword
         }
       } else {
         params = {
           isIdentity: 1,
           telPhone: this.teatelphone,
-          smsCode: this.teayanNum
+          smsCode: this.teayanNum,
+          password: this.tpassword
         }
       }
 
@@ -279,8 +289,6 @@ export default {
         } else {
           MessageBox('提示', res.data.msg)
         }
-      }).catch((err) => {
-        MessageBox('提示', res.data.msg)
       })
     }
   }

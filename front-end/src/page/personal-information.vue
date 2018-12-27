@@ -33,12 +33,18 @@
                 {{userMsg.telPhone}}
             </div>
         </div>
-        <!-- <div class="personal-box" style="border-bottom: 1px solid rgba(215, 215, 215, 1);">
+        <div class="personal-box" style="padding: 0; position: relative;" >
+          <div style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; z-index: 2" @click="changepassword()"></div>
+            <mt-cell title="密码" is-link>
+              <span>{{userMsg.password}}</span>
+            </mt-cell>
+        </div>
+        <!-- <div class="personal-box" style="border-bottom: 1px solid rgba(215, 215, 215, 1);" @click="changepassword()">
             <div class="personal-box-left">
-                学校
+                密码
             </div>
             <div class="personal-box-right">
-                {{userMsg.userSchool}}
+                {{userMsg.password}}
             </div>
         </div> -->
         <div class="personal-box" style="border-bottom: 1px solid rgba(215, 215, 215, 1);">
@@ -63,11 +69,13 @@
 </template>
 
 <script>
+import { MessageBox } from 'mint-ui';
 export default {
   name: "PersonalInformation",
   data() {
     return {
-       userMsg: {} 
+       userMsg: {},
+       obj: {}
     }
   },
   created() {
@@ -75,7 +83,7 @@ export default {
       this.isLogin = true
       
       let userMsg = JSON.parse(window.localStorage.getItem('userMsg'))
-
+      this.obj = userMsg
       this.axios({
         method: 'post',
         url: '/api/getUserMsg',
@@ -89,6 +97,14 @@ export default {
         this.userMsg = res.data.data
       })
       
+    }
+  },
+  methods: {
+    changepassword: function () {
+      this.$router.push({
+        path: '/Forget'
+      })   
+        
     }
   }
 }

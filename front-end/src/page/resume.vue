@@ -46,7 +46,7 @@
                         <div class="resume-tec-time" >
                             <img src="../../static/turn-icon.png" alt="" style="width: 20px;">
                         </div>
-                        <div class="resume-tec-time" style="font-size: 14px; color: #999; margin-right: 5px;">
+                        <div class="resume-tec-time" style="font-size: 14px; margin-right: 5px;">
                             {{item.beginTime}} - {{item.endTime}}
                         </div>
                     </div>
@@ -74,7 +74,7 @@
                         <div class="resume-tec-time" >
                             <img src="../../static/turn-icon.png" alt="" style="width: 20px;">
                         </div>
-                        <div class="resume-tec-time" style="font-size: 14px; color: #999; margin-right: 5px;">
+                        <div class="resume-tec-time" style="font-size: 14px;  margin-right: 5px;">
                             {{item.beginTime}} - {{item.endTime}}
                         </div>
                     </div>
@@ -102,7 +102,7 @@
                         <div class="resume-tec-time" >
                             <img src="../../static/turn-icon.png" alt="" style="width: 20px;">
                         </div>
-                        <div class="resume-tec-time" style="font-size: 14px; color: #999; margin-right: 5px;">
+                        <div class="resume-tec-time" style="font-size: 14px;  margin-right: 5px;">
                             {{item.beginTime}} - {{item.endTime}}
                         </div>
                     </div>
@@ -320,7 +320,7 @@ export default {
 }
 .resume-tes-dec {
     font-size: 14px;
-    color: #999;
+    /* color: #999; */
 }
 .resume-tec-card {
     margin-bottom: 10px;

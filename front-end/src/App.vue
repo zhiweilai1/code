@@ -33,7 +33,7 @@ export default {
 }
 .bo-offic-msg {
   font-size: 12px;
-  color: #999;
+  /* color: #999; */
   margin-bottom: 10px;
 }
 .bo-company-box {
@@ -58,7 +58,7 @@ export default {
 }
 .bo-company-fu {
   font-size: 12px;
-  color: #999;
+  /* color: #999; */
 }
 </style>
 
@@ -87,7 +87,7 @@ body {
 }
 .litle-title {
   font-size: 14px;
-  color: #999;
+  /* color: #999; */
 }
 
 .number-input {

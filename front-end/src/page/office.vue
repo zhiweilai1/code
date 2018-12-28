@@ -251,7 +251,7 @@ export default {
 
 .zhi-title {
   color: #333;
-  font-size: 17px;
+  font-size: 20px;
   margin-bottom: 5px;
   border-left: 4px solid #5dd5ca;
   padding-left: 12px;

@@ -83,7 +83,7 @@ body {
   font-size: 18px;
 }
 .normal-title {
-  font-size: 16px;
+  font-size: 20px;
 }
 .litle-title {
   font-size: 14px;

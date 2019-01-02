@@ -146,6 +146,11 @@
       >
       </el-table-column>
       <el-table-column
+        prop="nick_name"
+        label="昵称"
+      >
+      </el-table-column>
+      <el-table-column
         prop="user_name"
         label="姓名"
       >

@@ -199,6 +199,7 @@
     <el-pagination
     @current-change="changePage"
       layout="prev, pager, next"
+      :current-page.sync="page"
       :total="total">
     </el-pagination>
   </div>
@@ -212,7 +213,7 @@ export default {
       dialogVisible: false,
       deletObj: {},
       total: 200,
-      page: 1,
+      page: Number(window.sessionStorage.getItem('companyPage')) || 3,
       comLoad: false,
       height: 300,
       isAddCompany: false,
@@ -261,6 +262,7 @@ export default {
   },
   methods: {
     changePage: function(currentPage) {
+      window.sessionStorage.setItem('companyPage', currentPage)
       this.page = currentPage
       this.companyList()
     },

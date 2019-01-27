@@ -292,7 +292,7 @@ export default {
                 type: 'success'
               })
               this.page = 1
-              this.companyList()
+              this.companyList('add')
               this.isAddCompany = false
             } else {
               this.$message.error(res.data.msg)
@@ -338,7 +338,7 @@ export default {
       })
     },
 
-    companyList: function() {
+    companyList: function(isAdd) {
       this.comLoad = true
       let self = this
 
@@ -357,15 +357,22 @@ export default {
         this.comLoad = false
         if (res.data.code == 200) {
           this.total = res.data.data.total
-          for (let i = 0; i < res.data.data.res.length; i++) {
-            res.data.data.res[i].isHot = res.data.data.res[i].isHot == '1' ? true : false
-            res.data.data.res[i].isRead = res.data.data.res[i].isRead == '1' ? true : false
-            res.data.data.res[i].index = i + 1 + (this.page - 1) * 10
-            if (res.data.data.res[i].create_time) {
-              res.data.data.res[i].create_time = res.data.data.res[i].create_time.replace('T', ' ').replace('Z', '')
+          if (isAdd) {
+            this.page = Math.ceil(this.total / 10)
+
+            this.companyList()
+          } else {
+            for (let i = 0; i < res.data.data.res.length; i++) {
+              res.data.data.res[i].isHot = res.data.data.res[i].isHot == '1' ? true : false
+              res.data.data.res[i].isRead = res.data.data.res[i].isRead == '1' ? true : false
+              res.data.data.res[i].index = i + 1 + (this.page - 1) * 10
+              if (res.data.data.res[i].create_time) {
+                res.data.data.res[i].create_time = res.data.data.res[i].create_time.replace('T', ' ').replace('Z', '')
+              }
             }
+            this.tableList = res.data.data.res
           }
-          this.tableList = res.data.data.res
+          
         } else {
           this.$message.error(res.data.msg)
         }

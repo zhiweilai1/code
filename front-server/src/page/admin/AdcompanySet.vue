@@ -273,7 +273,12 @@ export default {
           companyImg: this.companyImg})
       }).then((res) => {
         if (res.data.code == 200) {
-          this.$message.success('更改成功')
+          this.$message.success('更改成功，3s后自动跳转至职位配置')
+          setTimeout(() => {
+            this.$router.push({
+              path: '/AdofficSet'
+            })
+          }, 3000);
         } else {
           this.$message.error('请求失败，请重试')
         }
